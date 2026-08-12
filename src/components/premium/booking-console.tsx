@@ -2,19 +2,18 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { addDays, format, nextFriday, parseISO } from "date-fns";
+import { addDays, format, parseISO } from "date-fns";
 import {
   ArrowRight,
   Bike,
-  CalendarRange,
+  CalendarClock,
   Car,
   Check,
-  ChevronRight,
+  Gauge,
+  Home,
   Map,
   MapPin,
   Plane,
-  Search,
-  Sparkles,
 } from "lucide-react";
 import type { Branch } from "@/content/site";
 import { BUSINESS_RULES } from "@/content/site";
@@ -22,7 +21,6 @@ import { buildCarsSearchParams, useBookingStore } from "@/store/useBookingStore"
 import { assertSearchValid } from "@/store/useBookingsStore";
 import { cn } from "@/utils";
 import { Button } from "@/components/ui/button";
-import { Segmented } from "@/components/ui/segmented";
 import {
   Sheet,
   SheetContent,
@@ -43,23 +41,18 @@ function prettyDate(value: string) {
   }
 }
 
-function tripNights(search: {
+function prettyRange(search: {
   pickupDate: string;
   pickupTime: string;
   dropoffDate: string;
   dropoffTime: string;
 }) {
-  if (!search.pickupDate || !search.dropoffDate) return 0;
-  const a = new Date(`${search.pickupDate}T${search.pickupTime || "10:00"}`);
-  const b = new Date(`${search.dropoffDate}T${search.dropoffTime || "10:00"}`);
-  const ms = b.getTime() - a.getTime();
-  if (Number.isNaN(ms) || ms <= 0) return 0;
-  return Math.max(1, Math.ceil(ms / 86_400_000));
+  if (!search.pickupDate || !search.dropoffDate) return "";
+  return `${prettyDate(search.pickupDate)} ${search.pickupTime || ""} → ${prettyDate(search.dropoffDate)} ${search.dropoffTime || ""}`.trim();
 }
 
 /**
- * Primary search surface. Everything downstream is gated on a valid trip, so
- * this bar carries smart defaults, inline validation and quick presets.
+ * Compact vertical booking card — location, schedule, Go.
  */
 export function BookingConsole({
   branches,
@@ -75,21 +68,23 @@ export function BookingConsole({
   const [category, setCategory] = useState<"car" | "bike">(
     search.category ?? "car"
   );
+  const [differentDropoff, setDifferentDropoff] = useState(
+    Boolean(search.dropoffBranchId) &&
+      search.dropoffBranchId !== search.pickupBranchId
+  );
   const [pickupOpen, setPickupOpen] = useState(false);
   const [dropoffOpen, setDropoffOpen] = useState(false);
+  const [scheduleOpen, setScheduleOpen] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
   const [error, setError] = useState("");
   const [city, setCity] = useState<string | null>(null);
-
-  const sameAsPickup =
-    !search.dropoffBranchId || search.dropoffBranchId === search.pickupBranchId;
 
   const cities = useMemo(
     () => Array.from(new Set(branches.map((b) => b.city))),
     [branches]
   );
   const branchList = city ? branches.filter((b) => b.city === city) : branches;
-  const nights = tripNights(search);
+  const scheduleLabel = prettyRange(search);
 
   const labelFor = (branch: Branch) => `${branch.name}, ${branch.city}`;
 
@@ -97,7 +92,7 @@ export function BookingConsole({
     setSearch({
       pickupBranchId: branch.id,
       pickupLabel: labelFor(branch),
-      ...(keepDropoff && !sameAsPickup
+      ...(keepDropoff && differentDropoff
         ? {}
         : { dropoffBranchId: branch.id, dropoffLabel: labelFor(branch) }),
     });
@@ -119,42 +114,29 @@ export function BookingConsole({
     setSearch({ category: next });
   }
 
-  /** Pickup date drives a sensible default return date. */
+  function onDifferentDropoff(on: boolean) {
+    setDifferentDropoff(on);
+    if (on) {
+      if (
+        !search.dropoffBranchId ||
+        search.dropoffBranchId === search.pickupBranchId
+      ) {
+        setSearch({ dropoffBranchId: "", dropoffLabel: "" });
+      }
+      return;
+    }
+    setSearch({
+      dropoffBranchId: search.pickupBranchId,
+      dropoffLabel: search.pickupLabel,
+    });
+  }
+
   function onPickupDate(value: string) {
     const patch: Record<string, string> = { pickupDate: value };
     if (value && (!search.dropoffDate || search.dropoffDate < value)) {
       patch.dropoffDate = iso(addDays(parseISO(value), 1));
     }
     setSearch(patch);
-    setError("");
-  }
-
-  function applyPreset(preset: "tomorrow" | "weekend" | "airport") {
-    if (preset === "airport") {
-      const airport =
-        branches.find((b) => b.id === "cok-airport") ??
-        branches.find((b) => b.type === "airport");
-      if (airport) selectPickup(airport, true);
-      return;
-    }
-    if (preset === "tomorrow") {
-      const start = addDays(new Date(), 1);
-      setSearch({
-        pickupDate: iso(start),
-        pickupTime: "10:00",
-        dropoffDate: iso(addDays(start, 1)),
-        dropoffTime: "10:00",
-      });
-    }
-    if (preset === "weekend") {
-      const friday = nextFriday(new Date());
-      setSearch({
-        pickupDate: iso(friday),
-        pickupTime: "17:00",
-        dropoffDate: iso(addDays(friday, 2)),
-        dropoffTime: "19:00",
-      });
-    }
     setError("");
   }
 
@@ -179,59 +161,94 @@ export function BookingConsole({
   return (
     <div
       className={cn(
-        "rounded-[var(--radius-2xl)] border border-hairline bg-surface p-3 shadow-e3 sm:p-4",
+        "overflow-hidden rounded-[var(--radius-2xl)] border border-hairline bg-surface shadow-e4",
         className
       )}
     >
-      {/* Category + presets */}
-      <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-        <Segmented
-          aria-label="Vehicle type"
-          value={category}
-          onChange={onCategory}
-          options={[
-            { value: "car", label: "Cars", icon: <Car className="size-4" /> },
-            { value: "bike", label: "Bikes", icon: <Bike className="size-4" /> },
-          ]}
-        />
+      {/* Title + vehicle tabs */}
+      <div className="px-5 pb-0 pt-6 text-center sm:px-7">
+        <h2 className="font-display text-[1.35rem] font-bold tracking-tight text-brand-500 sm:text-[1.5rem]">
+          Find the right {category === "bike" ? "bike" : "car"} now!
+        </h2>
 
-        <div className="no-scrollbar -mx-1 flex items-center gap-1.5 overflow-x-auto px-1">
-          <PresetChip icon={Plane} onClick={() => applyPreset("airport")}>
-            Airport pickup
-          </PresetChip>
-          <PresetChip icon={Sparkles} onClick={() => applyPreset("tomorrow")}>
-            Tomorrow
-          </PresetChip>
-          <PresetChip icon={CalendarRange} onClick={() => applyPreset("weekend")}>
-            This weekend
-          </PresetChip>
+        <div
+          role="tablist"
+          aria-label="Vehicle type"
+          className="mt-5 grid grid-cols-2 gap-0"
+        >
+          {(
+            [
+              { value: "car" as const, label: "Cars", Icon: Car },
+              { value: "bike" as const, label: "Bikes", Icon: Bike },
+            ] as const
+          ).map(({ value, label, Icon }) => {
+            const active = category === value;
+            return (
+              <button
+                key={value}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                onClick={() => onCategory(value)}
+                className={cn(
+                  "relative flex flex-col items-center gap-2 pb-3.5 pt-1 transition-colors",
+                  active ? "text-ink-900" : "text-ink-400 hover:text-ink-600"
+                )}
+              >
+                <Icon
+                  className={cn(
+                    "size-9",
+                    active ? "text-brand-500" : "text-ink-300"
+                  )}
+                  strokeWidth={1.5}
+                />
+                <span className="sr-only">{label}</span>
+                <span
+                  aria-hidden
+                  className={cn(
+                    "absolute inset-x-0 bottom-0 h-[3px] rounded-full transition-colors",
+                    active ? "bg-brand-500" : "bg-ink-100"
+                  )}
+                />
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {/* Search bar */}
-      <div className="grid overflow-hidden rounded-[var(--radius-xl)] border border-hairline bg-surface-sunken lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1.15fr)_minmax(0,1fr)_minmax(0,1fr)_auto] lg:rounded-full">
-        {/* Pickup location */}
+      <div className="space-y-3 px-5 py-5 sm:px-7">
+        {/* Different drop-off toggle */}
+        <label className="flex cursor-pointer items-center gap-3">
+          <span className="relative inline-flex h-6 w-11 shrink-0 items-center">
+            <input
+              type="checkbox"
+              className="peer sr-only"
+              checked={differentDropoff}
+              onChange={(e) => onDifferentDropoff(e.target.checked)}
+            />
+            <span className="absolute inset-0 rounded-full bg-ink-200 transition-colors peer-checked:bg-brand-500 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ring" />
+            <span className="absolute left-0.5 size-5 rounded-full bg-white shadow-e1 transition-transform peer-checked:translate-x-5" />
+          </span>
+          <span className="text-[13.5px] font-medium text-ink-700">
+            Return {category === "bike" ? "bike" : "car"} to another location
+          </span>
+        </label>
+
+        {/* Pickup */}
         <Sheet open={pickupOpen} onOpenChange={setPickupOpen}>
           <SheetTrigger asChild>
-            <button
-              type="button"
-              className="group flex min-w-0 items-center gap-3 px-4 py-3.5 text-left transition-colors hover:bg-surface/70 lg:py-3"
-            >
-              <MapPin className="size-[18px] shrink-0 text-brand-500" />
-              <span className="min-w-0 flex-1">
-                <span className="block text-[11px] font-bold uppercase tracking-[0.1em] text-ink-500">
-                  Pick-up
-                </span>
-                <span
-                  className={cn(
-                    "block truncate text-sm font-semibold",
-                    search.pickupLabel ? "text-ink-900" : "text-ink-400"
-                  )}
-                >
-                  {search.pickupLabel || "Where from?"}
-                </span>
+            <button type="button" className={fieldClass}>
+              <MapPin className="size-[18px] shrink-0 text-ink-400" />
+              <span
+                className={cn(
+                  "min-w-0 flex-1 truncate text-left text-[15px]",
+                  search.pickupLabel
+                    ? "font-semibold text-ink-900"
+                    : "font-medium text-ink-400"
+                )}
+              >
+                {search.pickupLabel || "Choose pick up location"}
               </span>
-              <ChevronRight className="size-4 shrink-0 text-ink-300 lg:hidden" />
             </button>
           </SheetTrigger>
           <BranchSheet
@@ -250,122 +267,133 @@ export function BookingConsole({
           />
         </Sheet>
 
-        {/* Drop-off location */}
-        <Sheet open={dropoffOpen} onOpenChange={setDropoffOpen}>
-          <SheetTrigger asChild>
-            <button
-              type="button"
-              className="flex min-w-0 items-center gap-3 border-t border-hairline px-4 py-3.5 text-left transition-colors hover:bg-surface/70 lg:border-l lg:border-t-0 lg:py-3"
-            >
-              <MapPin className="size-[18px] shrink-0 text-ink-400" />
-              <span className="min-w-0 flex-1">
-                <span className="block text-[11px] font-bold uppercase tracking-[0.1em] text-ink-500">
-                  Drop-off
-                </span>
+        {/* Drop-off (when toggle on) */}
+        {differentDropoff ? (
+          <Sheet open={dropoffOpen} onOpenChange={setDropoffOpen}>
+            <SheetTrigger asChild>
+              <button type="button" className={fieldClass}>
+                <MapPin className="size-[18px] shrink-0 text-ink-400" />
                 <span
                   className={cn(
-                    "block truncate text-sm font-semibold",
-                    sameAsPickup ? "text-ink-500" : "text-ink-900"
+                    "min-w-0 flex-1 truncate text-left text-[15px]",
+                    search.dropoffLabel
+                      ? "font-semibold text-ink-900"
+                      : "font-medium text-ink-400"
                   )}
                 >
-                  {sameAsPickup
-                    ? "Same as pick-up"
-                    : search.dropoffLabel || "Where to?"}
+                  {search.dropoffLabel || "Choose drop off location"}
                 </span>
+              </button>
+            </SheetTrigger>
+            <BranchSheet
+              title="Drop-off location"
+              description="End your trip at a different branch."
+              cities={cities}
+              city={city}
+              setCity={setCity}
+              branches={branchList}
+              selectedId={search.dropoffBranchId}
+              onSelect={selectDropoff}
+            />
+          </Sheet>
+        ) : null}
+
+        {/* Date & time */}
+        <Sheet open={scheduleOpen} onOpenChange={setScheduleOpen}>
+          <SheetTrigger asChild>
+            <button type="button" className={fieldClass}>
+              <CalendarClock className="size-[18px] shrink-0 text-ink-400" />
+              <span
+                className={cn(
+                  "min-w-0 flex-1 truncate text-left text-[15px]",
+                  scheduleLabel
+                    ? "font-semibold text-ink-900"
+                    : "font-medium text-ink-400"
+                )}
+              >
+                {scheduleLabel || "Choose date & time"}
               </span>
-              <ChevronRight className="size-4 shrink-0 text-ink-300 lg:hidden" />
             </button>
           </SheetTrigger>
-          <BranchSheet
-            title="Drop-off location"
-            description="Return to the same branch or end your trip elsewhere."
-            cities={cities}
-            city={city}
-            setCity={setCity}
-            branches={branchList}
-            selectedId={sameAsPickup ? undefined : search.dropoffBranchId}
-            onSelect={selectDropoff}
-          />
+          <SheetContent side="bottom" className="px-5 pb-6 pt-4 sm:px-6">
+            <SheetHeader>
+              <SheetTitle>Trip schedule</SheetTitle>
+              <p className="text-sm text-ink-500">
+                Minimum {BUSINESS_RULES.minRentalHours}h rental.
+              </p>
+            </SheetHeader>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <ScheduleField
+                label="Trip starts"
+                date={search.pickupDate}
+                time={search.pickupTime}
+                min={today}
+                onDate={onPickupDate}
+                onTime={(t) => setSearch({ pickupTime: t })}
+              />
+              <ScheduleField
+                label="Trip ends"
+                date={search.dropoffDate}
+                time={search.dropoffTime}
+                min={search.pickupDate || today}
+                onDate={(v) => {
+                  setSearch({ dropoffDate: v });
+                  setError("");
+                }}
+                onTime={(t) => setSearch({ dropoffTime: t })}
+              />
+            </div>
+            <Button
+              block
+              size="lg"
+              className="mt-5"
+              onClick={() => setScheduleOpen(false)}
+            >
+              Done
+            </Button>
+          </SheetContent>
         </Sheet>
 
-        {/* Pickup date + time */}
-        <DateTimeSegment
-          label="Trip starts"
-          date={search.pickupDate}
-          time={search.pickupTime}
-          min={today}
-          onDate={onPickupDate}
-          onTime={(t) => setSearch({ pickupTime: t })}
-        />
-
-        {/* Dropoff date + time */}
-        <DateTimeSegment
-          label="Trip ends"
-          date={search.dropoffDate}
-          time={search.dropoffTime}
-          min={search.pickupDate || today}
-          onDate={(v) => {
-            setSearch({ dropoffDate: v });
-            setError("");
-          }}
-          onTime={(t) => setSearch({ dropoffTime: t })}
-        />
-
-        <div className="border-t border-hairline p-2 lg:border-l lg:border-t-0 lg:p-1.5">
-          <Button
-            onClick={onSearch}
-            size="lg"
-            block
-            className="lg:h-[52px] lg:w-[52px] lg:px-0"
-            aria-label={category === "bike" ? "Search bikes" : "Search cars"}
-          >
-            <Search className="lg:size-5" />
-            <span className="lg:hidden">
-              Search {category === "bike" ? "bikes" : "cars"}
-            </span>
-          </Button>
-        </div>
-      </div>
-
-      {/* Feedback row */}
-      <div className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-1">
         {error ? (
-          <p
-            role="alert"
-            className="text-[13px] font-semibold text-danger"
-          >
+          <p role="alert" className="text-[13px] font-semibold text-danger">
             {error}
           </p>
-        ) : nights ? (
-          <p className="flex items-center gap-2 text-[13px] font-semibold text-ink-700">
-            <Check className="size-4 text-success" />
-            {nights} {nights === 1 ? "day" : "days"}
-            {category === "car" ? (
-              <span className="font-medium text-ink-500">
-                · {nights * BUSINESS_RULES.kmPerDay} free km included
-              </span>
-            ) : null}
-          </p>
-        ) : (
-          <p className="text-[13px] text-ink-500">
-            Minimum {BUSINESS_RULES.minRentalHours}h rental · no sign-in needed
-            to browse
-          </p>
-        )}
-        {!sameAsPickup ? (
-          <button
-            type="button"
-            onClick={() =>
-              setSearch({
-                dropoffBranchId: search.pickupBranchId,
-                dropoffLabel: search.pickupLabel,
-              })
-            }
-            className="text-[13px] font-semibold text-brand-600 hover:underline"
-          >
-            Return to pick-up point
-          </button>
         ) : null}
+
+        <Button
+          onClick={onSearch}
+          size="lg"
+          block
+          className="h-14 rounded-[var(--radius-md)] text-base font-bold"
+        >
+          Go
+        </Button>
+      </div>
+
+      {/* Footer perks */}
+      <div className="grid grid-cols-2 border-t border-hairline">
+        <div className="flex items-center gap-2.5 border-r border-hairline px-4 py-4 sm:px-5">
+          <span className="grid size-9 shrink-0 place-items-center rounded-full bg-brand-50 text-brand-600">
+            <Home className="size-4" />
+          </span>
+          <span className="min-w-0 text-left text-[12px] leading-snug text-ink-600">
+            <span className="block font-semibold text-ink-800">
+              Doorstep delivery
+            </span>
+            Available in your city
+          </span>
+        </div>
+        <div className="flex items-center gap-2.5 px-4 py-4 sm:px-5">
+          <span className="grid size-9 shrink-0 place-items-center rounded-full bg-jade-50 text-jade-600">
+            <Gauge className="size-4" />
+          </span>
+          <span className="min-w-0 text-left text-[12px] leading-snug text-ink-600">
+            <span className="block font-semibold text-ink-800">
+              Choose your
+            </span>
+            KM Package
+          </span>
+        </div>
       </div>
 
       <PickupMapPicker
@@ -382,7 +410,10 @@ export function BookingConsole({
   );
 }
 
-function DateTimeSegment({
+const fieldClass =
+  "flex w-full items-center gap-3 rounded-[var(--radius-md)] border border-ink-200 bg-surface px-4 py-[15px] transition-colors hover:border-ink-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring";
+
+function ScheduleField({
   label,
   date,
   time,
@@ -398,62 +429,28 @@ function DateTimeSegment({
   onTime: (value: string) => void;
 }) {
   return (
-    <div className="relative border-t border-hairline px-4 py-3.5 transition-colors focus-within:bg-surface hover:bg-surface/70 lg:border-l lg:border-t-0 lg:py-3">
+    <div className="rounded-[var(--radius-md)] border border-hairline bg-surface-sunken p-3.5">
       <span className="block text-[11px] font-bold uppercase tracking-[0.1em] text-ink-500">
         {label}
       </span>
-      <div className="mt-0.5 flex items-center gap-2">
-        <label className="relative min-w-0 flex-1 cursor-pointer">
-          <span
-            className={cn(
-              "block truncate text-sm font-semibold",
-              date ? "text-ink-900" : "text-ink-400"
-            )}
-          >
-            {date ? prettyDate(date) : "Add date"}
-          </span>
-          <input
-            type="date"
-            value={date}
-            min={min}
-            onChange={(e) => onDate(e.target.value)}
-            aria-label={`${label} date`}
-            className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
-          />
-        </label>
-        <span aria-hidden className="text-ink-200">
-          |
-        </span>
+      <div className="mt-2 flex items-center gap-2">
+        <input
+          type="date"
+          value={date}
+          min={min}
+          onChange={(e) => onDate(e.target.value)}
+          aria-label={`${label} date`}
+          className="min-w-0 flex-1 rounded-md border border-hairline bg-surface px-2.5 py-2 text-sm font-semibold text-ink-900 outline-none focus:border-brand-300"
+        />
         <input
           type="time"
           value={time}
           onChange={(e) => onTime(e.target.value)}
           aria-label={`${label} time`}
-          className="w-[4.75rem] shrink-0 rounded-md bg-transparent text-sm font-semibold text-ink-900 outline-none"
+          className="w-[6.5rem] shrink-0 rounded-md border border-hairline bg-surface px-2.5 py-2 text-sm font-semibold text-ink-900 outline-none focus:border-brand-300"
         />
       </div>
     </div>
-  );
-}
-
-function PresetChip({
-  children,
-  icon: Icon,
-  onClick,
-}: {
-  children: React.ReactNode;
-  icon: React.ComponentType<{ className?: string }>;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-hairline bg-surface px-3 py-1.5 text-[12.5px] font-semibold text-ink-600 transition-colors hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700"
-    >
-      <Icon className="size-3.5" />
-      {children}
-    </button>
   );
 }
 
