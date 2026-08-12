@@ -252,14 +252,15 @@ export function BookingWizard({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
+        mobileSheet
         className={cn(
-          "gap-0 p-0",
+          "gap-0 p-0 max-w-none",
           step === "dates" || step === "times"
-            ? "max-w-md sm:max-w-[720px]"
-            : "max-w-md sm:max-w-lg"
+            ? "sm:max-w-[720px]"
+            : "sm:max-w-lg"
         )}
       >
-        <div className="border-b border-hairline px-5 py-4 sm:px-6">
+        <div className="border-b border-hairline px-4 py-3.5 sm:px-6 sm:py-4">
           <div className="flex items-center gap-2 pr-8">
             <button
               type="button"
@@ -269,9 +270,11 @@ export function BookingWizard({
             >
               <ArrowLeft className="size-4" />
             </button>
-            <DialogHeader className="pr-0">
-              <DialogTitle>{titles[step]}</DialogTitle>
-              <p className="text-sm text-ink-500">
+            <DialogHeader className="gap-0.5 pr-0">
+              <DialogTitle className="text-lg sm:text-xl">
+                {titles[step]}
+              </DialogTitle>
+              <p className="text-[13px] text-ink-500 sm:text-sm">
                 Step {stepIndex + 1} of {STEPS.length}
                 {city && step !== "city" ? ` · ${CITY_LABEL[city] ?? city}` : ""}
               </p>
@@ -279,7 +282,7 @@ export function BookingWizard({
           </div>
 
           {/* Slim progress bar */}
-          <div className="mt-4 flex gap-1.5">
+          <div className="mt-3 flex gap-1.5 sm:mt-4">
             {STEPS.map((s, i) => (
               <span
                 key={s}
@@ -295,10 +298,10 @@ export function BookingWizard({
 
         <div
           className={cn(
-            "overflow-y-auto px-5 py-4 sm:px-6",
+            "min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-6",
             step === "dates" || step === "times"
-              ? "max-h-[min(70vh,560px)]"
-              : "max-h-[min(60vh,480px)]"
+              ? "max-h-[min(70dvh,560px)]"
+              : "max-h-[min(62dvh,480px)]"
           )}
         >
           {step === "city" ? (

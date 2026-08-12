@@ -50,15 +50,7 @@ export function ImmersiveHero({ branches }: { branches: Branch[] }) {
           {/* Brand + images */}
           <motion.div {...fade()} className="min-w-0">
             <div className="relative z-10 text-center lg:text-left">
-              <span className="inline-flex items-center gap-2 rounded-full border border-hairline bg-surface/70 py-1.5 pl-2.5 pr-3.5 text-[10px] font-bold uppercase tracking-[0.14em] text-ink-600 backdrop-blur sm:text-[11px] sm:tracking-[0.16em]">
-                <span
-                  aria-hidden
-                  className="size-1.5 rounded-full bg-brand-500"
-                />
-                Kochi · Kerala · Since {BUSINESS_RULES.foundedYear}
-              </span>
-
-              <h1 className="text-hero mt-3 sm:mt-5">
+              <h1 className="text-hero">
                 Drive your journey.
                 <br />
                 Your way.

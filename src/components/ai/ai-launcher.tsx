@@ -6,7 +6,7 @@ import { useAiAssistantUi } from "@/components/ai/ai-assistant-ui";
 
 /**
  * Single persistent launcher. Sits above the mobile tab bar so it never
- * collides with navigation.
+ * collides with navigation. Hidden while any dialog / bottom sheet is open.
  */
 export function AiFloatingButton() {
   const { open, setOpen } = useAiAssistantUi();
@@ -14,12 +14,13 @@ export function AiFloatingButton() {
   return (
     <motion.button
       type="button"
+      data-ai-fab
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.96 }}
       onClick={() => setOpen((v) => !v)}
       aria-expanded={open}
       aria-label={open ? "Close AI booking assistant" : "Open AI booking assistant"}
-      className="fixed bottom-[calc(env(safe-area-inset-bottom)+4.75rem)] right-4 z-[60] inline-flex h-13 items-center gap-2.5 rounded-full bg-ink-900 pl-3 pr-4 font-semibold text-white shadow-e4 sm:bottom-7 sm:right-6"
+      className="fixed bottom-[calc(env(safe-area-inset-bottom)+4.75rem)] right-4 z-40 inline-flex items-center gap-2.5 rounded-full bg-ink-900 pl-3 pr-4 font-semibold text-white shadow-e4 sm:bottom-7 sm:right-6"
       style={{ height: 52 }}
     >
       <span className="grid size-8 place-items-center rounded-full bg-brand-500">

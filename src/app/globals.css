@@ -616,4 +616,11 @@
   .animate-fade-in {
     animation: fade-in var(--dur-slow) var(--ease-out-quint) both;
   }
+
+  /* Hide Ask AI while any dialog / bottom sheet overlay is open */
+  body:has([data-radix-dialog-overlay][data-state="open"]) [data-ai-fab] {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
 }

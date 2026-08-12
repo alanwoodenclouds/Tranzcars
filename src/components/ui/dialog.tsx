@@ -29,27 +29,40 @@ const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
     hideClose?: boolean;
+    /** Bottom sheet on mobile, centered dialog from `sm` up. */
+    mobileSheet?: boolean;
   }
->(({ className, children, hideClose, ...props }, ref) => (
+>(({ className, children, hideClose, mobileSheet, ...props }, ref) => (
   <DialogPortal>
     <DialogOverlay />
-    {/*
-      Center with inset + margin auto (not translate). Dialog open animation
-      also uses transform; sharing that property used to knock modals off-center.
-    */}
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "dialog-anim fixed inset-0 z-50 m-auto flex h-fit max-h-[92dvh] w-[calc(100%-1.5rem)] max-w-lg flex-col overflow-hidden",
-        "rounded-[var(--radius-2xl)] border border-hairline bg-surface shadow-e4",
+        "fixed z-50 flex flex-col overflow-hidden border border-hairline bg-surface shadow-e4",
+        mobileSheet
+          ? [
+              // Mobile: bottom sheet
+              "inset-x-0 bottom-0 top-auto m-0 h-auto max-h-[92dvh] w-full max-w-none rounded-t-[var(--radius-2xl)] rounded-b-none max-sm:sheet-anim-bottom",
+              // Desktop: centered
+              "sm:dialog-anim sm:inset-0 sm:m-auto sm:max-h-[92dvh] sm:w-[calc(100%-1.5rem)] sm:max-w-lg sm:rounded-[var(--radius-2xl)]",
+            ]
+          : [
+              "dialog-anim inset-0 m-auto h-fit max-h-[92dvh] w-[calc(100%-1.5rem)] max-w-lg rounded-[var(--radius-2xl)]",
+            ],
         className
       )}
       {...props}
     >
+      {mobileSheet ? (
+        <div
+          aria-hidden
+          className="mx-auto mt-2.5 h-1.5 w-11 shrink-0 rounded-full bg-ink-200 sm:hidden"
+        />
+      ) : null}
       {children}
       {hideClose ? null : (
         <DialogPrimitive.Close
-          className="absolute right-4 top-4 z-10 grid size-9 place-items-center rounded-full text-ink-500 transition-colors hover:bg-ink-100 hover:text-ink-900"
+          className="absolute right-3 top-3 z-10 grid size-9 place-items-center rounded-full text-ink-500 transition-colors hover:bg-ink-100 hover:text-ink-900 sm:right-4 sm:top-4"
           aria-label="Close"
         >
           <X className="size-4" />

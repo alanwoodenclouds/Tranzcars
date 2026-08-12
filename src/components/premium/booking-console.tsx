@@ -170,7 +170,7 @@ export function BookingConsole({
   return (
     <div
       className={cn(
-        "overflow-hidden rounded-[var(--radius-xl)] border border-hairline bg-surface shadow-e4 sm:rounded-[var(--radius-2xl)]",
+        "overflow-hidden rounded-[var(--radius-xl)] border border-ink-200/80 bg-surface sm:rounded-[var(--radius-2xl)]",
         className
       )}
     >
@@ -352,8 +352,9 @@ export function BookingConsole({
 
       <Dialog open={searching && !wizardOpen}>
         <DialogContent
+          mobileSheet
           hideClose
-          className="max-w-sm gap-0 p-8 text-center"
+          className="max-w-none gap-0 p-8 text-center sm:max-w-sm"
           onPointerDownOutside={(e) => e.preventDefault()}
           onEscapeKeyDown={(e) => e.preventDefault()}
         >
