@@ -1,7 +1,7 @@
 "use client";
 
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 export type BookingSearch = {
   pickupBranchId: string;
@@ -20,11 +20,14 @@ export type BookingSearch = {
 
 type BookingState = {
   search: BookingSearch;
+  /** False until localStorage rehydrate finishes (avoids empty flash / lost UI). */
+  _hasHydrated: boolean;
+  setHasHydrated: (value: boolean) => void;
   setSearch: (partial: Partial<BookingSearch>) => void;
   resetSearch: () => void;
 };
 
-const defaultSearch: BookingSearch = {
+export const defaultSearch: BookingSearch = {
   pickupBranchId: "",
   pickupLabel: "",
   dropoffBranchId: "",
@@ -33,17 +36,30 @@ const defaultSearch: BookingSearch = {
   pickupTime: "10:00",
   dropoffDate: "",
   dropoffTime: "10:00",
+  category: "car",
 };
 
 export const useBookingStore = create<BookingState>()(
   persist(
     (set) => ({
       search: defaultSearch,
+      _hasHydrated: false,
+      setHasHydrated: (value) => set({ _hasHydrated: value }),
       setSearch: (partial) =>
         set((state) => ({ search: { ...state.search, ...partial } })),
-      resetSearch: () => set({ search: defaultSearch }),
+      resetSearch: () => set({ search: { ...defaultSearch } }),
     }),
-    { name: "tranzcars-booking" }
+    {
+      name: "tranzcars-booking",
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({ search: state.search }),
+      onRehydrateStorage: () => (state, error) => {
+        if (error) {
+          console.error("Booking store rehydrate failed", error);
+        }
+        state?.setHasHydrated(true);
+      },
+    }
   )
 );
 

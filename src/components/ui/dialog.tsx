@@ -27,26 +27,34 @@ DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
 
 const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
->(({ className, children, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
+    hideClose?: boolean;
+  }
+>(({ className, children, hideClose, ...props }, ref) => (
   <DialogPortal>
     <DialogOverlay />
+    {/*
+      Center with inset + margin auto (not translate). Dialog open animation
+      also uses transform; sharing that property used to knock modals off-center.
+    */}
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "dialog-anim fixed left-1/2 top-1/2 z-50 flex max-h-[92dvh] w-[calc(100%-1.5rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden",
+        "dialog-anim fixed inset-0 z-50 m-auto flex h-fit max-h-[92dvh] w-[calc(100%-1.5rem)] max-w-lg flex-col overflow-hidden",
         "rounded-[var(--radius-2xl)] border border-hairline bg-surface shadow-e4",
         className
       )}
       {...props}
     >
       {children}
-      <DialogPrimitive.Close
-        className="absolute right-4 top-4 grid size-9 place-items-center rounded-full text-ink-500 transition-colors hover:bg-ink-100 hover:text-ink-900"
-        aria-label="Close"
-      >
-        <X className="size-4" />
-      </DialogPrimitive.Close>
+      {hideClose ? null : (
+        <DialogPrimitive.Close
+          className="absolute right-4 top-4 z-10 grid size-9 place-items-center rounded-full text-ink-500 transition-colors hover:bg-ink-100 hover:text-ink-900"
+          aria-label="Close"
+        >
+          <X className="size-4" />
+        </DialogPrimitive.Close>
+      )}
     </DialogPrimitive.Content>
   </DialogPortal>
 ));

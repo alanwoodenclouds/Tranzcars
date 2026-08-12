@@ -68,11 +68,6 @@ export function ImmersiveHero({ branches }: { branches: Branch[] }) {
               Your way.
             </h1>
 
-            <p className="text-lead mt-6 max-w-md">
-              Premium self-drive cars and bikes for every Kerala trip — airport
-              delivery, {BUSINESS_RULES.kmPerDay} km free/day, MVD approved.
-            </p>
-
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Button asChild size="lg" className="w-full sm:w-auto">
                 <Link href="/cars">
