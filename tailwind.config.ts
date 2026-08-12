@@ -2,13 +2,13 @@ import type { Config } from "tailwindcss";
 
 /**
  * Light Premium Skeuomorphic — locked palette.
- * Shadow physics live in app/globals.css utility classes (.panel, .panel-inset, .btn-physical).
+ * Shadow physics live in src/app/globals.css utility classes (.panel, .panel-inset, .btn-physical).
  */
 const config: Config = {
   content: [
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./content/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/content/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
