@@ -28,6 +28,29 @@ export default function AccountPage() {
     }
   }, [user]);
 
+  useEffect(() => {
+    if (!user?.token || user.token.startsWith("mock-")) return;
+    void fetch("/api/me", {
+      headers: { Authorization: `Bearer ${user.token}` },
+      cache: "no-store",
+    })
+      .then((r) => (r.ok ? r.json() : null))
+      .then(
+        (me: { name?: string; email?: string; mobile?: string | null } | null) => {
+          if (!me) return;
+          setName(me.name || "");
+          setEmail(me.email || "");
+          updateProfile({
+            name: me.name,
+            email: me.email,
+            mobile: me.mobile,
+            mobileBound: Boolean(me.mobile),
+          });
+        }
+      )
+      .catch(() => undefined);
+  }, [user?.token, updateProfile]);
+
   if (!user) {
     return (
       <SignInGate
@@ -41,12 +64,34 @@ export default function AccountPage() {
     (b) => (user.mobile && b.mobile === user.mobile) || (!user.mobile && !b.mobile)
   ).length;
 
-  function onSave(e: React.FormEvent) {
+  async function onSave(e: React.FormEvent) {
     e.preventDefault();
-    updateProfile({
+    if (!user) return;
+    const token = user.token;
+    const next = {
       name: name.trim() || undefined,
       email: email.trim() || undefined,
-    });
+    };
+    if (token && !token.startsWith("mock-")) {
+      try {
+        const res = await fetch("/api/me", {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(next),
+        });
+        if (!res.ok) {
+          const err = (await res.json().catch(() => ({}))) as { detail?: string };
+          throw new Error(err.detail || "Could not save profile");
+        }
+      } catch (err) {
+        toast(err instanceof Error ? err.message : "Save failed", "error");
+        return;
+      }
+    }
+    updateProfile(next);
     setSaved(true);
     toast("Profile saved", "success");
     window.setTimeout(() => setSaved(false), 2500);
@@ -95,8 +140,8 @@ export default function AccountPage() {
           <ChevronRight className="size-4 text-ink-300" />
         </Link>
 
-        <form
-          onSubmit={onSave}
+          <form
+          onSubmit={(e) => void onSave(e)}
           className="mt-4 rounded-[var(--radius-xl)] border border-hairline bg-surface p-5 sm:p-6"
         >
           <h2 className="font-display text-[17px] font-bold leading-snug tracking-tight">

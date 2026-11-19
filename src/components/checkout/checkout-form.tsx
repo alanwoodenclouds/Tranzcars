@@ -120,7 +120,7 @@ export function CheckoutForm({
           }),
         });
         const data = (await res.json()) as {
-          id?: number;
+          id?: number | string;
           detail?: string;
           code?: string;
         };

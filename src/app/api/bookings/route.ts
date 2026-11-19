@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createPortalBooking, fetchPortalBookings } from "@/lib/api/server";
+import {
+  createPortalBooking,
+  fetchPortalBookings,
+} from "@/lib/api/server";
+import { mapPortalBooking, type PortalBooking } from "@/lib/api/portal";
 
 function bearer(request: NextRequest) {
   const h = request.headers.get("authorization") || "";
@@ -12,7 +16,11 @@ export async function GET(request: NextRequest) {
   if (!token) {
     return NextResponse.json({ detail: "Unauthorized" }, { status: 401 });
   }
-  const rows = await fetchPortalBookings(token);
+  if (token.startsWith("mock-")) {
+    return NextResponse.json([]);
+  }
+  const status = request.nextUrl.searchParams.get("status") || undefined;
+  const rows = await fetchPortalBookings(token, status);
   return NextResponse.json(rows);
 }
 
@@ -28,6 +36,11 @@ export async function POST(request: NextRequest) {
       res.data || { detail: "Could not create booking" },
       { status: res.status || 400 }
     );
+  }
+  if (res.data && typeof res.data === "object" && "variant" in res.data) {
+    return NextResponse.json(mapPortalBooking(res.data as PortalBooking), {
+      status: 201,
+    });
   }
   return NextResponse.json(res.data, { status: 201 });
 }

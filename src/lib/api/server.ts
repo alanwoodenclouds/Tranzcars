@@ -13,18 +13,25 @@ import {
   portalBindMobileSend,
   portalBindMobileVerify,
   portalBranches,
+  portalCancelBooking,
   portalCreateBooking,
+  portalGetBooking,
   portalGoogleLogin,
   portalListBookings,
   portalMe,
+  portalPatchMe,
   portalPasswordLogin,
   portalSendEmailOtp,
   portalSendMobileOtp,
+  portalSetPassword,
+  portalSettings,
   portalVariants,
   portalVerifyEmailOtp,
   portalVerifyMobileOtp,
+  type CarFilters,
   type PortalAuthConfig,
   type PortalAuthResult,
+  type PortalTrip,
 } from "@/lib/api/portal";
 
 const isMockMode = () => !isPortalLive();
@@ -35,23 +42,23 @@ export async function getBranches(): Promise<Branch[]> {
   return data.length ? data : BRANCHES;
 }
 
-export async function getCars(filters?: {
-  transmission?: string;
-  type?: string;
-  category?: string;
-  q?: string;
-}): Promise<Car[]> {
-  let cars = CARS;
+export async function getCars(filters?: CarFilters): Promise<Car[]> {
   if (!isMockMode()) {
-    const data = await portalVariants();
-    if (data.length) cars = data;
+    const data = await portalVariants(filters || {});
+    if (data.length || filters?.slug || filters?.q) return data;
   }
+  let cars = CARS;
   return cars.filter((car) => {
-    if (filters?.category && (car.category ?? "car") !== filters.category)
+    if (filters?.category && filters.category !== "All" && (car.category ?? "car") !== filters.category)
       return false;
-    if (filters?.transmission && car.transmission !== filters.transmission)
+    if (
+      filters?.transmission &&
+      filters.transmission !== "All" &&
+      car.transmission !== filters.transmission
+    )
       return false;
-    if (filters?.type && car.type !== filters.type) return false;
+    if (filters?.type && filters.type !== "All" && car.type !== filters.type) return false;
+    if (filters?.slug && car.slug !== filters.slug) return false;
     if (filters?.q) {
       const q = filters.q.toLowerCase();
       if (
@@ -67,6 +74,10 @@ export async function getCars(filters?: {
 }
 
 export async function getCarBySlug(slug: string): Promise<Car | undefined> {
+  if (!isMockMode()) {
+    const data = await portalVariants({ slug });
+    if (data[0]) return data[0];
+  }
   const cars = await getCars();
   return cars.find((c) => c.slug === slug);
 }
@@ -96,14 +107,28 @@ function normalizeFaq(item: Partial<Faq>, index: number): Faq {
 }
 
 export async function getFaqs(): Promise<Faq[]> {
-  if (isMockMode()) return FAQS;
   return FAQS.map((item, index) => normalizeFaq(item, index));
 }
 
 export async function getSettings() {
+  if (!isMockMode()) {
+    const live = await portalSettings();
+    if (live) {
+      return {
+        delivery_charge: Number(live.delivery_charge) || BUSINESS_RULES.deliveryCharge,
+        km_per_day: live.km_per_day || BUSINESS_RULES.kmPerDay,
+        min_rental_hours: live.min_rental_hours || 24,
+        senior_discount_percent: Number(live.senior_discount_percent) || 15,
+        lady_discount_percent: Number(live.lady_discount_percent) || 10,
+      };
+    }
+  }
   return {
     delivery_charge: BUSINESS_RULES.deliveryCharge,
     km_per_day: BUSINESS_RULES.kmPerDay,
+    min_rental_hours: 24,
+    senior_discount_percent: BUSINESS_RULES.seniorDiscountPercent,
+    lady_discount_percent: BUSINESS_RULES.ladyDiscountPercent,
   };
 }
 
@@ -172,10 +197,7 @@ export async function sendOtp(mobile: string): Promise<OtpSendResult> {
   return portalSendMobileOtp(mobile);
 }
 
-export async function verifyOtp(
-  mobile: string,
-  otp: string
-): Promise<OtpVerifyResult> {
+export async function verifyOtp(mobile: string, otp: string): Promise<OtpVerifyResult> {
   if (isMockMode()) {
     if (otp === "1234" || /^\d{4}$/.test(otp)) {
       return {
@@ -288,9 +310,42 @@ export async function fetchPortalMe(token: string) {
   return portalMe(token);
 }
 
-export async function fetchPortalBookings(token: string) {
+export async function updatePortalMe(
+  token: string,
+  body: { name?: string; email?: string }
+) {
+  if (isMockMode()) {
+    return { id: 0, mobile: null, email: body.email || "", name: body.name || "", status: "active" };
+  }
+  return portalPatchMe(token, body);
+}
+
+export async function setPortalPassword(token: string, password: string) {
+  if (isMockMode()) return { ok: true, message: "Password saved." };
+  return portalSetPassword(token, password);
+}
+
+export async function fetchPortalBookings(
+  token: string,
+  status?: string
+): Promise<PortalTrip[]> {
   if (isMockMode()) return [];
-  return portalListBookings(token);
+  return portalListBookings(token, status);
+}
+
+export async function fetchPortalBooking(
+  token: string,
+  id: string
+): Promise<PortalTrip | null> {
+  if (isMockMode()) return null;
+  return portalGetBooking(token, id);
+}
+
+export async function cancelPortalBooking(token: string, id: string) {
+  if (isMockMode()) {
+    return { ok: true as const, status: 200, message: "Cancelled", booking: null };
+  }
+  return portalCancelBooking(token, id);
 }
 
 export async function createPortalBooking(
@@ -298,7 +353,11 @@ export async function createPortalBooking(
   body: Record<string, unknown>
 ) {
   if (isMockMode()) {
-    return { ok: true, status: 201, data: { id: Date.now(), ...body } };
+    return {
+      ok: true,
+      status: 201,
+      data: { id: Date.now(), ...body } as Record<string, unknown>,
+    };
   }
   return portalCreateBooking(token, body);
 }

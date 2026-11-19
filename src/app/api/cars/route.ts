@@ -7,7 +7,9 @@ export async function GET(request: NextRequest) {
     transmission: searchParams.get("transmission") ?? undefined,
     type: searchParams.get("type") ?? undefined,
     category: searchParams.get("category") ?? undefined,
+    fuel: searchParams.get("fuel") ?? undefined,
     q: searchParams.get("q") ?? undefined,
+    slug: searchParams.get("slug") ?? undefined,
   });
   return NextResponse.json(cars);
 }

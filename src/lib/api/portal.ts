@@ -1,10 +1,35 @@
 /**
  * Server-side helpers for WoQuick CRM portal + rental APIs.
- * Desk UI host (*.crm.woquick.com) is not the API — use API_BASE_URL.
  */
 
 import type { Branch, Car } from "@/content/site";
 import { BUSINESS_RULES } from "@/constants/businessRules";
+
+export type PortalTripStatus = "upcoming" | "completed" | "cancelled";
+
+export type PortalTrip = {
+  id: string;
+  carId: string;
+  carSlug: string;
+  carName: string;
+  carImage: string;
+  pickupBranchId: string;
+  pickupLabel: string;
+  dropoffBranchId: string;
+  dropoffLabel: string;
+  pickupDate: string;
+  pickupTime: string;
+  dropoffDate: string;
+  dropoffTime: string;
+  days: number;
+  subtotal: number;
+  delivery: number;
+  discount: number;
+  total: number;
+  status: PortalTripStatus;
+  createdAt: string;
+  mobile: string;
+};
 
 export type PortalAuthConfig = {
   email_password_login_enabled: boolean;
@@ -35,6 +60,41 @@ export type PortalAuthResult = {
   account?: PortalAccount;
 };
 
+export type PortalRentalSettings = {
+  min_rental_hours: number;
+  km_per_day: number;
+  delivery_charge: string;
+  senior_discount_percent: string;
+  lady_discount_percent: string;
+};
+
+export type PortalBooking = {
+  id: number;
+  variant: number;
+  variant_name?: string;
+  variant_slug?: string;
+  variant_image?: string;
+  pickup_branch: number;
+  pickup_branch_name?: string;
+  dropoff_branch: number;
+  dropoff_branch_name?: string;
+  pickup_at: string;
+  dropoff_at: string;
+  days: number;
+  subtotal: string | number;
+  delivery: string | number;
+  discount: string | number;
+  total: string | number;
+  security_deposit?: string | number;
+  status: string;
+  status_kind?: string;
+  status_label?: string;
+  customer_mobile?: string | null;
+  created_at?: string;
+  detail?: string;
+  code?: string;
+};
+
 type PortalVariant = {
   id: number;
   slug: string;
@@ -62,6 +122,15 @@ type PortalBranch = {
   lng?: number | string | null;
 };
 
+export type CarFilters = {
+  transmission?: string;
+  type?: string;
+  category?: string;
+  fuel?: string;
+  q?: string;
+  slug?: string;
+};
+
 function apiBase() {
   return (process.env.API_BASE_URL ?? "").replace(/\/$/, "");
 }
@@ -84,9 +153,6 @@ async function portalFetch<T>(
 ): Promise<{ ok: boolean; status: number; data: T | null; raw?: string }> {
   const base = apiBase();
   if (!base) return { ok: false, status: 0, data: null };
-  // Prefer API_BASE_URL that already resolves the tenant (dedicated host or
-  // reverse-proxy). X-Forwarded-Host helps when the API trusts it (Django
-  // USE_X_FORWARDED_HOST). Node fetch often blocks overriding Host.
   const headers: Record<string, string> = {
     Accept: "application/json",
     "Content-Type": "application/json",
@@ -146,7 +212,7 @@ export function mapVariantToCar(v: PortalVariant): Car {
     seats: v.seats ?? 5,
     fuel: (v.fuel || "petrol").replace(/^\w/, (c) => c.toUpperCase()),
     pricePerDay: dailyRate(v),
-    image: v.image || "/images/cars/placeholder.jpg",
+    image: v.image || "/images/fleet/maruti-fronx.png",
     popular: Boolean(v.popular),
     features: Array.isArray(v.features) ? v.features.map(String) : [],
     kmPerDay: kmPerDay(v),
@@ -170,13 +236,73 @@ export function mapBranch(b: PortalBranch): Branch {
   };
 }
 
+function mapStatusKind(kind?: string, status?: string): PortalTripStatus {
+  const k = (kind || status || "").toLowerCase();
+  if (k === "cancelled" || k === "canceled") return "cancelled";
+  if (k === "completed") return "completed";
+  if (k === "on_rent" || k === "upcoming") return "upcoming";
+  return "upcoming";
+}
+
+function splitDateTime(iso: string): { date: string; time: string } {
+  if (!iso) return { date: "", time: "" };
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) {
+    const [date, rest = ""] = iso.split("T");
+    return { date, time: rest.slice(0, 5) };
+  }
+  const date = d.toISOString().slice(0, 10);
+  const time = `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+  return { date, time };
+}
+
+export function mapPortalBooking(b: PortalBooking): PortalTrip {
+  const pickup = splitDateTime(b.pickup_at);
+  const dropoff = splitDateTime(b.dropoff_at);
+  return {
+    id: String(b.id),
+    carId: String(b.variant),
+    carSlug: b.variant_slug || String(b.variant),
+    carName: b.variant_name || "Vehicle",
+    carImage: b.variant_image || "/images/fleet/maruti-fronx.png",
+    pickupBranchId: String(b.pickup_branch),
+    pickupLabel: b.pickup_branch_name || "",
+    dropoffBranchId: String(b.dropoff_branch),
+    dropoffLabel: b.dropoff_branch_name || "",
+    pickupDate: pickup.date,
+    pickupTime: pickup.time,
+    dropoffDate: dropoff.date,
+    dropoffTime: dropoff.time,
+    days: Number(b.days) || 1,
+    subtotal: Number(b.subtotal) || 0,
+    delivery: Number(b.delivery) || 0,
+    discount: Number(b.discount) || 0,
+    total: Number(b.total) || 0,
+    status: mapStatusKind(b.status_kind, b.status),
+    createdAt: b.created_at || new Date().toISOString(),
+    mobile: b.customer_mobile || "",
+  };
+}
+
 export async function portalAuthConfig(): Promise<PortalAuthConfig | null> {
   const res = await portalFetch<PortalAuthConfig>("auth/config/");
   return res.ok ? res.data : null;
 }
 
-export async function portalVariants(): Promise<Car[]> {
-  const res = await portalFetch<PortalVariant[]>("rental/variants/");
+export async function portalVariants(filters: CarFilters = {}): Promise<Car[]> {
+  const params = new URLSearchParams();
+  if (filters.category && filters.category !== "All")
+    params.set("category", filters.category.toLowerCase());
+  if (filters.transmission && filters.transmission !== "All")
+    params.set("transmission", filters.transmission.toLowerCase());
+  if (filters.type && filters.type !== "All") params.set("type", filters.type);
+  if (filters.fuel) params.set("fuel", filters.fuel.toLowerCase());
+  if (filters.q) params.set("q", filters.q);
+  if (filters.slug) params.set("slug", filters.slug);
+  const qs = params.toString();
+  const res = await portalFetch<PortalVariant[]>(
+    `rental/variants/${qs ? `?${qs}` : ""}`
+  );
   if (!res.ok || !Array.isArray(res.data)) return [];
   return res.data.map(mapVariantToCar);
 }
@@ -185,6 +311,11 @@ export async function portalBranches(): Promise<Branch[]> {
   const res = await portalFetch<PortalBranch[]>("rental/branches/");
   if (!res.ok || !Array.isArray(res.data)) return [];
   return res.data.map(mapBranch);
+}
+
+export async function portalSettings(): Promise<PortalRentalSettings | null> {
+  const res = await portalFetch<PortalRentalSettings>("rental/settings/");
+  return res.ok ? res.data : null;
 }
 
 export async function portalSendMobileOtp(mobile: string): Promise<PortalAuthResult> {
@@ -282,16 +413,73 @@ export async function portalMe(token: string): Promise<PortalAccount | null> {
   return res.ok ? res.data : null;
 }
 
-export async function portalListBookings(token: string) {
-  const res = await portalFetch<unknown[]>("rental/bookings/", { token });
-  return res.ok && Array.isArray(res.data) ? res.data : [];
+export async function portalPatchMe(
+  token: string,
+  body: Partial<Pick<PortalAccount, "name" | "email">>
+): Promise<PortalAccount | null> {
+  const res = await portalFetch<PortalAccount>("me/", {
+    method: "PATCH",
+    body: JSON.stringify(body),
+    token,
+  });
+  return res.ok ? res.data : null;
+}
+
+export async function portalSetPassword(
+  token: string,
+  password: string
+): Promise<{ ok: boolean; message: string }> {
+  const res = await portalFetch<{ ok: boolean; message: string }>(
+    "auth/password/set/",
+    { method: "POST", body: JSON.stringify({ password }), token }
+  );
+  return {
+    ok: Boolean(res.data?.ok),
+    message: res.data?.message || (res.ok ? "Password saved." : "Could not save password."),
+  };
+}
+
+export async function portalListBookings(token: string, status?: string) {
+  const qs = status ? `?status=${encodeURIComponent(status)}` : "";
+  const res = await portalFetch<PortalBooking[]>(`rental/bookings/${qs}`, { token });
+  if (!res.ok || !Array.isArray(res.data)) return [];
+  return res.data.map(mapPortalBooking);
+}
+
+export async function portalGetBooking(token: string, id: string | number) {
+  const res = await portalFetch<PortalBooking>(`rental/bookings/${id}/`, { token });
+  if (!res.ok || !res.data) return null;
+  return mapPortalBooking(res.data);
+}
+
+export async function portalCancelBooking(token: string, id: string | number) {
+  const res = await portalFetch<PortalBooking>(`rental/bookings/${id}/cancel/`, {
+    method: "POST",
+    body: JSON.stringify({}),
+    token,
+  });
+  if (!res.ok || !res.data) {
+    return {
+      ok: false as const,
+      status: res.status,
+      message:
+        (res.data as { detail?: string } | null)?.detail || "Could not cancel booking",
+      booking: null,
+    };
+  }
+  return {
+    ok: true as const,
+    status: res.status,
+    message: "Cancelled",
+    booking: mapPortalBooking(res.data),
+  };
 }
 
 export async function portalCreateBooking(
   token: string,
   body: Record<string, unknown>
 ) {
-  const res = await portalFetch<Record<string, unknown> & { detail?: string; code?: string }>(
+  const res = await portalFetch<PortalBooking & { detail?: string; code?: string }>(
     "rental/bookings/",
     { method: "POST", body: JSON.stringify(body), token }
   );

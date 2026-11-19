@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { use } from "react";
+import { use, useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { format, parseISO } from "date-fns";
 import {
@@ -15,12 +15,16 @@ import {
 } from "lucide-react";
 import { BUSINESS_RULES } from "@/content/site";
 import { useAuthStore } from "@/store/useAuthStore";
-import { useBookingsStore } from "@/store/useBookingsStore";
+import {
+  type DemoBooking,
+  useBookingsStore,
+} from "@/store/useBookingsStore";
 import { formatINR } from "@/utils";
 import { toast } from "@/store/useToastStore";
 import { Button } from "@/components/ui/button";
 import { SignInGate } from "@/components/auth/sign-in-gate";
 import { StatusBadge } from "@/components/trips/status-badge";
+import type { PortalTrip } from "@/lib/api/portal";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -37,22 +41,60 @@ export default function TripDetailPage({ params }: Props) {
   const { id } = use(params);
   const router = useRouter();
   const user = useAuthStore((s) => s.user);
-  const booking = useBookingsStore((s) => s.bookings.find((b) => b.id === id));
-  const cancelBooking = useBookingsStore((s) => s.cancelBooking);
+  const local = useBookingsStore((s) => s.bookings.find((b) => b.id === id));
+  const cancelLocal = useBookingsStore((s) => s.cancelBooking);
+  const [booking, setBooking] = useState<DemoBooking | null>(local || null);
+  const [loading, setLoading] = useState(false);
+  const [cancelling, setCancelling] = useState(false);
+
+  const load = useCallback(async () => {
+    if (!user?.token || user.token.startsWith("mock-")) {
+      setBooking(local || null);
+      return;
+    }
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/bookings/${id}`, {
+        headers: { Authorization: `Bearer ${user.token}` },
+        cache: "no-store",
+      });
+      if (res.ok) {
+        const row = (await res.json()) as PortalTrip;
+        setBooking({ ...row });
+      } else if (local) {
+        setBooking(local);
+      } else {
+        setBooking(null);
+      }
+    } catch {
+      setBooking(local || null);
+    } finally {
+      setLoading(false);
+    }
+  }, [user?.token, id, local]);
+
+  useEffect(() => {
+    void load();
+  }, [load]);
 
   if (!user) {
     return (
       <SignInGate
         title="Sign in to view this trip"
-        description="Booking details are tied to the mobile number used at checkout."
+        description="Booking details are available after you sign in."
       />
     );
   }
 
-  if (
-    !booking ||
-    (user.mobile ? booking.mobile !== user.mobile : false)
-  ) {
+  if (loading && !booking) {
+    return (
+      <div className="container-page py-20 text-center text-sm text-ink-500">
+        Loading trip…
+      </div>
+    );
+  }
+
+  if (!booking) {
     return (
       <div className="container-page py-20">
         <div className="mx-auto flex max-w-md flex-col items-center rounded-[var(--radius-2xl)] border border-hairline bg-surface px-6 py-14 text-center">
@@ -61,7 +103,7 @@ export default function TripDetailPage({ params }: Props) {
           </span>
           <h1 className="mt-5 font-display text-xl font-bold">Trip not found</h1>
           <p className="mt-2 text-[14px] leading-relaxed text-ink-500">
-            This booking isn’t in your history. It may belong to another number.
+            This booking isn’t in your history.
           </p>
           <Button asChild className="mt-6">
             <Link href="/trips">Back to my trips</Link>
@@ -71,10 +113,31 @@ export default function TripDetailPage({ params }: Props) {
     );
   }
 
-  function onCancel() {
-    cancelBooking(booking!.id);
-    toast("Booking cancelled", "info");
-    router.refresh();
+  async function onCancel() {
+    setCancelling(true);
+    try {
+      if (user?.token && !user.token.startsWith("mock-")) {
+        const res = await fetch(`/api/bookings/${booking!.id}/cancel`, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${user.token}` },
+        });
+        if (!res.ok) {
+          const err = (await res.json().catch(() => ({}))) as { detail?: string };
+          throw new Error(err.detail || "Could not cancel");
+        }
+        const updated = (await res.json()) as PortalTrip;
+        setBooking({ ...updated, status: "cancelled" });
+      } else {
+        cancelLocal(booking!.id);
+        setBooking({ ...booking!, status: "cancelled" });
+      }
+      toast("Booking cancelled", "info");
+      router.refresh();
+    } catch (e) {
+      toast(e instanceof Error ? e.message : "Cancel failed", "error");
+    } finally {
+      setCancelling(false);
+    }
   }
 
   return (
@@ -98,140 +161,89 @@ export default function TripDetailPage({ params }: Props) {
               className="object-cover"
               sizes="(max-width: 1024px) 100vw, 62vw"
             />
-            <div className="absolute left-4 top-4">
-              <StatusBadge status={booking.status} />
-            </div>
           </div>
-
-          <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <p className="text-eyebrow mb-2">
-                Booking {booking.id.slice(-6).toUpperCase()}
-              </p>
-              <h1 className="text-display-md">{booking.carName}</h1>
-            </div>
-            <p className="text-numeric font-display text-2xl font-extrabold">
-              {formatINR(booking.total)}
-            </p>
+          <div className="mt-5 flex flex-wrap items-center gap-3">
+            <h1 className="font-display text-2xl font-extrabold tracking-tight">
+              {booking.carName}
+            </h1>
+            <StatusBadge status={booking.status} />
           </div>
-
-          <div className="mt-8 grid gap-4 sm:grid-cols-2">
-            <Leg
-              title="Pick-up"
-              place={booking.pickupLabel}
-              date={longDate(booking.pickupDate)}
-              time={booking.pickupTime}
-            />
-            <Leg
-              title="Drop-off"
-              place={booking.dropoffLabel}
-              date={longDate(booking.dropoffDate)}
-              time={booking.dropoffTime}
-            />
-          </div>
-
-          <section className="mt-6 rounded-[var(--radius-xl)] border border-hairline bg-surface p-5">
-            <h2 className="font-display text-[17px] font-bold tracking-tight">
-              Payment
-            </h2>
-            <dl className="mt-4 space-y-2.5 text-[13.5px]">
-              <Row
-                label={`Rental · ${booking.days} ${booking.days === 1 ? "day" : "days"}`}
-                value={formatINR(booking.subtotal)}
-              />
-              {booking.delivery > 0 ? (
-                <Row label="Delivery" value={formatINR(booking.delivery)} />
-              ) : null}
-              {booking.discount > 0 ? (
-                <Row
-                  label="Discount"
-                  value={`− ${formatINR(booking.discount)}`}
-                />
-              ) : null}
-              <div className="flex justify-between gap-4 border-t border-hairline pt-3">
-                <dt className="font-bold text-ink-900">Total paid</dt>
-                <dd className="text-numeric font-display text-lg font-extrabold">
-                  {formatINR(booking.total)}
+          <dl className="mt-6 space-y-4 rounded-[var(--radius-xl)] border border-hairline bg-surface p-5">
+            <div className="flex gap-3">
+              <Clock3 className="mt-0.5 size-4 shrink-0 text-brand-600" />
+              <div>
+                <dt className="text-[12px] font-semibold uppercase tracking-wide text-ink-400">
+                  Trip window
+                </dt>
+                <dd className="mt-1 text-[14px] text-ink-700">
+                  {longDate(booking.pickupDate)} {booking.pickupTime} →{" "}
+                  {longDate(booking.dropoffDate)} {booking.dropoffTime}
                 </dd>
               </div>
-            </dl>
-          </section>
+            </div>
+            <div className="flex gap-3">
+              <MapPin className="mt-0.5 size-4 shrink-0 text-brand-600" />
+              <div>
+                <dt className="text-[12px] font-semibold uppercase tracking-wide text-ink-400">
+                  Pickup / drop-off
+                </dt>
+                <dd className="mt-1 text-[14px] text-ink-700">
+                  {booking.pickupLabel || "—"}
+                  {booking.dropoffLabel && booking.dropoffLabel !== booking.pickupLabel
+                    ? ` → ${booking.dropoffLabel}`
+                    : ""}
+                </dd>
+              </div>
+            </div>
+          </dl>
+          {booking.status === "upcoming" ? (
+            <Button
+              variant="outline"
+              className="mt-5"
+              loading={cancelling}
+              onClick={() => void onCancel()}
+            >
+              Cancel booking
+            </Button>
+          ) : null}
         </div>
 
-        <aside className="space-y-4 lg:sticky lg:top-28 lg:h-fit">
+        <aside className="space-y-4">
           <div className="rounded-[var(--radius-xl)] border border-hairline bg-surface p-5">
-            <h2 className="font-display text-[15px] font-bold tracking-tight">
-              Manage this trip
-            </h2>
-            <div className="mt-4 flex flex-col gap-2.5">
-              {booking.status === "upcoming" ? (
-                <Button variant="outline" block onClick={onCancel}>
-                  Cancel booking
-                </Button>
+            <h2 className="font-display text-base font-bold">Fare</h2>
+            <ul className="mt-3 space-y-2 text-[13.5px] text-ink-600">
+              <li className="flex justify-between">
+                <span>Subtotal</span>
+                <span>{formatINR(booking.subtotal)}</span>
+              </li>
+              <li className="flex justify-between">
+                <span>Delivery</span>
+                <span>{formatINR(booking.delivery)}</span>
+              </li>
+              {booking.discount > 0 ? (
+                <li className="flex justify-between text-emerald-700">
+                  <span>Discount</span>
+                  <span>-{formatINR(booking.discount)}</span>
+                </li>
               ) : null}
-              <Button asChild block>
-                <Link href="/cars">Book another ride</Link>
-              </Button>
-            </div>
-            <p className="mt-3 text-[12px] leading-relaxed text-ink-400">
+              <li className="flex justify-between border-t border-hairline pt-2 font-semibold text-ink-900">
+                <span>Total</span>
+                <span>{formatINR(booking.total)}</span>
+              </li>
+            </ul>
+          </div>
+          <div className="rounded-[var(--radius-xl)] border border-hairline bg-surface p-5 text-[13px] text-ink-500">
+            <p className="flex items-start gap-2">
+              <Headphones className="mt-0.5 size-4 shrink-0" />
+              Need help? Call {BUSINESS_RULES.phoneDisplay}.
+            </p>
+            <p className="mt-3 flex items-start gap-2">
+              <Phone className="mt-0.5 size-4 shrink-0" />
               Free cancellation up to 24 hours before pick-up.
             </p>
           </div>
-
-          <div className="rounded-[var(--radius-xl)] bg-ink-900 p-5 text-white">
-            <Headphones className="size-5 text-brand-400" />
-            <p className="mt-3 text-[14px] font-bold">Need help on the road?</p>
-            <p className="mt-1 text-[13px] leading-relaxed text-ink-400">
-              Our Kochi desk answers 24/7 for breakdowns and extensions.
-            </p>
-            <Button asChild variant="outline" block className="mt-4 border-white/20 bg-transparent text-white hover:bg-white/10">
-              <a href={`tel:${BUSINESS_RULES.phoneE164}`}>
-                <Phone />
-                {BUSINESS_RULES.phoneDisplay}
-              </a>
-            </Button>
-          </div>
         </aside>
       </div>
-    </div>
-  );
-}
-
-function Leg({
-  title,
-  place,
-  date,
-  time,
-}: {
-  title: string;
-  place: string;
-  date: string;
-  time: string;
-}) {
-  return (
-    <div className="rounded-[var(--radius-xl)] border border-hairline bg-surface p-5">
-      <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-ink-500">
-        {title}
-      </p>
-      <p className="mt-2.5 flex items-start gap-2 text-[14px] font-bold text-ink-900">
-        <MapPin className="mt-0.5 size-4 shrink-0 text-brand-500" />
-        {place}
-      </p>
-      <p className="mt-2 flex items-center gap-2 text-[13px] text-ink-500">
-        <Clock3 className="size-3.5 shrink-0 text-ink-400" />
-        {date} · {time}
-      </p>
-    </div>
-  );
-}
-
-function Row({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex justify-between gap-4">
-      <dt className="text-ink-500">{label}</dt>
-      <dd className="text-numeric text-right font-semibold text-ink-900">
-        {value}
-      </dd>
     </div>
   );
 }
