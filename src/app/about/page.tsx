@@ -12,7 +12,6 @@ import {
 import { BRANCHES, BUSINESS_RULES } from "@/content/site";
 import { MEDIA } from "@/content/media";
 import { AboutHero } from "@/components/premium/about-hero";
-import { ClosingJourney } from "@/components/premium/closing-journey";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/ui/section";
@@ -296,8 +295,6 @@ export default function AboutPage() {
           </RevealStagger>
         </div>
       </section>
-
-      <ClosingJourney />
     </>
   );
 }

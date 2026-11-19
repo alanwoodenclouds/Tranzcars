@@ -9,7 +9,6 @@ import { BUSINESS_RULES } from "@/content/site";
 import { getFaqs } from "@/lib/api/server";
 import { FaqExplorer } from "@/components/faq/faq-explorer";
 import { FaqHelpBand } from "@/components/faq/faq-help-band";
-import { ClosingJourney } from "@/components/premium/closing-journey";
 import { Reveal } from "@/components/motion/reveal";
 import {
   JsonLd,
@@ -120,7 +119,6 @@ export default async function FaqPage() {
       </section>
 
       <FaqHelpBand />
-      <ClosingJourney />
     </>
   );
 }

@@ -4,6 +4,8 @@ export const MEDIA = {
   heroFullBleed: "/images/fleet/maruti-fronx.png",
   /** Story image in the "why TranzCars" section */
   keralaRoadCar: "/images/fleet/innova-hycross.png",
+  /** Real Mahindra Thar ROXX (Wikimedia Commons) */
+  tharRoxx: "/images/fleet/mahindra-thar-roxx.jpg",
   appScreen: "/images/fleet/mobile-booking-ui.jpg",
   destinations: {
     munnar:

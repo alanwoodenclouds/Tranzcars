@@ -133,11 +133,10 @@ export const CARS: Car[] = [
     seats: 5,
     fuel: "Diesel",
     pricePerDay: 4500,
-    image:
-      "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=1200&q=80",
+    image: "/images/fleet/mahindra-thar-roxx.jpg",
     popular: true,
     tripHint: "Ideal for Munnar & hill trips",
-    features: ["Automatic", "5-seater", "Diesel", "SUV"],
+    features: ["4×4 ready", "Automatic", "Diesel", "Hill trips"],
     kmPerDay: 120,
   },
   {
@@ -150,11 +149,10 @@ export const CARS: Car[] = [
     seats: 7,
     fuel: "Diesel",
     pricePerDay: 4200,
-    image:
-      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=1200&q=80",
+    image: "/images/fleet/innova-hycross.png",
     popular: true,
     tripHint: "Family & group travel",
-    features: ["Manual", "7-seater", "Diesel", "MUV"],
+    features: ["7-seater", "Manual", "Diesel", "Airport runs"],
     kmPerDay: 120,
   },
   {
@@ -171,7 +169,7 @@ export const CARS: Car[] = [
       "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=1200&q=80",
     popular: true,
     tripHint: "City drives & airport runs",
-    features: ["Automatic", "5-seater", "Petrol", "Hatchback"],
+    features: ["Automatic", "Petrol", "Easy parking", "City"],
     kmPerDay: 120,
   },
   {
@@ -184,11 +182,10 @@ export const CARS: Car[] = [
     seats: 5,
     fuel: "Petrol",
     pricePerDay: 2800,
-    image:
-      "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=1200&q=80",
+    image: "/images/fleet/tata-punch.png",
     popular: true,
     tripHint: "Weekend getaways",
-    features: ["Automatic", "5-seater", "Petrol", "Compact SUV"],
+    features: ["Automatic", "Petrol", "Compact SUV", "Weekends"],
     kmPerDay: 120,
   },
   {
@@ -205,7 +202,7 @@ export const CARS: Car[] = [
       "https://images.unsplash.com/photo-1617531653332-bd46c24f2068?auto=format&fit=crop&w=1200&q=80",
     popular: false,
     tripHint: "Comfortable long drives",
-    features: ["Manual", "5-seater", "Petrol", "Sedan"],
+    features: ["Manual", "Petrol", "Boot space", "Highway"],
     kmPerDay: 120,
   },
   {
@@ -219,10 +216,10 @@ export const CARS: Car[] = [
     fuel: "Petrol",
     pricePerDay: 2000,
     image:
-      "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=1200&q=80",
     popular: false,
     tripHint: "Budget-friendly city car",
-    features: ["Manual", "5-seater", "Petrol", "Hatchback"],
+    features: ["Manual", "Petrol", "City", "Value"],
     kmPerDay: 120,
   },
 
@@ -271,7 +268,7 @@ export const CARS: Car[] = [
     fuel: "Electric",
     pricePerDay: 699,
     image:
-      "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1571068316344-75bc76f77890?auto=format&fit=crop&w=1200&q=80",
     popular: false,
     tripHint: "Reliable commute scooter",
     features: ["Electric", "2-seater", "Smart dash", "E-Scooter"],

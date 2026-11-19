@@ -8,6 +8,7 @@ import {
   Info,
   MapPin,
   PencilLine,
+  Phone,
   ShieldCheck,
 } from "lucide-react";
 import type { Car } from "@/content/site";
@@ -49,20 +50,27 @@ export function BookingPanel({
   });
 
   return (
-    <div className="lg:sticky lg:top-28">
-      <div className="overflow-hidden rounded-[var(--radius-2xl)] border border-hairline bg-surface">
-        <div className="border-b border-hairline p-5 sm:p-6">
-          <div className="flex items-end justify-between gap-3">
-            <div>
-              <p className="text-numeric font-display text-3xl font-extrabold text-ink-900">
+    <aside className="lg:sticky lg:top-24 lg:z-20 lg:self-start xl:top-28">
+      <div className="overflow-hidden rounded-[var(--radius-3xl)] border border-hairline bg-surface shadow-[0_20px_50px_-28px_rgba(13,20,32,0.35)] lg:max-h-[calc(100dvh-7.5rem)] lg:overflow-y-auto">
+        <div className="relative overflow-hidden border-b border-hairline bg-ink-950 px-5 py-5 text-white sm:px-6 sm:py-6">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -right-10 -top-12 size-40 rounded-full bg-brand-500/30 blur-3xl"
+          />
+          <div className="relative flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="text-meta text-white/55">From</p>
+              <p className="text-numeric mt-1 font-display text-3xl font-extrabold tracking-tight sm:text-[2.1rem]">
                 {formatINR(car.pricePerDay)}
-                <span className="text-sm font-semibold text-ink-500"> / day</span>
+                <span className="ml-1.5 text-sm font-semibold text-white/55">
+                  / day
+                </span>
               </p>
-              <p className="mt-1 text-[12.5px] text-ink-500">
+              <p className="mt-1.5 text-[12.5px] text-white/60">
                 {car.kmPerDay} km included daily · fuel excluded
               </p>
             </div>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-jade-50 px-2.5 py-1 text-[11.5px] font-bold text-jade-600">
+            <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-jade-500/20 px-2.5 py-1 text-[11.5px] font-bold text-jade-100 ring-1 ring-jade-500/35">
               <ShieldCheck className="size-3.5" />
               Insured
             </span>
@@ -77,7 +85,7 @@ export function BookingPanel({
             <button
               type="button"
               onClick={() => setScheduleOpen(true)}
-              className="inline-flex items-center gap-1.5 text-[12.5px] font-bold text-brand-600 hover:underline"
+              className="interactive inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[12.5px] font-bold text-brand-600 hover:bg-brand-50"
             >
               <PencilLine className="size-3.5" />
               {ready ? "Change" : "Set trip"}
@@ -85,29 +93,37 @@ export function BookingPanel({
           </div>
 
           {ready ? (
-            <ul className="mt-3.5 space-y-2.5">
-              <li className="flex items-start gap-2.5 text-[13.5px] text-ink-700">
+            <ul className="mt-3.5 space-y-0 overflow-hidden rounded-[var(--radius-xl)] border border-hairline bg-surface-sunken/60">
+              <li className="flex items-start gap-2.5 border-b border-hairline px-3.5 py-3 text-[13.5px] text-ink-700">
                 <MapPin className="mt-0.5 size-4 shrink-0 text-brand-500" />
-                <span>
+                <span className="min-w-0 leading-snug">
                   {search.pickupLabel}
                   {search.dropoffBranchId !== search.pickupBranchId ? (
-                    <> → {search.dropoffLabel}</>
+                    <>
+                      <span className="mx-1 text-ink-400">→</span>
+                      {search.dropoffLabel}
+                    </>
                   ) : null}
                 </span>
               </li>
-              <li className="flex items-start gap-2.5 text-[13.5px] text-ink-700">
+              <li className="flex items-start gap-2.5 px-3.5 py-3 text-[13.5px] text-ink-700">
                 <CalendarRange className="mt-0.5 size-4 shrink-0 text-brand-500" />
-                <span>
-                  {shortDate(search.pickupDate)}, {search.pickupTime} →{" "}
+                <span className="leading-snug">
+                  {shortDate(search.pickupDate)}, {search.pickupTime}
+                  <span className="mx-1 text-ink-400">→</span>
                   {shortDate(search.dropoffDate)}, {search.dropoffTime}
                 </span>
               </li>
             </ul>
           ) : (
-            <p className="mt-3.5 flex items-start gap-2.5 rounded-[var(--radius-md)] bg-warning-soft px-3.5 py-3 text-[13px] font-medium text-warning">
+            <button
+              type="button"
+              onClick={() => setScheduleOpen(true)}
+              className="mt-3.5 flex w-full items-start gap-2.5 rounded-[var(--radius-xl)] border border-dashed border-brand-300 bg-brand-50/70 px-3.5 py-3.5 text-left text-[13px] font-medium text-brand-700 transition-colors hover:bg-brand-50"
+            >
               <Info className="mt-0.5 size-4 shrink-0" />
               Add pick-up, drop-off and times to see your total and book.
-            </p>
+            </button>
           )}
 
           {ready ? (
@@ -129,9 +145,9 @@ export function BookingPanel({
                   </dd>
                 </div>
               ) : null}
-              <div className="flex justify-between gap-4 border-t border-hairline pt-3">
+              <div className="flex items-end justify-between gap-4 border-t border-hairline pt-3.5">
                 <dt className="font-bold text-ink-900">Estimated total</dt>
-                <dd className="text-numeric font-display text-lg font-extrabold text-ink-900">
+                <dd className="text-numeric font-display text-2xl font-extrabold tracking-tight text-ink-900">
                   {formatINR(quote.total)}
                 </dd>
               </div>
@@ -152,12 +168,12 @@ export function BookingPanel({
           <ul className="mt-4 space-y-2">
             {[
               "Free cancellation up to 24h before pick-up",
-              `OTP verification only at checkout`,
+              "OTP verification only at checkout",
               `Minimum rental ${BUSINESS_RULES.minRentalHours} hours`,
             ].map((line) => (
               <li
                 key={line}
-                className="flex items-start gap-2 text-[12.5px] text-ink-500"
+                className="flex items-start gap-2 text-[12.5px] leading-snug text-ink-500"
               >
                 <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-jade-500" />
                 {line}
@@ -167,9 +183,10 @@ export function BookingPanel({
         </div>
       </div>
 
-      <Button asChild variant="ghost" block className="mt-3">
+      <Button asChild variant="outline" block className="mt-3">
         <a href={`tel:${BUSINESS_RULES.phoneE164}`}>
-          Questions? Call {BUSINESS_RULES.phoneDisplay}
+          <Phone />
+          Questions? {BUSINESS_RULES.phoneDisplay}
         </a>
       </Button>
 
@@ -180,6 +197,6 @@ export function BookingPanel({
         continueLabel="Save trip"
         onContinue={() => setScheduleOpen(false)}
       />
-    </div>
+    </aside>
   );
 }

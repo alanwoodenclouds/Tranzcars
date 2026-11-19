@@ -104,7 +104,7 @@ export default function RootLayout({
           </Suspense>
           <main
             id="main"
-            className="min-h-screen min-h-[100dvh] overflow-x-clip pt-16 sm:pt-[72px]"
+            className="min-h-screen min-h-[100dvh] pt-16 sm:pt-[72px]"
           >
             {children}
           </main>

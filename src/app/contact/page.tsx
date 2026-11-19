@@ -13,7 +13,6 @@ import { BRANCHES, BUSINESS_RULES } from "@/content/site";
 import { MEDIA } from "@/content/media";
 import { ContactForm } from "@/components/contact/contact-form";
 import { ContactHero } from "@/components/premium/contact-hero";
-import { ClosingJourney } from "@/components/premium/closing-journey";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/ui/section";
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal";
@@ -237,8 +236,6 @@ export default function ContactPage() {
           </RevealStagger>
         </div>
       </section>
-
-      <ClosingJourney />
     </>
   );
 }
