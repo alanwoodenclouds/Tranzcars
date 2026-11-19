@@ -100,7 +100,7 @@ export default function AboutPage() {
       <section className="section-y">
         <div className="container-page grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <Reveal>
-            <p className="text-eyebrow mb-3 flex items-center gap-2">
+            <p className="text-eyebrow mb-3.5 flex items-center gap-2">
               <span
                 aria-hidden
                 className="inline-block h-px w-6 bg-brand-400"
@@ -110,7 +110,7 @@ export default function AboutPage() {
             <h2 className="text-display-md max-w-[18ch]">
               Built by people who drive these roads every week.
             </h2>
-            <div className="text-body mt-5 space-y-4">
+            <div className="text-body mt-5 space-y-4 sm:mt-6 sm:space-y-5">
               <p>
                 Freedom to drive Kerala on your own terms — in a safe,
                 well-maintained car, without a chauffeur watching the clock or a

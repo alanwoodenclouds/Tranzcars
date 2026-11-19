@@ -109,7 +109,9 @@ export default function RootLayout({
             {children}
           </main>
           <SiteFooter />
-          <MobileTabBar />
+          <Suspense fallback={null}>
+            <MobileTabBar />
+          </Suspense>
           <AiAssistant />
         </Providers>
       </body>

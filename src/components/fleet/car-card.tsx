@@ -85,14 +85,14 @@ export function CarCard({ car, priority }: { car: Car; priority?: boolean }) {
             </h3>
           </Link>
           {car.tripHint ? (
-            <p className="text-caption mt-1">{car.tripHint}</p>
+            <p className="text-caption mt-1.5 leading-snug">{car.tripHint}</p>
           ) : null}
 
-          <ul className="mt-3.5 grid grid-cols-2 gap-x-3 gap-y-2">
+          <ul className="mt-4 grid grid-cols-2 gap-x-3 gap-y-2.5">
             {specs.map((spec) => (
               <li
                 key={spec.label}
-                className="text-caption flex items-center gap-1.5 font-medium text-ink-600"
+                className="text-caption flex items-center gap-1.5 font-medium leading-snug text-ink-600"
               >
                 <spec.icon className="size-3.5 shrink-0 text-ink-400" />
                 <span className="truncate">{spec.label}</span>
@@ -103,14 +103,14 @@ export function CarCard({ car, priority }: { car: Car; priority?: boolean }) {
 
         <div className="mt-4 flex items-end justify-between gap-3 border-t border-hairline pt-4">
           <div>
-            <p className="text-numeric font-display text-xl font-extrabold text-ink-900">
+            <p className="text-numeric font-display text-xl font-extrabold leading-none text-ink-900">
               {formatINR(car.pricePerDay)}
               <span className="text-caption font-semibold text-ink-500">
                 {" "}
                 / day
               </span>
             </p>
-            <p className="text-caption text-ink-400">Fuel excluded</p>
+            <p className="text-caption mt-1 text-ink-400">Fuel excluded</p>
           </div>
           <Button size="sm" onClick={onSelect} className="relative z-10">
             {tripReady ? "Select" : "Set dates"}

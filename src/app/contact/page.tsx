@@ -15,7 +15,7 @@ import { ContactForm } from "@/components/contact/contact-form";
 import { ContactHero } from "@/components/premium/contact-hero";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/ui/section";
-import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal";
+import { Reveal } from "@/components/motion/reveal";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -48,6 +48,8 @@ export default function ContactPage() {
     image: CITY_IMAGE[city],
     branches: BRANCHES.filter((b) => b.city === city),
   }));
+  const kochi = branchesByCity.find((g) => g.city === "Kochi")!;
+  const otherCities = branchesByCity.filter((g) => g.city !== "Kochi");
 
   return (
     <>
@@ -56,7 +58,7 @@ export default function ContactPage() {
       <section className="section-y" aria-labelledby="reach-heading">
         <div className="container-page grid items-start gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:gap-16">
           <Reveal className="min-w-0">
-            <p className="text-eyebrow mb-3 flex items-center gap-2">
+            <p className="text-eyebrow mb-3.5 flex items-center gap-2">
               <span
                 aria-hidden
                 className="inline-block h-px w-6 bg-brand-400"
@@ -66,7 +68,7 @@ export default function ContactPage() {
             <h2 id="reach-heading" className="text-display-md max-w-[16ch]">
               Call, WhatsApp, or leave a note.
             </h2>
-            <p className="text-lead mt-4 max-w-md">
+            <p className="text-lead mt-4 max-w-md sm:mt-5">
               Same-day cars, Cochin Airport hand-over, and long-term rates —
               humans on the line, not a call centre script.
             </p>
@@ -169,7 +171,10 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="section-y bg-surface-sunken" aria-label="Pick-up and delivery points">
+      <section
+        className="section-y-sm bg-surface-sunken"
+        aria-label="Pick-up and delivery points"
+      >
         <div className="container-page">
           <Reveal>
             <SectionHeading
@@ -187,53 +192,126 @@ export default function ContactPage() {
             />
           </Reveal>
 
-          <RevealStagger className="mt-10 grid gap-4 lg:grid-cols-3">
-            {branchesByCity.map((group) => (
-              <RevealItem key={group.city}>
-                <article className="overflow-hidden rounded-[var(--radius-2xl)] border border-hairline bg-surface">
-                  <div className="relative aspect-[16/10] overflow-hidden bg-ink-100">
-                    <Image
-                      src={group.image}
-                      alt={`${group.city} — TranzCars pick-up`}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 1024px) 100vw, 33vw"
-                    />
-                    <div
-                      aria-hidden
-                      className="absolute inset-0 bg-gradient-to-t from-ink-950/80 via-ink-950/25 to-transparent"
-                    />
-                    <div className="absolute inset-x-0 bottom-0 p-4">
-                      <h3 className="text-title-lg text-white">{group.city}</h3>
-                      <p className="text-caption mt-0.5 text-white/80">
-                        {group.branches.length} pick-up{" "}
-                        {group.branches.length === 1 ? "point" : "points"}
+          <div className="mt-8 grid gap-4 lg:grid-cols-2 lg:items-stretch">
+            <article className="overflow-hidden rounded-[var(--radius-2xl)] border border-hairline bg-surface">
+              <div className="relative aspect-[2/1] overflow-hidden bg-ink-100">
+                <Image
+                  src={kochi.image}
+                  alt="Kochi — TranzCars pick-up"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+                <div
+                  aria-hidden
+                  className="absolute inset-0 bg-gradient-to-t from-ink-950/85 via-ink-950/25 to-transparent"
+                />
+                <div className="absolute inset-x-0 bottom-0 p-4">
+                  <h3 className="text-title-lg text-white">Kochi</h3>
+                  <p className="text-caption mt-0.5 text-white/80">
+                    HQ · {kochi.branches.length} pick-up points
+                  </p>
+                </div>
+              </div>
+              <ul className="divide-y divide-hairline">
+                {kochi.branches.map((b) => (
+                  <li key={b.id} className="flex items-center gap-3 px-4 py-2.5">
+                    <MapPin className="size-4 shrink-0 text-brand-500" />
+                    <div className="min-w-0 flex-1">
+                      <p className="text-body-sm font-semibold text-ink-900">
+                        {b.name}
                       </p>
                     </div>
-                  </div>
+                    <p className="text-caption shrink-0">
+                      {BRANCH_LABEL[b.type] ?? b.type}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </article>
 
-                  <ul className="divide-y divide-hairline">
-                    {group.branches.map((b) => (
-                      <li
-                        key={b.id}
-                        className="flex items-start gap-3 px-4 py-3.5"
-                      >
-                        <MapPin className="mt-0.5 size-4 shrink-0 text-brand-500" />
-                        <div className="min-w-0">
-                          <p className="text-body-sm font-semibold text-ink-900">
-                            {b.name}
-                          </p>
-                          <p className="text-caption mt-0.5">
-                            {BRANCH_LABEL[b.type] ?? b.type}
-                          </p>
+            <div className="flex flex-col gap-4">
+              {otherCities.map((group) => (
+                <article
+                  key={group.city}
+                  className="shrink-0 overflow-hidden rounded-[var(--radius-2xl)] border border-hairline bg-surface"
+                >
+                  <div className="flex items-stretch">
+                    <div className="relative w-[42%] min-h-[5.5rem] shrink-0 bg-ink-100 sm:w-[38%]">
+                      <Image
+                        src={group.image}
+                        alt={`${group.city} — TranzCars pick-up`}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 1024px) 40vw, 20vw"
+                      />
+                    </div>
+                    <div className="flex min-w-0 flex-1 flex-col justify-center gap-2 px-4 py-3.5">
+                      <div>
+                        <h3 className="text-title">{group.city}</h3>
+                        <p className="text-caption mt-0.5">
+                          {group.branches.length} pick-up{" "}
+                          {group.branches.length === 1 ? "point" : "points"}
+                        </p>
+                      </div>
+                      {group.branches.map((b) => (
+                        <div key={b.id} className="flex items-start gap-2">
+                          <MapPin className="mt-0.5 size-3.5 shrink-0 text-brand-500" />
+                          <div className="min-w-0">
+                            <p className="text-body-sm font-semibold text-ink-900">
+                              {b.name}
+                            </p>
+                            <p className="text-caption">
+                              {BRANCH_LABEL[b.type] ?? b.type}
+                            </p>
+                          </div>
                         </div>
-                      </li>
-                    ))}
-                  </ul>
+                      ))}
+                    </div>
+                  </div>
                 </article>
-              </RevealItem>
-            ))}
-          </RevealStagger>
+              ))}
+
+              <div className="relative flex min-h-[11rem] flex-1 flex-col justify-end overflow-hidden rounded-[var(--radius-2xl)] border border-hairline bg-ink-900 px-5 py-5 text-white sm:px-6 sm:py-6">
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute -right-8 -top-10 size-36 rounded-full bg-brand-500/25 blur-3xl"
+                />
+                <div className="relative">
+                  <p className="text-eyebrow text-brand-300">Airport hand-over</p>
+                  <p className="text-title-lg mt-2 text-white">
+                    Landing late at COK?
+                  </p>
+                  <p className="text-body-sm mt-2 max-w-sm text-white/65">
+                    Call the Kochi desk — we hand over at the airport 24×7.
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-2.5">
+                    <Button asChild size="sm">
+                      <a href={`tel:${BUSINESS_RULES.phoneE164}`}>
+                        <Phone />
+                        Call now
+                      </a>
+                    </Button>
+                    <Button
+                      asChild
+                      size="sm"
+                      variant="outline"
+                      className="border-white/20 bg-white/5 text-white hover:border-white/35 hover:bg-white/10 hover:text-white"
+                    >
+                      <a
+                        href={`https://wa.me/${wa}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <MessageCircle />
+                        WhatsApp
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </>

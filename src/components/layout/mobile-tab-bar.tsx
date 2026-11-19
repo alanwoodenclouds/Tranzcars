@@ -1,63 +1,83 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Car, Home, Ticket, UserRound } from "lucide-react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { Bike, Car, Home, UserRound } from "lucide-react";
 import { cn } from "@/utils";
 
-const TABS = [
-  { href: "/", label: "Home", icon: Home, match: (p: string) => p === "/" },
+type TabMatch = (pathname: string, category: string | null) => boolean;
+
+const TABS: {
+  href: string;
+  label: string;
+  icon: typeof Home;
+  match: TabMatch;
+}[] = [
   {
-    href: "/cars",
-    label: "Fleet",
-    icon: Car,
-    match: (p: string) => p.startsWith("/cars"),
+    href: "/",
+    label: "Home",
+    icon: Home,
+    match: (p) => p === "/",
   },
   {
-    href: "/trips",
-    label: "Trips",
-    icon: Ticket,
-    match: (p: string) => p.startsWith("/trips"),
+    href: "/cars",
+    label: "Cars",
+    icon: Car,
+    match: (p, category) => p.startsWith("/cars") && category !== "bike",
+  },
+  {
+    href: "/cars?category=bike",
+    label: "Bikes",
+    icon: Bike,
+    match: (p, category) => p.startsWith("/cars") && category === "bike",
   },
   {
     href: "/account",
     label: "Account",
     icon: UserRound,
-    match: (p: string) => p.startsWith("/account"),
+    match: (p) => p.startsWith("/account"),
   },
 ];
 
-/** App-style bottom navigation — thumb-reachable on mobile only. */
+/** Floating curved bottom nav — thumb-reachable on mobile only. */
 export function MobileTabBar() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const category = searchParams.get("category");
 
   return (
     <nav
       aria-label="Quick navigation"
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-hairline bg-surface/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl md:hidden"
+      className="pointer-events-none fixed inset-x-0 bottom-0 z-50 px-3 pb-[max(0.7rem,env(safe-area-inset-bottom))] md:hidden"
     >
-      <ul className="grid grid-cols-4">
+      <ul
+        className={cn(
+          "pointer-events-auto mx-auto grid h-[3.85rem] max-w-md grid-cols-4 gap-0.5",
+          "rounded-[1.85rem] border border-hairline bg-surface p-1.5",
+          "shadow-[0_10px_36px_rgba(15,23,42,0.16),0_2px_8px_rgba(15,23,42,0.06)]",
+          "ring-1 ring-ink-900/5"
+        )}
+      >
         {TABS.map((tab) => {
-          const active = tab.match(pathname);
+          const active = tab.match(pathname, category);
           return (
-            <li key={tab.href}>
+            <li key={tab.href} className="min-w-0">
               <Link
                 href={tab.href}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "flex flex-col items-center gap-1 py-2.5 text-[10.5px] font-semibold transition-colors",
-                  active ? "text-brand-600" : "text-ink-400"
+                  "relative flex h-full min-h-11 flex-col items-center justify-center gap-1 rounded-[1.35rem] px-1 text-[12px] font-semibold tracking-normal transition-all duration-200 ease-[var(--ease-out-quint)]",
+                  active
+                    ? "bg-brand-50 text-brand-600 shadow-[inset_0_0_0_1px_rgba(248,120,0,0.12)]"
+                    : "text-ink-500 hover:text-ink-600"
                 )}
               >
-                <span
-                  className={cn(
-                    "grid h-7 w-12 place-items-center rounded-full transition-colors",
-                    active && "bg-brand-50"
-                  )}
-                >
-                  <tab.icon className="size-[18px]" />
-                </span>
-                {tab.label}
+                <tab.icon
+                  className="size-[18px]"
+                  strokeWidth={active ? 2.35 : 1.75}
+                  aria-hidden
+                />
+                <span className="truncate leading-none">{tab.label}</span>
               </Link>
             </li>
           );

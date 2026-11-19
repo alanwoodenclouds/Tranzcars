@@ -185,18 +185,18 @@ export function SiteNav() {
             )}
           </div>
 
-          <div className="flex items-center gap-1.5 md:hidden">
+          <div className="flex items-center gap-2 md:hidden">
             <a
               href={`tel:${BUSINESS_RULES.phoneE164}`}
               aria-label="Call TranzCars"
               className={cn(
-                "grid size-10 place-items-center rounded-full text-brand-500",
+                "grid size-11 place-items-center rounded-full text-brand-500",
                 darkChrome
                   ? "border border-white/20 bg-white/10"
                   : "border border-hairline bg-surface"
               )}
             >
-              <Phone className="size-4" />
+              <Phone className="size-[18px]" />
             </a>
             <button
               type="button"
@@ -204,7 +204,7 @@ export function SiteNav() {
               aria-label="Open menu"
               aria-expanded={menuOpen}
               className={cn(
-                "grid size-10 place-items-center rounded-full",
+                "grid size-11 place-items-center rounded-full",
                 darkChrome
                   ? "border border-white/20 bg-white/10 text-white"
                   : "border border-hairline bg-surface text-ink-900"

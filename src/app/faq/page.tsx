@@ -68,9 +68,9 @@ export default async function FaqPage() {
           aria-hidden
           className="bg-grid mask-fade-b absolute inset-0 -z-10 opacity-[0.45]"
         />
-        <div className="container-page py-10 sm:py-14">
+        <div className="container-page py-12 sm:py-14">
           <div className="max-w-3xl">
-            <p className="text-eyebrow mb-3 flex items-center gap-2">
+            <p className="text-eyebrow mb-3.5 flex items-center gap-2">
               <span
                 aria-hidden
                 className="inline-block h-px w-6 bg-brand-400"
@@ -83,7 +83,7 @@ export default async function FaqPage() {
                 Tranz<span className="text-brand-500">Cars</span>
               </span>.
             </h1>
-            <p className="text-lead mt-4 max-w-2xl">
+            <p className="text-lead mt-4 max-w-2xl sm:mt-5">
               Licences, deposits, kilometre limits and airport hand-over — search
               or browse by topic.
             </p>

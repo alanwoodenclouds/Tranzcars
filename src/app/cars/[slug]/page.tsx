@@ -122,7 +122,7 @@ export default async function CarDetailPage({ params }: Props) {
                       </Badge>
                     ) : null}
                   </div>
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white/12 px-2.5 py-1 text-[11.5px] font-bold text-white backdrop-blur-md ring-1 ring-white/15">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white/12 px-3 py-1.5 text-[12.5px] font-bold text-white backdrop-blur-md ring-1 ring-white/15">
                     <ShieldCheck className="size-3.5" />
                     Insured
                   </span>
@@ -131,8 +131,8 @@ export default async function CarDetailPage({ params }: Props) {
                   <p className="text-eyebrow text-brand-300">
                     Self-drive · Kochi
                   </p>
-                  <h1 className="text-display-lg mt-2 text-white">{car.name}</h1>
-                  <p className="text-body-sm mt-2 max-w-xl text-white/75">
+                  <h1 className="text-display-lg mt-2.5 text-white">{car.name}</h1>
+                  <p className="text-body-sm mt-3 max-w-xl text-white/80">
                     {car.tripHint ? `${car.tripHint}. ` : ""}
                     {car.kmPerDay} km included every day — insurance and 24/7
                     roadside assistance in the rate.

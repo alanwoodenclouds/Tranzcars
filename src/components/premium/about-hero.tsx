@@ -85,12 +85,12 @@ export function AboutHero() {
             About TranzCars
           </p>
 
-          <h1 className="text-hero mt-3 text-white">
+          <h1 className="text-hero mt-4 text-white">
             Kerala&apos;s self-drive company,
             <br className="hidden sm:block" /> built for the open road.
           </h1>
 
-          <p className="text-lead-on-dark mt-4 max-w-md">
+          <p className="text-lead-on-dark mt-5 max-w-md">
             Govt-approved since {BUSINESS_RULES.foundedYear}. Kochi
             headquarters. Keys waiting at the airport, railway, or your door.
           </p>
@@ -123,13 +123,13 @@ export function AboutHero() {
           {STATS.map((s) => (
             <div
               key={s.label}
-              className="bg-ink-950/45 px-2 py-5 text-center backdrop-blur-sm sm:px-3 sm:py-8"
+              className="bg-ink-950/45 px-2.5 py-5 text-center backdrop-blur-sm sm:px-3 sm:py-8"
             >
               <dt className="sr-only">{s.label}</dt>
-              <dd className="text-numeric font-display text-[1.5rem] font-extrabold tracking-tight text-white sm:text-4xl">
+              <dd className="text-numeric font-display text-[1.55rem] font-extrabold leading-none tracking-tight text-white sm:text-4xl">
                 {s.value}
               </dd>
-              <p className="text-meta mt-1.5 break-words text-white/70">
+              <p className="text-meta mt-2 break-words text-white/75">
                 {s.label}
               </p>
             </div>

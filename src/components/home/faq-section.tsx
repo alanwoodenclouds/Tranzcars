@@ -26,7 +26,7 @@ export function FaqSection({
       <div className="container-page">
         <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-14">
           <Reveal>
-            <p className="text-eyebrow mb-3 flex items-center gap-2">
+            <p className="text-eyebrow mb-3.5 flex items-center gap-2">
               <span
                 aria-hidden
                 className="inline-block h-px w-6 bg-brand-400"
@@ -34,7 +34,7 @@ export function FaqSection({
               FAQ
             </p>
             <h2 className="text-display-md max-w-[16ch]">{title}</h2>
-            <p className="text-body-sm mt-4 max-w-sm text-ink-500">
+            <p className="text-body-sm mt-4 max-w-sm leading-relaxed text-ink-500 sm:mt-5">
               Documents, free kilometres, airport pickup and deposits — the
               short version travellers ask for first.
             </p>

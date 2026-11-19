@@ -158,13 +158,15 @@
   h4 {
     font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
     font-weight: 700;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
     color: var(--foreground);
     text-wrap: balance;
   }
 
   p {
     text-wrap: pretty;
+    line-height: 1.65;
   }
 
   /* Numbers should never jitter — prices, counters, timers */
@@ -206,68 +208,68 @@
 @layer components {
   .text-display-xl {
     font-family: var(--font-display), sans-serif;
-    font-size: clamp(2.6rem, 6.2vw, 4.75rem);
-    line-height: 0.98;
-    letter-spacing: -0.042em;
+    font-size: clamp(2.35rem, 5.8vw, 4.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.035em;
     font-weight: 800;
   }
 
-  /* Hero headline: scales down on narrow phones without overflowing. */
+  /* Hero headline: roomy leading so descenders never collide on phones. */
   .text-hero {
     font-family: var(--font-display), sans-serif;
-    font-size: clamp(1.85rem, 7.2vw + 0.4rem, 3.5rem);
-    line-height: 1.05;
-    letter-spacing: -0.04em;
+    font-size: clamp(1.7rem, 6vw + 0.35rem, 3.25rem);
+    line-height: 1.2;
+    letter-spacing: -0.028em;
     font-weight: 800;
   }
 
   .text-display-lg {
     font-family: var(--font-display), sans-serif;
-    font-size: clamp(2.1rem, 4.4vw, 3.4rem);
-    line-height: 1.04;
-    letter-spacing: -0.036em;
+    font-size: clamp(1.85rem, 4vw, 3.15rem);
+    line-height: 1.14;
+    letter-spacing: -0.03em;
     font-weight: 800;
   }
 
   .text-display-md {
     font-family: var(--font-display), sans-serif;
-    font-size: clamp(1.65rem, 3vw, 2.4rem);
-    line-height: 1.1;
-    letter-spacing: -0.03em;
+    font-size: clamp(1.5rem, 2.8vw, 2.25rem);
+    line-height: 1.2;
+    letter-spacing: -0.026em;
     font-weight: 700;
   }
 
   .text-display-sm {
     font-family: var(--font-display), sans-serif;
-    font-size: clamp(1.3rem, 2vw, 1.6rem);
-    line-height: 1.2;
-    letter-spacing: -0.024em;
+    font-size: clamp(1.25rem, 2vw, 1.55rem);
+    line-height: 1.28;
+    letter-spacing: -0.02em;
     font-weight: 700;
   }
 
   .text-eyebrow {
-    font-size: 0.6875rem;
-    line-height: 1;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-ink-500);
-  }
-
-  .text-meta {
-    font-size: 0.6875rem;
-    line-height: 1.2;
+    font-size: 0.75rem;
+    line-height: 1.35;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--color-ink-500);
   }
 
+  .text-meta {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-ink-500);
+  }
+
   .text-title {
     font-family: var(--font-display), sans-serif;
-    font-size: 1.0625rem;
-    line-height: 1.3;
-    letter-spacing: -0.024em;
+    font-size: 1.125rem;
+    line-height: 1.35;
+    letter-spacing: -0.02em;
     font-weight: 700;
     color: var(--color-ink-900);
   }
@@ -275,38 +277,38 @@
   .text-title-lg {
     font-family: var(--font-display), sans-serif;
     font-size: clamp(1.35rem, 2.2vw, 1.5rem);
-    line-height: 1.2;
-    letter-spacing: -0.028em;
+    line-height: 1.28;
+    letter-spacing: -0.022em;
     font-weight: 800;
   }
 
   .text-lead {
-    font-size: clamp(1rem, 1.2vw, 1.125rem);
-    line-height: 1.65;
+    font-size: clamp(1.015rem, 1.15vw, 1.125rem);
+    line-height: 1.7;
     color: var(--color-ink-500);
   }
 
   .text-lead-on-dark {
-    font-size: clamp(0.9375rem, 1.1vw, 1.03125rem);
-    line-height: 1.65;
-    color: rgba(255, 255, 255, 0.85);
+    font-size: clamp(1rem, 1.1vw, 1.0625rem);
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.88);
   }
 
   .text-body {
-    font-size: 0.9375rem;
-    line-height: 1.65;
+    font-size: 0.975rem;
+    line-height: 1.7;
     color: var(--color-ink-600);
   }
 
   .text-body-sm {
-    font-size: 0.875rem;
-    line-height: 1.6;
+    font-size: 0.9rem;
+    line-height: 1.65;
     color: var(--color-ink-500);
   }
 
   .text-caption {
-    font-size: 0.8125rem;
-    line-height: 1.5;
+    font-size: 0.875rem;
+    line-height: 1.55;
     color: var(--color-ink-500);
   }
 }
@@ -320,14 +322,14 @@
     width: 100%;
     margin-inline: auto;
     max-width: 1280px;
-    padding-inline: max(1rem, env(safe-area-inset-left, 0px))
-      max(1rem, env(safe-area-inset-right, 0px));
+    padding-inline: max(1.25rem, env(safe-area-inset-left, 0px))
+      max(1.25rem, env(safe-area-inset-right, 0px));
   }
 
   @media (min-width: 400px) {
     .container-page {
-      padding-inline: max(1.25rem, env(safe-area-inset-left, 0px))
-        max(1.25rem, env(safe-area-inset-right, 0px));
+      padding-inline: max(1.375rem, env(safe-area-inset-left, 0px))
+        max(1.375rem, env(safe-area-inset-right, 0px));
     }
   }
 
@@ -353,7 +355,7 @@
   }
 
   .section-y {
-    padding-block: 4rem;
+    padding-block: 3.5rem;
   }
 
   @media (min-width: 768px) {
@@ -363,7 +365,7 @@
   }
 
   .section-y-sm {
-    padding-block: 3rem;
+    padding-block: 2.75rem;
   }
 
   @media (min-width: 768px) {

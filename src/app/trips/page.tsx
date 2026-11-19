@@ -112,23 +112,23 @@ export default function TripsPage() {
                 </div>
                 <div className="min-w-0 flex-1 p-4 sm:p-5">
                   <div className="flex items-start justify-between gap-3">
-                    <h2 className="font-display text-[16px] font-bold tracking-tight transition-colors group-hover:text-brand-600">
+                    <h2 className="font-display text-[16px] font-bold leading-snug tracking-tight transition-colors group-hover:text-brand-600">
                       {b.carName}
                     </h2>
                     <StatusBadge status={b.status} size="sm" />
                   </div>
 
-                  <p className="mt-2.5 flex items-center gap-1.5 truncate text-[12.5px] text-ink-500">
+                  <p className="mt-2.5 flex items-center gap-1.5 truncate text-[13.5px] leading-snug text-ink-500">
                     <MapPin className="size-3.5 shrink-0 text-ink-400" />
                     {b.pickupLabel}
                   </p>
-                  <p className="mt-1 flex items-center gap-1.5 text-[12.5px] text-ink-500">
+                  <p className="mt-1.5 flex items-center gap-1.5 text-[13.5px] leading-snug text-ink-500">
                     <CalendarRange className="size-3.5 shrink-0 text-ink-400" />
                     {shortDate(b.pickupDate)} → {shortDate(b.dropoffDate)} ·{" "}
                     {b.days} {b.days === 1 ? "day" : "days"}
                   </p>
 
-                  <p className="text-numeric mt-3 font-display text-[17px] font-extrabold text-ink-900">
+                  <p className="text-numeric mt-3.5 font-display text-[17px] font-extrabold leading-none text-ink-900">
                     {formatINR(b.total)}
                   </p>
                 </div>

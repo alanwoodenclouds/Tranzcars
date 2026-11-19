@@ -74,12 +74,12 @@ export function ContactHero() {
             </span>
           </p>
 
-          <h1 className="text-hero mt-3 text-white">
+          <h1 className="text-hero mt-4 text-white">
             We pick up
             <br className="hidden sm:block" /> the phone.
           </h1>
 
-          <p className="text-lead-on-dark mt-4 max-w-md">
+          <p className="text-lead-on-dark mt-5 max-w-md">
             Bookings, airport delivery, extensions or promo codes — the Kochi
             desk answers any hour of the day.
           </p>

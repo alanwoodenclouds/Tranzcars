@@ -26,8 +26,8 @@ export function MvdBadge({
         onDark
           ? "border border-white/15 bg-white/[0.06] text-white"
           : "border border-hairline bg-surface/90 text-ink-800",
-        isBanner ? "px-2.5 py-1.5 sm:gap-2.5 sm:px-3 sm:py-2" : "px-2 py-1",
-        size === "md" && "px-2.5 py-1.5",
+        isBanner ? "gap-2.5 px-3 py-2 sm:px-3.5 sm:py-2.5" : "px-2.5 py-1.5",
+        size === "md" && "px-3 py-1.5",
         className
       )}
       role="img"
@@ -50,8 +50,8 @@ export function MvdBadge({
       </span>
       <span
         className={cn(
-          "min-w-0 font-semibold tracking-tight",
-          isBanner ? "text-[12px] sm:text-[13px]" : "text-[11px]",
+          "min-w-0 font-semibold leading-snug tracking-tight",
+          isBanner ? "text-[13px] sm:text-[14px]" : "text-[12px]",
           onDark ? "text-white/90" : "text-ink-700"
         )}
       >

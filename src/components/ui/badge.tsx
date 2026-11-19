@@ -18,8 +18,8 @@ const badgeVariants = cva(
         dark: "bg-ink-900/85 text-white backdrop-blur-sm",
       },
       size: {
-        sm: "px-2 py-0.5 text-[10.5px] tracking-wide [&_svg]:size-3",
-        md: "px-2.5 py-1 text-[11.5px] [&_svg]:size-3.5",
+        sm: "px-2.5 py-1 text-[11.5px] tracking-wide [&_svg]:size-3",
+        md: "px-2.5 py-1 text-[12.5px] [&_svg]:size-3.5",
         lg: "px-3 py-1.5 text-[13px] [&_svg]:size-4",
       },
     },

@@ -107,10 +107,10 @@ export default async function DestinationDetailPage({ params }: Props) {
             <Badge className="bg-brand-500 text-white">Rent a car · Kochi</Badge>
           </div>
 
-          <h1 className="text-hero mt-4 max-w-3xl text-white">
+          <h1 className="text-hero mt-5 max-w-3xl text-white">
             {destination.name}
           </h1>
-          <p className="text-lead-on-dark mt-3 max-w-2xl">
+          <p className="text-lead-on-dark mt-4 max-w-2xl sm:mt-5">
             {destination.summary}
           </p>
 

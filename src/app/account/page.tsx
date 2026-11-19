@@ -61,7 +61,7 @@ export default function AccountPage() {
             <h1 className="text-display-sm truncate">
               {user.name || "Guest driver"}
             </h1>
-            <p className="mt-1 flex flex-wrap items-center gap-2 text-[13.5px] text-ink-500">
+            <p className="mt-1.5 flex flex-wrap items-center gap-2 text-[14px] leading-snug text-ink-500">
               <span className="truncate">+91 {user.mobile}</span>
               <Badge tone="success" size="sm">
                 <ShieldCheck />
@@ -79,10 +79,10 @@ export default function AccountPage() {
             <Ticket className="size-5" />
           </span>
           <span className="flex-1">
-            <span className="block text-[15px] font-bold text-ink-900">
+            <span className="block text-[15px] font-bold leading-snug text-ink-900">
               My trips
             </span>
-            <span className="block text-[13px] text-ink-500">
+            <span className="mt-0.5 block text-[13.5px] leading-snug text-ink-500">
               {tripCount === 0
                 ? "No bookings yet"
                 : `${tripCount} booking${tripCount === 1 ? "" : "s"}`}
@@ -95,10 +95,10 @@ export default function AccountPage() {
           onSubmit={onSave}
           className="mt-4 rounded-[var(--radius-xl)] border border-hairline bg-surface p-5 sm:p-6"
         >
-          <h2 className="font-display text-[17px] font-bold tracking-tight">
+          <h2 className="font-display text-[17px] font-bold leading-snug tracking-tight">
             Profile details
           </h2>
-          <p className="mt-1.5 text-[13px] text-ink-500">
+          <p className="mt-2 text-[13.5px] leading-relaxed text-ink-500">
             We use these on your rental agreement and receipts.
           </p>
 
@@ -135,10 +135,10 @@ export default function AccountPage() {
         </form>
 
         <div className="mt-4 rounded-[var(--radius-xl)] border border-hairline bg-surface p-5">
-          <h2 className="font-display text-[15px] font-bold tracking-tight">
+          <h2 className="font-display text-[15px] font-bold leading-snug tracking-tight">
             Session
           </h2>
-          <p className="mt-1.5 text-[13px] text-ink-500">
+          <p className="mt-2 text-[13.5px] leading-relaxed text-ink-500">
             Signing out keeps your bookings — sign back in with the same number.
           </p>
           <Button

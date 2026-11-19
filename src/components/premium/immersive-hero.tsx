@@ -81,10 +81,10 @@ export function ImmersiveHero({ branches }: { branches: Branch[] }) {
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_12%_25%,rgba(248,120,0,0.2),transparent_58%)]"
       />
 
-      <div className="container-page relative flex flex-col pb-8 pt-6 sm:pb-12 sm:pt-12 lg:min-h-[calc(100svh-72px)] lg:justify-center lg:pb-14 lg:pt-16">
-        <div className="grid min-w-0 items-start gap-6 sm:gap-7 lg:grid-cols-[1fr_0.92fr] lg:items-center lg:gap-12">
+      <div className="container-page relative flex flex-col pb-[calc(7.5rem+env(safe-area-inset-bottom))] pt-7 sm:pb-12 sm:pt-12 md:pb-12 lg:min-h-[calc(100svh-72px)] lg:justify-center lg:pb-14 lg:pt-16">
+        <div className="grid min-w-0 items-start gap-7 sm:gap-8 lg:grid-cols-[1fr_0.92fr] lg:items-center lg:gap-12">
           <motion.div {...fade()} className="min-w-0 max-w-xl">
-            <div className="mb-3 sm:mb-4">
+            <div className="mb-4 sm:mb-5">
               <MvdBadge size="banner" tone="onDark" />
             </div>
 
@@ -97,13 +97,14 @@ export function ImmersiveHero({ branches }: { branches: Branch[] }) {
               self-drive car rental.
             </h1>
 
-            <p className="text-lead-on-dark mt-3 max-w-md sm:mt-3.5">
+            <p className="text-lead-on-dark mt-5 max-w-md sm:mt-5">
               Cars and bikes in Kochi — Cochin Airport pickup,{" "}
               {BUSINESS_RULES.kmPerDay} km free every day, transparent pricing
               since {BUSINESS_RULES.foundedYear}.
             </p>
 
-            <div className="mt-5 flex flex-wrap items-center gap-3 sm:mt-6">
+            {/* Phone is in the header on mobile — keep the hero shorter above the tab bar. */}
+            <div className="mt-6 hidden flex-wrap items-center gap-3 sm:mt-7 sm:flex">
               <Button
                 asChild
                 size="lg"
@@ -131,7 +132,7 @@ export function ImmersiveHero({ branches }: { branches: Branch[] }) {
                   },
                 })}
             id="booking-console"
-            className="relative z-10 w-full min-w-0 sm:mx-auto sm:max-w-[440px] lg:mx-0 lg:ml-auto lg:max-w-[460px]"
+            className="relative z-10 mb-[5.75rem] w-full min-w-0 sm:mx-auto sm:mb-0 sm:max-w-[440px] lg:mx-0 lg:ml-auto lg:max-w-[460px]"
           >
             <BookingConsole
               branches={branches}
@@ -142,16 +143,16 @@ export function ImmersiveHero({ branches }: { branches: Branch[] }) {
 
         <nav
           aria-label="Popular self-drive searches"
-          className="no-scrollbar -mx-1 mt-5 flex items-center gap-2 overflow-x-auto px-1 pb-1 sm:mt-7"
+          className="no-scrollbar -mx-1 mt-6 flex items-center gap-2.5 overflow-x-auto px-1 pb-1 sm:mt-8"
         >
-          <span className="text-caption shrink-0 font-semibold text-white/70">
+          <span className="text-caption shrink-0 font-semibold text-white/75">
             Popular:
           </span>
           {POPULAR.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="text-caption shrink-0 rounded-full border border-white/20 bg-ink-950/55 px-3 py-1.5 font-semibold text-white backdrop-blur-sm transition-colors hover:border-brand-400/50 hover:bg-ink-950/75 sm:px-3.5"
+              className="text-caption shrink-0 rounded-full border border-white/20 bg-ink-950/55 px-3.5 py-2 font-semibold text-white backdrop-blur-sm transition-colors hover:border-brand-400/50 hover:bg-ink-950/75"
             >
               {item.label}
             </Link>

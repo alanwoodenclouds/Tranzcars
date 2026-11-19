@@ -175,7 +175,7 @@ export function BookingConsole({
       )}
     >
       <div className="px-4 pb-0 pt-5 text-center sm:px-7 sm:pt-6">
-        <h2 className="font-display text-[1.2rem] font-bold tracking-tight text-brand-500 sm:text-[1.5rem]">
+        <h2 className="font-display text-[1.25rem] font-bold leading-snug tracking-tight text-brand-500 sm:text-[1.5rem] sm:leading-tight">
           Find the right {category === "bike" ? "bike" : "car"} now!
         </h2>
 
@@ -227,9 +227,9 @@ export function BookingConsole({
         </div>
       </div>
 
-      <div className="space-y-2.5 px-4 py-4 sm:space-y-3 sm:px-7 sm:py-5">
-        <label className="flex cursor-pointer items-center gap-2.5 sm:gap-3">
-          <span className="relative inline-flex h-5 w-9 shrink-0 items-center sm:h-6 sm:w-11">
+      <div className="space-y-3 px-4 py-4 sm:space-y-3.5 sm:px-7 sm:py-5">
+        <label className="flex cursor-pointer items-center gap-3 sm:gap-3.5">
+          <span className="relative inline-flex h-6 w-11 shrink-0 items-center">
             <input
               type="checkbox"
               className="peer sr-only"
@@ -237,9 +237,9 @@ export function BookingConsole({
               onChange={(e) => onDifferentDropoff(e.target.checked)}
             />
             <span className="absolute inset-0 rounded-full bg-ink-200 transition-colors peer-checked:bg-brand-500 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ring" />
-            <span className="absolute left-0.5 size-4 rounded-full bg-white transition-transform peer-checked:translate-x-4 sm:size-5 sm:peer-checked:translate-x-5" />
+            <span className="absolute left-0.5 size-5 rounded-full bg-white transition-transform peer-checked:translate-x-5" />
           </span>
-          <span className="text-[12.5px] font-medium leading-snug text-ink-700 sm:text-[13.5px]">
+          <span className="text-[13.5px] font-medium leading-snug text-ink-700 sm:text-[14px]">
             Return {category === "bike" ? "bike" : "car"} to another location
           </span>
         </label>
@@ -252,7 +252,7 @@ export function BookingConsole({
           <MapPin className="size-4 shrink-0 text-ink-400 sm:size-[18px]" />
           <span
             className={cn(
-              "min-w-0 flex-1 truncate text-left text-[14px] sm:text-[15px]",
+              "min-w-0 flex-1 truncate text-left text-[15px]",
               pickupLabel
                 ? "font-semibold text-ink-900"
                 : "font-medium text-ink-400"
@@ -270,7 +270,7 @@ export function BookingConsole({
             className={fieldClass}
           >
             <MapPin className="size-4 shrink-0 text-ink-400 sm:size-[18px]" />
-            <span className="min-w-0 flex-1 truncate text-left text-[14px] font-semibold text-ink-900 sm:text-[15px]">
+            <span className="min-w-0 flex-1 truncate text-left text-[15px] font-semibold text-ink-900">
               {dropoffLabel}
             </span>
             <ChevronRight className="size-4 shrink-0 text-ink-300" />
@@ -285,7 +285,7 @@ export function BookingConsole({
           <CalendarClock className="size-4 shrink-0 text-ink-400 sm:size-[18px]" />
           <span
             className={cn(
-              "min-w-0 flex-1 text-left text-[13px] leading-snug sm:truncate sm:text-[15px]",
+              "min-w-0 flex-1 text-left text-[14px] leading-snug sm:truncate sm:text-[15px]",
               scheduleLabel
                 ? "font-semibold text-ink-900"
                 : "font-medium text-ink-400"
@@ -297,7 +297,7 @@ export function BookingConsole({
         </button>
 
         {error ? (
-          <p role="alert" className="text-[13px] font-semibold text-danger">
+          <p role="alert" className="text-[13.5px] font-semibold leading-snug text-danger">
             {error}
           </p>
         ) : null}
@@ -307,29 +307,29 @@ export function BookingConsole({
           size="lg"
           block
           loading={searching}
-          className="h-12 rounded-[var(--radius-md)] text-[15px] font-bold sm:h-14 sm:text-base"
+          className="h-[52px] rounded-[var(--radius-md)] text-base font-bold sm:h-14"
         >
           {goLabel}
         </Button>
       </div>
 
-      <div className="grid grid-cols-2 border-t border-hairline">
-        <div className="flex items-start gap-2 border-r border-hairline px-3 py-3 sm:items-center sm:gap-2.5 sm:px-5 sm:py-4">
-          <span className="grid size-8 shrink-0 place-items-center rounded-full bg-brand-50 text-brand-600 sm:size-9">
-            <Home className="size-3.5 sm:size-4" />
+      <div className="hidden grid-cols-2 border-t border-hairline sm:grid">
+        <div className="flex items-start gap-2.5 border-r border-hairline px-3.5 py-3.5 sm:items-center sm:gap-3 sm:px-5 sm:py-4">
+          <span className="grid size-9 shrink-0 place-items-center rounded-full bg-brand-50 text-brand-600">
+            <Home className="size-4" />
           </span>
-          <span className="min-w-0 text-left text-[11px] leading-snug text-ink-600 sm:text-[12px]">
+          <span className="min-w-0 text-left text-[12.5px] leading-snug text-ink-600 sm:text-[13px]">
             <span className="block font-semibold text-ink-800">
               Doorstep delivery
             </span>
             Available in your city
           </span>
         </div>
-        <div className="flex items-start gap-2 px-3 py-3 sm:items-center sm:gap-2.5 sm:px-5 sm:py-4">
-          <span className="grid size-8 shrink-0 place-items-center rounded-full bg-jade-50 text-jade-600 sm:size-9">
-            <Gauge className="size-3.5 sm:size-4" />
+        <div className="flex items-start gap-2.5 px-3.5 py-3.5 sm:items-center sm:gap-3 sm:px-5 sm:py-4">
+          <span className="grid size-9 shrink-0 place-items-center rounded-full bg-jade-50 text-jade-600">
+            <Gauge className="size-4" />
           </span>
-          <span className="min-w-0 text-left text-[11px] leading-snug text-ink-600 sm:text-[12px]">
+          <span className="min-w-0 text-left text-[12.5px] leading-snug text-ink-600 sm:text-[13px]">
             <span className="block font-semibold text-ink-800">Choose your</span>
             KM Package
           </span>
@@ -395,4 +395,4 @@ export function BookingConsole({
 }
 
 const fieldClass =
-  "flex w-full items-center gap-2.5 rounded-[var(--radius-md)] border border-ink-200 bg-surface px-3.5 py-3.5 transition-colors hover:border-ink-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring sm:gap-3 sm:px-4 sm:py-[15px]";
+  "flex w-full items-center gap-3 rounded-[var(--radius-md)] border border-ink-200 bg-surface px-4 py-4 transition-colors hover:border-ink-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring sm:py-[15px]";

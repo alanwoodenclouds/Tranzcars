@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Keep the Next.js build indicator off the mobile tab bar (Home).
+  devIndicators: {
+    position: "top-right",
+  },
   images: {
     remotePatterns: [
       {

@@ -80,7 +80,7 @@ export function SiteFooter() {
             <p className="text-eyebrow text-brand-300">
               Self-drive · Kerala · Since {BUSINESS_RULES.foundedYear}
             </p>
-            <h2 className="mt-3 max-w-xl font-display text-[clamp(1.85rem,3.4vw,2.5rem)] font-extrabold leading-[1.06] tracking-[-0.032em] text-white">
+            <h2 className="mt-3 max-w-xl font-display text-[clamp(1.75rem,3.4vw,2.5rem)] font-extrabold leading-[1.18] tracking-[-0.028em] text-white">
               Rent a car.
               <span className="text-brand-400"> Drive better.</span>
             </h2>
@@ -100,7 +100,7 @@ export function SiteFooter() {
             </p>
             <form
               onSubmit={onJoin}
-              className="mt-5 flex w-full min-w-0 flex-col gap-2 sm:flex-row sm:items-center"
+              className="mt-5 flex w-full min-w-0 items-center gap-2"
             >
               <Input
                 type="email"
@@ -111,7 +111,7 @@ export function SiteFooter() {
                 aria-label="Email address"
                 className="h-12 min-w-0 flex-1 border-white/15 bg-white/[0.05] text-white placeholder:text-ink-500 hover:border-white/25 focus:border-brand-400"
               />
-              <Button type="submit" size="lg" className="h-12 w-full shrink-0 sm:w-auto">
+              <Button type="submit" size="lg" className="h-12 shrink-0 px-5">
                 Join
                 <ArrowRight />
               </Button>
@@ -131,7 +131,7 @@ export function SiteFooter() {
                 <Phone className="size-4" />
               </span>
               <span className="min-w-0">
-                <span className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-500">
+                <span className="block text-[12px] font-semibold uppercase tracking-[0.1em] text-ink-500">
                   Primary
                 </span>
                 <span className="mt-0.5 block truncate font-display text-base font-bold text-white">
@@ -148,7 +148,7 @@ export function SiteFooter() {
                 <Phone className="size-4" />
               </span>
               <span className="min-w-0">
-                <span className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-500">
+                <span className="block text-[12px] font-semibold uppercase tracking-[0.1em] text-ink-500">
                   Alternate
                 </span>
                 <span className="mt-0.5 block truncate text-sm font-semibold text-ink-200">
@@ -167,7 +167,7 @@ export function SiteFooter() {
                 <MessageCircle className="size-4" />
               </span>
               <span className="min-w-0">
-                <span className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-500">
+                <span className="block text-[12px] font-semibold uppercase tracking-[0.1em] text-ink-500">
                   WhatsApp
                 </span>
                 <span className="mt-0.5 block text-sm font-semibold text-ink-200">
@@ -184,7 +184,7 @@ export function SiteFooter() {
                 <Mail className="size-4" />
               </span>
               <span className="min-w-0">
-                <span className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-500">
+                <span className="block text-[12px] font-semibold uppercase tracking-[0.1em] text-ink-500">
                   Email
                 </span>
                 <span className="mt-0.5 block truncate text-sm font-semibold text-ink-200">
@@ -209,12 +209,12 @@ export function SiteFooter() {
           </p>
         </div>
 
-        {/* Site map */}
-        <div className="grid gap-10 py-12 sm:grid-cols-3">
+        {/* Site map — 2 cols on phone, 3 from sm up */}
+        <div className="grid grid-cols-2 gap-x-6 gap-y-8 py-10 sm:grid-cols-3 sm:gap-10 sm:py-12">
           {COLUMNS.map((column) => (
             <div key={column.title}>
               <p className="text-eyebrow text-ink-500">{column.title}</p>
-              <ul className="mt-5 space-y-3">
+              <ul className="mt-3 space-y-2.5 sm:mt-5 sm:space-y-3">
                 {column.links.map((link) => (
                   <li key={link.href + link.label}>
                     <Link

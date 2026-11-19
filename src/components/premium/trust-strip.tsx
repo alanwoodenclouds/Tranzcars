@@ -23,14 +23,14 @@ export function TrustStrip() {
     <section className="section-y-sm">
       <div className="container-page">
         <Reveal>
-          <div className="overflow-hidden rounded-[var(--radius-2xl)] bg-ink-900 px-6 py-10 sm:px-10 sm:py-12">
-            <dl className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
+          <div className="overflow-hidden rounded-[var(--radius-2xl)] bg-ink-900 px-5 py-8 sm:px-10 sm:py-12">
+            <dl className="grid grid-cols-2 gap-x-5 gap-y-7 lg:grid-cols-4 lg:gap-4">
               {STATS.map((stat, i) => (
                 <div
                   key={stat.label}
                   className="lg:border-l lg:border-white/10 lg:pl-6 lg:first:border-l-0 lg:first:pl-0"
                 >
-                  <dd className="text-numeric font-display text-4xl font-extrabold text-white sm:text-[2.75rem]">
+                  <dd className="text-numeric font-display text-[1.85rem] font-extrabold leading-none text-white sm:text-[2.75rem]">
                     <AnimatedNumber
                       value={stat.value}
                       decimals={stat.decimals}
@@ -38,13 +38,13 @@ export function TrustStrip() {
                     />
                     <span className="text-brand-400">{stat.suffix}</span>
                   </dd>
-                  <dt className="text-meta mt-2 text-white/65">{stat.label}</dt>
+                  <dt className="text-meta mt-2 text-white/70">{stat.label}</dt>
                 </div>
               ))}
             </dl>
-            <div className="mt-10 flex flex-col gap-4 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
+            <div className="mt-8 flex flex-col gap-3 border-t border-white/10 pt-5 sm:mt-10 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:pt-6">
               <MvdBadge size="md" />
-              <p className="text-caption text-white/70">
+              <p className="text-caption text-white/70 sm:text-right">
                 Comprehensive insurance included · 24/7 roadside assistance
                 across Kerala
               </p>
