@@ -38,13 +38,13 @@ export function TrustStrip() {
                     />
                     <span className="text-brand-400">{stat.suffix}</span>
                   </dd>
-                  <dt className="text-meta mt-2 text-ink-400">{stat.label}</dt>
+                  <dt className="text-meta mt-2 text-white/65">{stat.label}</dt>
                 </div>
               ))}
             </dl>
             <div className="mt-10 flex flex-col gap-4 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
               <MvdBadge size="md" />
-              <p className="text-caption text-ink-400">
+              <p className="text-caption text-white/70">
                 Comprehensive insurance included · 24/7 roadside assistance
                 across Kerala
               </p>

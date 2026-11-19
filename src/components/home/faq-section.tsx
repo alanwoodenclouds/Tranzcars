@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { MessageCircleQuestion } from "lucide-react";
+import { ArrowRight, MessageCircleQuestion } from "lucide-react";
 import type { Faq } from "@/content/site";
 import {
   Accordion,
@@ -10,6 +10,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Reveal } from "@/components/motion/reveal";
+import { Button } from "@/components/ui/button";
 
 export function FaqSection({
   faqs,
@@ -23,7 +24,7 @@ export function FaqSection({
   return (
     <section className="section-y">
       <div className="container-page">
-        <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+        <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:gap-14">
           <Reveal>
             <p className="text-eyebrow mb-3 flex items-center gap-2">
               <span
@@ -32,9 +33,19 @@ export function FaqSection({
               />
               FAQ
             </p>
-            <h2 className="text-display-md">{title}</h2>
+            <h2 className="text-display-md max-w-[16ch]">{title}</h2>
+            <p className="text-body-sm mt-4 max-w-sm text-ink-500">
+              Documents, free kilometres, airport pickup and deposits — the
+              short version travellers ask for first.
+            </p>
+            <Button asChild variant="outline" className="mt-6">
+              <Link href="/faq">
+                Browse all FAQs
+                <ArrowRight />
+              </Link>
+            </Button>
             {showContact ? (
-              <div className="mt-6 rounded-[var(--radius-xl)] border border-hairline bg-surface p-5">
+              <div className="mt-5 rounded-[var(--radius-xl)] border border-hairline bg-surface p-5">
                 <MessageCircleQuestion className="size-5 text-brand-500" />
                 <p className="text-body-sm mt-3 font-bold text-ink-900">
                   Still unsure about something?
@@ -55,7 +66,7 @@ export function FaqSection({
 
           <Reveal delay={0.08}>
             <div className="overflow-hidden rounded-[var(--radius-xl)] border border-hairline bg-surface">
-              <Accordion type="single" collapsible>
+              <Accordion type="single" collapsible defaultValue={faqs[0]?.id}>
                 {faqs.map((faq) => (
                   <AccordionItem key={faq.id} value={faq.id}>
                     <AccordionTrigger>{faq.question}</AccordionTrigger>

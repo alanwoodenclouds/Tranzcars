@@ -32,10 +32,26 @@ export type Testimonial = {
   body: string;
 };
 
+export type FaqCategory =
+  | "eligibility"
+  | "pricing"
+  | "pickup"
+  | "trip"
+  | "booking";
+
 export type Faq = {
   id: string;
   question: string;
   answer: string;
+  category: FaqCategory;
+};
+
+export const FAQ_CATEGORY_LABELS: Record<FaqCategory, string> = {
+  eligibility: "Eligibility",
+  pricing: "Pricing & km",
+  pickup: "Pickup & delivery",
+  trip: "During your trip",
+  booking: "Booking & refunds",
 };
 
 export type UserSession = {
@@ -330,90 +346,105 @@ export const TESTIMONIALS: Testimonial[] = [
 export const FAQS: Faq[] = [
   {
     id: "1",
+    category: "eligibility",
     question: "Is TranzCars a government-approved car rental company?",
     answer:
       "Yes. TranzCars is a government-approved, licensed self-drive car rental operator in Kerala, operating since 2017 as a Kerala Govt Approved Self Drive Rent A Cab company.",
   },
   {
     id: "2",
+    category: "eligibility",
     question: "Am I eligible to use TranzCars services?",
     answer:
       "Indian citizens must be above 23 years of age, hold a valid Indian driving licence that is at least three years old, and present an Aadhaar card or voter ID. Foreign nationals must be above 23, hold a valid International Driving Permit, their home-country driving licence, and a passport with a valid visa. Original documents are required at delivery.",
   },
   {
     id: "3",
+    category: "pricing",
     question: "How many free kilometres do I get per day?",
     answer:
       "Every TranzCars rental includes 120 km of free driving per day. Extra kilometres beyond the daily free limit are charged at the published per-km rate for that vehicle.",
   },
   {
     id: "4",
+    category: "pickup",
     question: "Can I pick up a car at Cochin Airport?",
     answer:
       "Yes. TranzCars offers pickup and drop at Cochin International Airport and Ernakulam railway station, plus doorstep / home delivery across service areas in Kerala and South India.",
   },
   {
     id: "5",
+    category: "pricing",
     question: "Do I need to pay a security deposit?",
     answer:
       "Yes. A refundable security deposit is collected and returned after your trip (typically within 7 working days), minus any tolls, fines or damages as per the terms.",
   },
   {
     id: "6",
+    category: "eligibility",
     question: "What documents do I need at delivery?",
     answer:
       "Original driving licence (with clear photo) and Aadhaar or passport. Printed A4 copies of the licence are not accepted. Foreign nationals also need the original International Driving Permit, home-country licence, and passport. Missing originals are treated as a late cancellation.",
   },
   {
     id: "7",
+    category: "booking",
     question: "Can I book a TranzCars car with a driver?",
     answer:
       "No. TranzCars is self-drive only — you drive the vehicle yourself. There is no chauffeur option.",
   },
   {
     id: "8",
+    category: "pickup",
     question: "Does TranzCars operate outside Kochi?",
     answer:
       "Yes. TranzCars is headquartered in Kochi and operates throughout Kerala (including Trivandrum and Calicut), with delivery and drop-off available anywhere in South India.",
   },
   {
     id: "9",
+    category: "pricing",
     question: "Is fuel included in my booking?",
     answer:
       "Fuel is not included. Return the vehicle at the same fuel level you received. Top-up costs apply if the level is lower; unused extra fuel is not refunded.",
   },
   {
     id: "10",
+    category: "pricing",
     question: "Who pays for tolls, parking and traffic fines?",
     answer:
       "You pay tolls, FasTag usage, parking, interstate entry taxes and any traffic / parking fines incurred during the rental. Challans that arrive after return remain your responsibility.",
   },
   {
     id: "11",
+    category: "booking",
     question: "What if I need to modify or cancel my booking?",
     answer:
       "You can modify or cancel via the website or by calling us. Charges depend on how close you are to pick-up time — see the Cancellation Policy. Security deposit is fully refundable on cancellations including no-shows; deductions apply only to rental and delivery charges.",
   },
   {
     id: "12",
+    category: "booking",
     question: "How long do refunds take?",
     answer:
       "Refunds are typically initiated within 7 working days to the original payment account or bank. Bank processing may add a few days — contact us if a refund has not appeared after 7 working days.",
   },
   {
     id: "13",
+    category: "trip",
     question: "Is there a speed limit?",
     answer:
       "Yes. Vehicles have tracking devices and the maximum speed limit is 80 km/h. Overspeeding attracts a penalty as per company policy.",
   },
   {
     id: "14",
+    category: "trip",
     question: "Can I take a pet along?",
     answer:
       "Pets are not allowed in TranzCars vehicles. A cleaning charge applies if this rule is violated.",
   },
   {
     id: "15",
+    category: "trip",
     question: "What do I do if the vehicle breaks down or I meet with an accident?",
     answer:
       "Call TranzCars immediately on +91 98950 41111. Do not leave the scene unless unavoidable. Take spot photos, inform the local police (GD / FIR as required), and follow instructions from our team and the insurer.",

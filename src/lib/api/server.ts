@@ -1,5 +1,12 @@
-import type { Branch, Car, Faq, Testimonial } from "@/content/site";
-import { BRANCHES, CARS, FAQS, TESTIMONIALS, BUSINESS_RULES } from "@/content/site";
+import type { Branch, Car, Faq, FaqCategory, Testimonial } from "@/content/site";
+import {
+  BRANCHES,
+  CARS,
+  FAQ_CATEGORY_LABELS,
+  FAQS,
+  TESTIMONIALS,
+  BUSINESS_RULES,
+} from "@/content/site";
 
 const isMockMode = () => process.env.USE_MOCK_API !== "false";
 
@@ -75,10 +82,26 @@ export async function getTestimonials(): Promise<Testimonial[]> {
   return data?.length ? data : TESTIMONIALS;
 }
 
+function normalizeFaq(item: Partial<Faq>, index: number): Faq {
+  const fallback = FAQS.find((f) => f.id === item.id) ?? FAQS[index];
+  const category =
+    item.category && item.category in FAQ_CATEGORY_LABELS
+      ? (item.category as FaqCategory)
+      : (fallback?.category ?? "booking");
+
+  return {
+    id: String(item.id ?? fallback?.id ?? index + 1),
+    question: item.question ?? fallback?.question ?? "",
+    answer: item.answer ?? fallback?.answer ?? "",
+    category,
+  };
+}
+
 export async function getFaqs(): Promise<Faq[]> {
   if (isMockMode()) return FAQS;
-  const data = await upstream<Faq[]>("faqs");
-  return data?.length ? data : FAQS;
+  const data = await upstream<Partial<Faq>[]>("faqs");
+  if (!data?.length) return FAQS;
+  return data.map((item, index) => normalizeFaq(item, index));
 }
 
 export async function getSettings() {

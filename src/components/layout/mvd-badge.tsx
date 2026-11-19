@@ -60,7 +60,7 @@ export function MvdBadge({
             <span className={onDark ? "text-white" : "text-ink-900"}>
               Kerala Govt Approved
             </span>
-            <span className={onDark ? "text-white/50" : "text-ink-400"}>
+            <span className={onDark ? "text-white/70" : "text-ink-400"}>
               {" "}
               · Since {BUSINESS_RULES.foundedYear}
             </span>

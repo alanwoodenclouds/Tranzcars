@@ -30,7 +30,7 @@ export function AiFloatingButton() {
           <Sparkles className="size-[15px]" />
         )}
       </span>
-      <span className="text-caption tracking-wide text-white">
+      <span className="text-[13px] font-bold tracking-wide text-white">
         {open ? "Close" : "Ask AI"}
       </span>
     </motion.button>

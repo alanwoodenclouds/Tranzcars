@@ -105,7 +105,7 @@ export function Membership() {
                 <p
                   className={cn(
                     "text-body-sm mt-2",
-                    plan.featured ? "text-ink-400" : "text-ink-500"
+                    plan.featured ? "text-white/75" : "text-ink-500"
                   )}
                 >
                   {plan.desc}
@@ -121,7 +121,11 @@ export function Membership() {
                         )}
                         strokeWidth={2.5}
                       />
-                      <span className={plan.featured ? "text-ink-200" : "text-ink-700"}>
+                      <span
+                        className={
+                          plan.featured ? "text-white/90" : "text-ink-700"
+                        }
+                      >
                         {perk}
                       </span>
                     </li>

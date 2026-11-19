@@ -143,14 +143,14 @@ export function ImmersiveHero({ branches }: { branches: Branch[] }) {
           aria-label="Popular self-drive searches"
           className="no-scrollbar mt-5 flex items-center gap-2 overflow-x-auto pb-1 sm:mt-7"
         >
-          <span className="text-caption shrink-0 font-semibold text-white/45">
+          <span className="text-caption shrink-0 font-semibold text-white/70">
             Popular:
           </span>
           {POPULAR.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="text-caption shrink-0 rounded-full border border-white/15 bg-white/[0.07] px-3 py-1.5 font-semibold text-white/85 transition-colors hover:border-brand-400/50 hover:bg-white/[0.12] hover:text-white sm:px-3.5"
+              className="text-caption shrink-0 rounded-full border border-white/20 bg-ink-950/55 px-3 py-1.5 font-semibold text-white shadow-e1 backdrop-blur-sm transition-colors hover:border-brand-400/50 hover:bg-ink-950/75 sm:px-3.5"
             >
               {item.label}
             </Link>

@@ -150,10 +150,15 @@ export default function AboutPage() {
                 className="object-cover object-center"
                 sizes="(max-width: 1024px) 100vw, 46vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink-950/55 via-transparent to-transparent" />
+              <div
+                aria-hidden
+                className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/50 to-transparent"
+              />
               <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
-                <p className="text-title-lg text-white">Hand-over in minutes.</p>
-                <p className="text-body-sm mt-1.5 max-w-sm text-white/75">
+                <p className="text-title-lg text-white drop-shadow-[0_1px_12px_rgba(0,0,0,0.55)]">
+                  Hand-over in minutes.
+                </p>
+                <p className="text-body-sm mt-1.5 max-w-sm text-white">
                   Documents, photos and fuel level confirmed together before you
                   drive away.
                 </p>

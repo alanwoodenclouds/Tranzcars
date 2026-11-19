@@ -1,48 +1,26 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { addDays, format, isValid, parse } from "date-fns";
-import { Mic, MicOff, Send, Sparkles, Volume2, X } from "lucide-react";
+import { CalendarDays, MapPin, Send, Sparkles, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import { BRANCHES, BUSINESS_RULES } from "@/content/site";
-import {
-  buildCarsSearchParams,
-  useBookingStore,
-} from "@/store/useBookingStore";
+import { BRANCHES, BUSINESS_RULES, CARS, type Car } from "@/content/site";
+import { useBookingStore } from "@/store/useBookingStore";
 import { useAiAssistantUi } from "@/components/ai/ai-assistant-ui";
 import { AiFloatingButton } from "@/components/ai/ai-launcher";
-import { cn } from "@/utils";
+import { cn, formatINR } from "@/utils";
 
 type Role = "assistant" | "user";
-type Message = { id: string; role: Role; text: string };
 
-type SpeechRecognitionLike = {
-  lang: string;
-  continuous: boolean;
-  interimResults: boolean;
-  start: () => void;
-  stop: () => void;
-  onresult:
-    | ((event: {
-        results: {
-          [i: number]: { [j: number]: { transcript: string } };
-          length: number;
-        };
-      }) => void)
-    | null;
-  onerror: (() => void) | null;
-  onend: (() => void) | null;
+type Message = {
+  id: string;
+  role: Role;
+  text: string;
+  cars?: Car[];
+  tripSummary?: string;
 };
-
-function getSpeechRecognition(): (new () => SpeechRecognitionLike) | null {
-  if (typeof window === "undefined") return null;
-  const w = window as Window & {
-    SpeechRecognition?: new () => SpeechRecognitionLike;
-    webkitSpeechRecognition?: new () => SpeechRecognitionLike;
-  };
-  return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
-}
 
 function matchBranch(text: string) {
   const q = text.toLowerCase();
@@ -95,6 +73,89 @@ function parseDateFromText(text: string): string | null {
   return null;
 }
 
+function matchCategory(text: string): "car" | "bike" | "suv" | null {
+  const lower = text.toLowerCase();
+  if (/\bbikes?\b|\bscooters?\b/.test(lower)) return "bike";
+  if (/\bsuvs?\b/.test(lower)) return "suv";
+  if (/\bcars?\b|\bhatch\b|\bsedan\b|\bmuv\b/.test(lower)) return "car";
+  return null;
+}
+
+function filterCars(text: string, categoryHint?: "car" | "bike" | "suv" | null) {
+  const lower = text.toLowerCase();
+  const hint = categoryHint ?? matchCategory(text);
+  let pool = CARS.filter((c) => c.category !== "bike");
+
+  if (hint === "bike") {
+    pool = CARS.filter((c) => c.category === "bike");
+  } else if (hint === "suv") {
+    pool = CARS.filter((c) => /suv/i.test(c.type) || /suv/i.test(c.name));
+  } else if (hint === "car") {
+    pool = CARS.filter((c) => c.category === "car");
+  }
+
+  if (/automatic|at\b/.test(lower)) {
+    const auto = pool.filter((c) => c.transmission === "Automatic");
+    if (auto.length) pool = auto;
+  }
+
+  return [...pool]
+    .sort((a, b) => Number(!!b.popular) - Number(!!a.popular) || a.pricePerDay - b.pricePerDay)
+    .slice(0, 4);
+}
+
+function formatTripLabel(pickupLabel: string, pickupDate: string, dropoffDate: string) {
+  const from = format(parse(pickupDate, "yyyy-MM-dd", new Date()), "d MMM");
+  const to = format(parse(dropoffDate, "yyyy-MM-dd", new Date()), "d MMM");
+  return `${pickupLabel} · ${from} → ${to}`;
+}
+
+function ChatCarCard({
+  car,
+  onBook,
+}: {
+  car: Car;
+  onBook: (car: Car) => void;
+}) {
+  return (
+    <div className="overflow-hidden rounded-[var(--radius-lg)] border border-hairline bg-white shadow-e1">
+      <div className="relative aspect-[16/9] bg-ink-100">
+        <Image
+          src={car.image}
+          alt={car.name}
+          fill
+          className="object-cover"
+          sizes="320px"
+        />
+        <span className="absolute left-2 top-2 rounded-full bg-ink-900/80 px-2 py-0.5 text-[10px] font-semibold text-white">
+          {car.type}
+        </span>
+      </div>
+      <div className="space-y-2 p-3">
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0">
+            <p className="truncate text-sm font-bold text-ink-900">{car.name}</p>
+            <p className="text-[11px] text-ink-500">
+              {car.transmission} · {car.seats} seats · {car.kmPerDay} km/day
+            </p>
+          </div>
+          <p className="shrink-0 text-sm font-bold text-brand-600">
+            {formatINR(car.pricePerDay)}
+            <span className="block text-[10px] font-medium text-ink-400">/day</span>
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => onBook(car)}
+          className="flex h-9 w-full items-center justify-center rounded-full bg-brand-500 text-xs font-bold text-white transition-colors hover:bg-brand-600"
+        >
+          Book this car
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export function AiAssistant() {
   const router = useRouter();
   const setSearch = useBookingStore((s) => s.setSearch);
@@ -102,20 +163,16 @@ export function AiAssistant() {
   const { open, setOpen } = useAiAssistantUi();
 
   const [input, setInput] = useState("");
-  const [listening, setListening] = useState(false);
-  const [voiceOn, setVoiceOn] = useState(true);
   const [busy, setBusy] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",
       role: "assistant",
-      text: `Hi — I'm your TranzCars concierge. Tell me where you're picking up, and when. Chat or hold the mic. Try “Airport tomorrow for 2 days”.`,
+      text: `Hi — I'm your TranzCars concierge. Tell me where you're picking up and when, then book a car right here. Try “Airport tomorrow for 2 days”.`,
     },
   ]);
 
   const listRef = useRef<HTMLDivElement>(null);
-  const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
-  const speechSupported = useMemo(() => !!getSpeechRecognition(), []);
 
   useEffect(() => {
     if (!open) return;
@@ -123,31 +180,49 @@ export function AiAssistant() {
       top: listRef.current.scrollHeight,
       behavior: "smooth",
     });
-  }, [messages, open]);
-
-  const speak = useCallback(
-    (text: string) => {
-      if (!voiceOn || typeof window === "undefined" || !window.speechSynthesis)
-        return;
-      window.speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance(text);
-      u.rate = 1.02;
-      u.pitch = 1;
-      u.lang = "en-IN";
-      window.speechSynthesis.speak(u);
-    },
-    [voiceOn]
-  );
+  }, [messages, open, busy]);
 
   const reply = useCallback(
-    (text: string) => {
+    (text: string, extra?: Pick<Message, "cars" | "tripSummary">) => {
       setMessages((m) => [
         ...m,
-        { id: `${Date.now()}-a`, role: "assistant", text },
+        {
+          id: `${Date.now()}-a`,
+          role: "assistant",
+          text,
+          cars: extra?.cars,
+          tripSummary: extra?.tripSummary,
+        },
       ]);
-      speak(text);
     },
-    [speak]
+    []
+  );
+
+  const bookCar = useCallback(
+    (car: Car) => {
+      const latest = useBookingStore.getState().search;
+      setSearch({
+        selectedCarId: car.id,
+        selectedCarSlug: car.slug,
+        category: car.category,
+      });
+      setMessages((m) => [
+        ...m,
+        {
+          id: `${Date.now()}-u`,
+          role: "user",
+          text: `Book ${car.name}`,
+        },
+      ]);
+      reply(
+        `Great choice — ${car.name} at ${formatINR(car.pricePerDay)}/day. Taking you to checkout to confirm ${latest.pickupLabel || "your trip"}.`
+      );
+      window.setTimeout(() => {
+        setOpen(false);
+        router.push(`/checkout?car=${car.slug}`);
+      }, 650);
+    },
+    [reply, router, setOpen, setSearch]
   );
 
   const handleUserText = useCallback(
@@ -165,9 +240,11 @@ export function AiAssistant() {
         const lower = text.toLowerCase();
         const branch = matchBranch(text);
         const date = parseDateFromText(text);
-        const wantsSearch =
-          /search|find|show|book|cars?|available|go/.test(lower) ||
-          lower.includes("yes");
+        const categoryHint = matchCategory(text);
+        const wantsCars =
+          /search|find|show|book|cars?|suvs?|bikes?|available|options|go/.test(
+            lower
+          ) || lower.includes("yes");
 
         if (branch) {
           setSearch({
@@ -191,25 +268,35 @@ export function AiAssistant() {
           });
         }
 
-        const latest = useBookingStore.getState().search;
+        if (categoryHint === "bike") {
+          setSearch({ category: "bike" });
+        } else if (categoryHint === "car" || categoryHint === "suv") {
+          setSearch({ category: "car" });
+        }
 
-        if (
-          (wantsSearch || (branch && date)) &&
-          latest.pickupBranchId &&
-          latest.pickupDate
-        ) {
+        const latest = useBookingStore.getState().search;
+        const tripReady = Boolean(latest.pickupBranchId && latest.pickupDate);
+
+        if (tripReady && (wantsCars || (branch && date) || categoryHint)) {
+          const cars = filterCars(text, categoryHint);
+          const summary = formatTripLabel(
+            latest.pickupLabel,
+            latest.pickupDate,
+            latest.dropoffDate
+          );
           reply(
-            `Perfect — ${latest.pickupLabel} from ${latest.pickupDate}. Opening matching cars for you.`
+            cars.length
+              ? `Here are ${cars.length} options for ${summary}. Tap Book on any car to continue.`
+              : `No matches for that filter — try SUVs, hatchbacks, or bikes.`,
+            { cars, tripSummary: summary }
           );
           setBusy(false);
-          setOpen(false);
-          router.push(`/cars?${buildCarsSearchParams(latest)}`);
           return;
         }
 
         if (branch && !latest.pickupDate) {
           reply(
-            `Got it — pickup at ${branch.name}. When do you need the car? Say “tomorrow for 3 days” or a date like 15/08/2026.`
+            `Got it — pickup at ${branch.name}. When do you need the car? Try “tomorrow for 3 days” or a date like 15/08/2026.`
           );
         } else if (date && !latest.pickupBranchId) {
           reply(
@@ -217,11 +304,11 @@ export function AiAssistant() {
           );
         } else if (/hello|hi|hey|help/.test(lower)) {
           reply(
-            `I can book self-drive cars & bikes in Kochi & Kerala — free km/day, airport delivery. Where are you starting from?`
+            `I can find and book self-drive cars & bikes in Kochi & Kerala — ${BUSINESS_RULES.kmPerDay} km free/day, airport delivery. Where are you starting from?`
           );
         } else if (/price|cost|rate|km/.test(lower)) {
           reply(
-            `Every trip includes ${BUSINESS_RULES.kmPerDay} km free per day. Browse without login — OTP only at checkout. Want me to find cars from the airport?`
+            `Every trip includes ${BUSINESS_RULES.kmPerDay} km free per day. Browse without login — OTP only at checkout. Share pickup + dates and I’ll show cars you can book here.`
           );
         } else {
           reply(
@@ -229,43 +316,10 @@ export function AiAssistant() {
           );
         }
         setBusy(false);
-      }, 420);
+      }, 380);
     },
-    [
-      reply,
-      router,
-      search.dropoffBranchId,
-      search.dropoffLabel,
-      setOpen,
-      setSearch,
-    ]
+    [reply, search.dropoffBranchId, search.dropoffLabel, setSearch]
   );
-
-  const stopListening = useCallback(() => {
-    recognitionRef.current?.stop();
-    setListening(false);
-  }, []);
-
-  const startListening = useCallback(() => {
-    const Ctor = getSpeechRecognition();
-    if (!Ctor) {
-      reply("Voice isn’t supported in this browser — type your request instead.");
-      return;
-    }
-    const rec = new Ctor();
-    recognitionRef.current = rec;
-    rec.lang = "en-IN";
-    rec.continuous = false;
-    rec.interimResults = false;
-    rec.onresult = (event) => {
-      const transcript = event.results[0]?.[0]?.transcript ?? "";
-      if (transcript) handleUserText(transcript);
-    };
-    rec.onerror = () => setListening(false);
-    rec.onend = () => setListening(false);
-    setListening(true);
-    rec.start();
-  }, [handleUserText, reply]);
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -280,18 +334,20 @@ export function AiAssistant() {
     "Show SUVs from Kalamassery",
   ];
 
+  const tripReady = Boolean(search.pickupBranchId && search.pickupDate);
+
   return (
     <>
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: 16, scale: 0.96 }}
+            initial={{ opacity: 0, y: 20, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 12, scale: 0.96 }}
+            exit={{ opacity: 0, y: 14, scale: 0.97 }}
             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed bottom-[calc(env(safe-area-inset-bottom)+8.5rem)] right-4 z-[70] flex w-[min(100vw-2rem,392px)] flex-col overflow-hidden rounded-[var(--radius-2xl)] border border-hairline bg-surface shadow-e4 sm:bottom-[6.5rem] sm:right-6"
+            className="fixed inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+5.75rem)] top-[max(0.75rem,env(safe-area-inset-top))] z-[70] flex flex-col overflow-hidden rounded-[var(--radius-2xl)] border border-hairline bg-surface shadow-e4 sm:inset-auto sm:bottom-[6.5rem] sm:right-6 sm:top-auto sm:h-[min(82vh,720px)] sm:w-[min(100vw-3rem,460px)]"
           >
-            <header className="flex items-center justify-between gap-3 bg-ink-900 px-4 py-3.5 text-white">
+            <header className="flex shrink-0 items-center justify-between gap-3 bg-ink-900 px-4 py-3.5 text-white">
               <div className="flex items-center gap-3">
                 <span className="grid size-10 place-items-center rounded-full bg-brand-500">
                   <Sparkles className="size-[18px]" />
@@ -299,66 +355,71 @@ export function AiAssistant() {
                 <div>
                   <p className="text-sm font-bold">AI booking concierge</p>
                   <p className="text-[11px] text-white/60">
-                    Chat or speak your trip
+                    Chat to find & book a car
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-1">
-                <button
-                  type="button"
-                  onClick={() => setVoiceOn((v) => !v)}
-                  className={cn(
-                    "inline-flex h-9 w-9 items-center justify-center rounded-full transition",
-                    voiceOn ? "bg-white/15 text-white" : "text-white/45"
-                  )}
-                  aria-label={voiceOn ? "Mute replies" : "Unmute replies"}
-                >
-                  <Volume2 className="h-4 w-4" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    stopListening();
-                    setOpen(false);
-                  }}
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-full text-white/80 hover:bg-white/10"
-                  aria-label="Close assistant"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full text-white/80 hover:bg-white/10"
+                aria-label="Close assistant"
+              >
+                <X className="h-4 w-4" />
+              </button>
             </header>
+
+            {tripReady ? (
+              <div className="flex shrink-0 items-center gap-2 border-b border-hairline bg-brand-50 px-4 py-2.5 text-[11px] font-semibold text-ink-700">
+                <MapPin className="size-3.5 shrink-0 text-brand-600" />
+                <span className="truncate">{search.pickupLabel}</span>
+                <span className="text-ink-300">·</span>
+                <CalendarDays className="size-3.5 shrink-0 text-brand-600" />
+                <span className="truncate">
+                  {search.pickupDate}
+                  {search.dropoffDate ? ` → ${search.dropoffDate}` : ""}
+                </span>
+              </div>
+            ) : null}
 
             <div
               ref={listRef}
-              className="max-h-[min(48vh,380px)] space-y-3 overflow-y-auto px-4 py-4"
+              className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-4"
             >
               {messages.map((m) => (
                 <div
                   key={m.id}
                   className={cn(
-                    "flex",
-                    m.role === "user" ? "justify-end" : "justify-start"
+                    "flex flex-col gap-2",
+                    m.role === "user" ? "items-end" : "items-start"
                   )}
                 >
                   <div
                     className={cn(
-                    "max-w-[88%] rounded-[var(--radius-lg)] px-3.5 py-2.5 text-sm leading-relaxed",
-                    m.role === "user"
-                      ? "rounded-br-sm bg-brand-500 text-white"
-                      : "rounded-bl-sm bg-ink-100 text-ink-800"
-                  )}
+                      "max-w-[92%] rounded-[var(--radius-lg)] px-3.5 py-2.5 text-sm leading-relaxed",
+                      m.role === "user"
+                        ? "rounded-br-sm bg-brand-500 text-white"
+                        : "rounded-bl-sm bg-ink-100 text-ink-800"
+                    )}
                   >
                     {m.text}
                   </div>
+
+                  {m.cars && m.cars.length > 0 ? (
+                    <div className="grid w-full max-w-[92%] gap-2.5 sm:grid-cols-2">
+                      {m.cars.map((car) => (
+                        <ChatCarCard key={car.id} car={car} onBook={bookCar} />
+                      ))}
+                    </div>
+                  ) : null}
                 </div>
               ))}
               {busy && (
-                <p className="text-xs font-medium text-ink-400">Thinking…</p>
+                <p className="text-xs font-medium text-ink-400">Finding cars…</p>
               )}
             </div>
 
-            <div className="flex flex-wrap gap-2 border-t border-hairline px-4 py-3">
+            <div className="flex shrink-0 flex-wrap gap-2 border-t border-hairline px-4 py-3">
               {suggestions.map((s) => (
                 <button
                   key={s}
@@ -373,29 +434,8 @@ export function AiAssistant() {
 
             <form
               onSubmit={onSubmit}
-              className="flex items-center gap-2 border-t border-hairline px-3 py-3"
+              className="flex shrink-0 items-center gap-2 border-t border-hairline px-3 py-3"
             >
-              <button
-                type="button"
-                onClick={() =>
-                  listening ? stopListening() : startListening()
-                }
-                disabled={!speechSupported}
-                className={cn(
-                  "grid size-11 shrink-0 place-items-center rounded-full transition",
-                  listening
-                    ? "bg-brand-500 text-white ring-4 ring-brand-500/20"
-                    : "bg-ink-100 text-ink-700 hover:bg-ink-200",
-                  !speechSupported && "opacity-40"
-                )}
-                aria-label={listening ? "Stop listening" : "Start voice"}
-              >
-                {listening ? (
-                  <MicOff className="h-4 w-4" />
-                ) : (
-                  <Mic className="h-4 w-4" />
-                )}
-              </button>
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}

@@ -128,7 +128,7 @@ export function AboutHero() {
               <dd className="text-numeric font-display text-[1.75rem] font-extrabold tracking-tight text-white sm:text-4xl">
                 {s.value}
               </dd>
-              <p className="text-meta mt-1.5 text-white/50">{s.label}</p>
+              <p className="text-meta mt-1.5 text-white/70">{s.label}</p>
             </div>
           ))}
         </motion.dl>

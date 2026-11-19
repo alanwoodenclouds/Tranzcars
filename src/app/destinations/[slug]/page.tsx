@@ -89,7 +89,7 @@ export default async function DestinationDetailPage({ params }: Props) {
         <div className="container-page relative flex min-h-[52vh] flex-col justify-end pb-10 pt-24 sm:min-h-[58vh] sm:pb-14">
           <Link
             href="/destinations"
-            className="text-caption mb-6 inline-flex w-fit items-center gap-1.5 font-semibold text-white/75 transition-colors hover:text-white"
+            className="text-caption mb-6 inline-flex w-fit items-center gap-1.5 font-semibold text-white transition-colors hover:text-brand-300"
           >
             <ChevronLeft className="size-4" />
             All destinations
@@ -110,7 +110,7 @@ export default async function DestinationDetailPage({ params }: Props) {
           <h1 className="text-hero mt-4 max-w-3xl text-white">
             {destination.name}
           </h1>
-          <p className="text-lead-on-dark mt-3 max-w-2xl text-white/80">
+          <p className="text-lead-on-dark mt-3 max-w-2xl">
             {destination.summary}
           </p>
 

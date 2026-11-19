@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { BadgeCheck, Gauge, IdCard, ShieldCheck } from "lucide-react";
+import {
+  BadgeCheck,
+  Gauge,
+  IdCard,
+  ShieldCheck,
+} from "lucide-react";
 import { BUSINESS_RULES } from "@/content/site";
 import { getFaqs } from "@/lib/api/server";
-import { FaqSection } from "@/components/home/faq-section";
-import { PageHero } from "@/components/layout/page-hero";
-import { Button } from "@/components/ui/button";
+import { FaqExplorer } from "@/components/faq/faq-explorer";
+import { FaqHelpBand } from "@/components/faq/faq-help-band";
+import { ClosingJourney } from "@/components/premium/closing-journey";
+import { Reveal } from "@/components/motion/reveal";
 import {
   JsonLd,
   breadcrumbJsonLd,
@@ -57,38 +62,65 @@ export default async function FaqPage() {
           faqJsonLd(faqs),
         ]}
       />
-      <PageHero
-        eyebrow="Help centre"
-        title="Everything about renting from us."
-        description="Licences, deposits, kilometre limits and airport hand-over — the answers travellers ask for most."
-      >
-        <Button asChild size="lg" variant="outline">
-          <Link href="/contact">Ask us directly</Link>
-        </Button>
-      </PageHero>
 
-      <section className="hairline-b bg-surface">
-        <div className="container-page grid gap-6 py-10 sm:grid-cols-2 lg:grid-cols-4">
-          {QUICK_FACTS.map((f) => (
-            <div key={f.label} className="flex gap-3">
-              <span className="grid size-10 shrink-0 place-items-center rounded-[var(--radius-lg)] bg-brand-50 text-brand-600">
-                <f.icon className="size-[18px]" />
-              </span>
-              <div>
-                <p className="text-meta">{f.label}</p>
-                <p className="text-caption mt-1 font-semibold leading-snug text-ink-900">
-                  {f.value}
-                </p>
-              </div>
-            </div>
-          ))}
+      <header className="hairline-b relative isolate overflow-hidden bg-surface-sunken">
+        <div aria-hidden className="bg-aurora absolute inset-0 -z-10 opacity-70" />
+        <div
+          aria-hidden
+          className="bg-grid mask-fade-b absolute inset-0 -z-10 opacity-[0.45]"
+        />
+        <div className="container-page py-10 sm:py-14">
+          <div className="max-w-3xl">
+            <p className="text-eyebrow mb-3 flex items-center gap-2">
+              <span
+                aria-hidden
+                className="inline-block h-px w-6 bg-brand-400"
+              />
+              Help centre
+            </p>
+            <h1 className="text-display-lg">
+              Everything about renting from{" "}
+              <span className="italic text-brand-600">
+                Tranz<span className="text-brand-500">Cars</span>
+              </span>.
+            </h1>
+            <p className="text-lead mt-4 max-w-2xl">
+              Licences, deposits, kilometre limits and airport hand-over — search
+              or browse by topic.
+            </p>
+          </div>
+
+          <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {QUICK_FACTS.map((f) => (
+              <li
+                key={f.label}
+                className="flex gap-3 rounded-[var(--radius-xl)] border border-hairline/80 bg-surface/80 px-4 py-3.5 backdrop-blur-sm"
+              >
+                <span className="grid size-9 shrink-0 place-items-center rounded-[var(--radius-md)] bg-brand-50 text-brand-600">
+                  <f.icon className="size-4" />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-meta">{f.label}</p>
+                  <p className="text-caption mt-0.5 font-semibold leading-snug text-ink-900">
+                    {f.value}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </header>
+
+      <section className="section-y">
+        <div className="container-page">
+          <Reveal y={24}>
+            <FaqExplorer faqs={faqs} />
+          </Reveal>
         </div>
       </section>
 
-      <FaqSection
-        faqs={faqs}
-        title="Self-drive car rental questions, answered"
-      />
+      <FaqHelpBand />
+      <ClosingJourney />
     </>
   );
 }
