@@ -70,7 +70,7 @@ export function WhyTranzCars() {
           </Reveal>
 
           <Reveal delay={0.1} className="relative">
-            <div className="relative aspect-[4/3.4] overflow-hidden rounded-[var(--radius-2xl)] bg-ink-100 shadow-e2">
+            <div className="relative aspect-[4/3.4] overflow-hidden rounded-[var(--radius-2xl)] bg-ink-100">
               <Image
                 src={MEDIA.keralaRoadCar}
                 alt="Toyota Innova Hycross self-drive — TranzCars Kochi"
@@ -80,7 +80,7 @@ export function WhyTranzCars() {
               />
             </div>
 
-            <div className="relative z-10 mx-4 -mt-14 rounded-[var(--radius-xl)] border border-hairline bg-surface p-6 shadow-e3 sm:mx-8">
+            <div className="relative z-10 mx-4 -mt-14 rounded-[var(--radius-xl)] border border-hairline bg-surface p-6 sm:mx-8">
               <Quote className="size-6 text-brand-300" />
               <p className="text-body mt-3 font-medium text-ink-800">
                 “We booked Thar Roxx for Munnar and Vagamon. Car was so clean,

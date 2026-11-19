@@ -53,12 +53,12 @@ export default function TripsPage() {
   }
 
   return (
-    <div className="container-page pb-20 pt-10">
+    <div className="container-page pb-20 pt-8 sm:pt-10">
       <PageHeading
         eyebrow={user.name ? user.name : user.mobile}
         title="My trips"
         action={
-          <Button asChild variant="outline">
+          <Button asChild variant="outline" className="w-full sm:w-auto">
             <Link href="/cars">
               Book another ride
               <ArrowRight />
@@ -99,7 +99,7 @@ export default function TripsPage() {
             <li key={b.id}>
               <Link
                 href={`/trips/${b.id}`}
-                className="interactive group flex overflow-hidden rounded-[var(--radius-xl)] border border-hairline bg-surface shadow-e1 hover:-translate-y-0.5 hover:shadow-e3"
+                className="interactive group flex overflow-hidden rounded-[var(--radius-xl)] border border-hairline bg-surface hover:-translate-y-0.5"
               >
                 <div className="relative w-28 shrink-0 bg-ink-100 sm:w-36">
                   <Image

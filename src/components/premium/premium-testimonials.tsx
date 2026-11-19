@@ -89,7 +89,7 @@ export function PremiumTestimonials({ items }: { items: Testimonial[] }) {
             eyebrow="Travellers"
             title="Reviewed by people who actually drove."
             action={
-              <div className="flex items-center gap-3 rounded-[var(--radius-lg)] border border-hairline bg-surface px-4 py-3 shadow-e1">
+              <div className="flex items-center gap-3 rounded-[var(--radius-lg)] border border-hairline bg-surface px-4 py-3">
                 <Stars size={4} />
                 <div>
                   <p className="text-caption font-bold text-ink-900">

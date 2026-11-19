@@ -51,7 +51,7 @@ export function CarCard({ car, priority }: { car: Car; priority?: boolean }) {
   ];
 
   return (
-    <article className="group interactive relative flex flex-col overflow-hidden rounded-[var(--radius-xl)] border border-hairline bg-surface shadow-e1 hover:-translate-y-1 hover:border-ink-200 hover:shadow-e3">
+    <article className="group interactive relative flex flex-col overflow-hidden rounded-[var(--radius-xl)] border border-hairline bg-surface hover:-translate-y-1 hover:border-ink-200">
       <Link
         href={`/cars/${car.slug}`}
         onClick={remember}

@@ -118,7 +118,7 @@ function ChatCarCard({
   onBook: (car: Car) => void;
 }) {
   return (
-    <div className="overflow-hidden rounded-[var(--radius-lg)] border border-hairline bg-white shadow-e1">
+    <div className="overflow-hidden rounded-[var(--radius-lg)] border border-hairline bg-white">
       <div className="relative aspect-[16/9] bg-ink-100">
         <Image
           src={car.image}
@@ -345,7 +345,7 @@ export function AiAssistant() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 14, scale: 0.97 }}
             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+5.75rem)] top-[max(0.75rem,env(safe-area-inset-top))] z-[70] flex flex-col overflow-hidden rounded-[var(--radius-2xl)] border border-hairline bg-surface shadow-e4 sm:inset-auto sm:bottom-[6.5rem] sm:right-6 sm:top-auto sm:h-[min(82vh,720px)] sm:w-[min(100vw-3rem,460px)]"
+            className="fixed inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+5.75rem)] top-[max(0.75rem,env(safe-area-inset-top))] z-[70] flex flex-col overflow-hidden rounded-[var(--radius-2xl)] border border-hairline bg-surface sm:inset-auto sm:bottom-[6.5rem] sm:right-6 sm:top-auto sm:h-[min(82vh,720px)] sm:w-[min(100vw-3rem,460px)]"
           >
             <header className="flex shrink-0 items-center justify-between gap-3 bg-ink-900 px-4 py-3.5 text-white">
               <div className="flex items-center gap-3">

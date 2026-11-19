@@ -57,7 +57,7 @@ export function SiteFooter() {
   }
 
   return (
-    <footer className="relative mt-24 overflow-hidden bg-ink-950 text-ink-300 md:pb-0">
+    <footer className="relative mt-16 overflow-hidden bg-ink-950 text-ink-300 sm:mt-24 md:pb-0">
       {/* Atmosphere — brand wash + road grid, not flat black */}
       <div
         aria-hidden
@@ -100,7 +100,7 @@ export function SiteFooter() {
             </p>
             <form
               onSubmit={onJoin}
-              className="mt-5 flex w-full items-center gap-2"
+              className="mt-5 flex w-full min-w-0 flex-col gap-2 sm:flex-row sm:items-center"
             >
               <Input
                 type="email"
@@ -109,9 +109,9 @@ export function SiteFooter() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@email.com"
                 aria-label="Email address"
-                className="h-12 border-white/15 bg-white/[0.05] text-white placeholder:text-ink-500 hover:border-white/25 focus:border-brand-400"
+                className="h-12 min-w-0 flex-1 border-white/15 bg-white/[0.05] text-white placeholder:text-ink-500 hover:border-white/25 focus:border-brand-400"
               />
-              <Button type="submit" size="lg" className="h-12 shrink-0">
+              <Button type="submit" size="lg" className="h-12 w-full shrink-0 sm:w-auto">
                 Join
                 <ArrowRight />
               </Button>
@@ -232,7 +232,7 @@ export function SiteFooter() {
         </div>
 
         {/* Legal bar */}
-        <div className="flex flex-col gap-5 border-t border-white/10 py-7 pb-20 sm:flex-row sm:items-center sm:justify-between md:pb-7">
+        <div className="flex flex-col gap-5 border-t border-white/10 py-7 pb-[calc(5.5rem+env(safe-area-inset-bottom))] sm:flex-row sm:items-center sm:justify-between md:pb-7">
           <p className="text-xs leading-snug text-ink-500">
             © {new Date().getFullYear()} {BUSINESS_RULES.brandLegalName}.
             <span className="mt-0.5 block sm:mt-0 sm:inline">

@@ -74,8 +74,8 @@ export function Membership() {
                 className={cn(
                   "relative flex h-full flex-col rounded-[var(--radius-2xl)] p-7",
                   plan.featured
-                    ? "bg-ink-900 text-white shadow-e4 lg:-my-3 lg:py-10"
-                    : "border border-hairline bg-surface shadow-e1"
+                    ? "bg-ink-900 text-white lg:-my-3 lg:py-10"
+                    : "border border-hairline bg-surface"
                 )}
               >
                 <div className="flex items-center justify-between gap-3">

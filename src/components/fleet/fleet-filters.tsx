@@ -82,16 +82,16 @@ export function FleetToolbar({ count }: { count: number }) {
   const [sheetOpen, setSheetOpen] = useState(false);
 
   return (
-    <div className="flex items-center justify-between gap-3">
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <p className="text-[13.5px] font-semibold text-ink-600">
         <span className="text-numeric text-ink-900">{count}</span>{" "}
         {count === 1 ? "vehicle" : "vehicles"} available
       </p>
 
-      <div className="flex items-center gap-2">
+      <div className="flex min-w-0 items-center gap-2">
         <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
           <SheetTrigger asChild>
-            <Button variant="outline" size="sm" className="lg:hidden">
+            <Button variant="outline" size="sm" className="shrink-0 lg:hidden">
               <SlidersHorizontal />
               Filters
               {hasFilters ? (
@@ -99,7 +99,7 @@ export function FleetToolbar({ count }: { count: number }) {
               ) : null}
             </Button>
           </SheetTrigger>
-          <SheetContent side="bottom" className="px-5 pb-6 pt-4">
+          <SheetContent side="bottom" className="max-h-[88vh] px-5 pb-6 pt-4">
             <SheetHeader>
               <SheetTitle>Filter the fleet</SheetTitle>
             </SheetHeader>
@@ -116,7 +116,7 @@ export function FleetToolbar({ count }: { count: number }) {
           id="fleet-sort"
           value={sort}
           onChange={(e) => set({ sort: e.target.value })}
-          className="h-9 w-[168px] text-[13px]"
+          className="h-9 min-w-0 flex-1 text-[13px] sm:w-[168px] sm:flex-none"
         >
           {SORT_OPTIONS.map((option) => (
             <option key={option.value} value={option.value}>

@@ -44,7 +44,7 @@ function BranchList({
               onClick={() => onSelectId(b.id)}
               className={cn(
                 "flex w-full items-center gap-3 rounded-[var(--radius-md)] px-3 py-3 text-left transition-colors",
-                active ? "bg-surface shadow-e1" : "hover:bg-surface/70"
+                active ? "bg-surface" : "hover:bg-surface/70"
               )}
             >
               <span

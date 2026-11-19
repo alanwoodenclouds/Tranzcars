@@ -37,7 +37,7 @@ const SheetContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed z-50 flex flex-col border border-hairline bg-surface shadow-e4",
+        "fixed z-50 flex flex-col border border-hairline bg-surface",
         side === "bottom" &&
           "sheet-anim-bottom inset-x-0 bottom-0 max-h-[88dvh] rounded-t-[var(--radius-2xl)]",
         side === "right" &&

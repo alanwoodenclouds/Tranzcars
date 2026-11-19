@@ -13,12 +13,12 @@ const TOPICS = [
   "Airport delivery",
   "Long-term / monthly",
   "Something else",
-];
+] as const;
 
 export function ContactForm() {
   const [name, setName] = useState("");
   const [mobile, setMobile] = useState("");
-  const [topic, setTopic] = useState(TOPICS[0]);
+  const [topic, setTopic] = useState<(typeof TOPICS)[number]>(TOPICS[0]);
   const [message, setMessage] = useState("");
   const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -39,18 +39,22 @@ export function ContactForm() {
 
   if (sent) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-[var(--radius-2xl)] border border-hairline bg-surface p-8 text-center shadow-e1">
+      <div className="flex h-full flex-col items-center justify-center rounded-[var(--radius-3xl)] border border-hairline bg-surface p-8 text-center sm:p-10">
         <span className="grid size-14 place-items-center rounded-full bg-jade-50 text-jade-600">
           <CheckCircle2 className="size-7" />
         </span>
-        <h2 className="mt-5 font-display text-xl font-bold tracking-tight">
+        <h2 className="mt-5 font-display text-xl font-bold tracking-tight sm:text-2xl">
           Message received
         </h2>
         <p className="mt-2 max-w-sm text-[14px] leading-relaxed text-ink-500">
           Our Kochi desk replies within 15 minutes during the day. For anything
           urgent, calling is still fastest.
         </p>
-        <Button variant="outline" className="mt-6" onClick={() => setSent(false)}>
+        <Button
+          variant="outline"
+          className="mt-7"
+          onClick={() => setSent(false)}
+        >
           Send another message
         </Button>
       </div>
@@ -60,17 +64,25 @@ export function ContactForm() {
   return (
     <form
       onSubmit={onSubmit}
-      className="rounded-[var(--radius-2xl)] border border-hairline bg-surface p-6 shadow-e1 sm:p-8"
+      className="rounded-[var(--radius-3xl)] border border-hairline bg-surface p-6 sm:p-8 lg:p-9"
+      aria-labelledby="contact-form-heading"
     >
-      <h2 className="font-display text-xl font-bold tracking-tight">
+      <p className="text-eyebrow mb-3 flex items-center gap-2">
+        <span aria-hidden className="inline-block h-px w-6 bg-brand-400" />
+        Write to us
+      </p>
+      <h2
+        id="contact-form-heading"
+        className="font-display text-xl font-bold tracking-tight sm:text-2xl"
+      >
         Send a message
       </h2>
-      <p className="mt-1.5 text-[13.5px] text-ink-500">
+      <p className="mt-2 text-[13.5px] leading-relaxed text-ink-500">
         Tell us the dates and where you want the vehicle — we will confirm
         availability.
       </p>
 
-      <div className="mt-6 space-y-4">
+      <div className="mt-7 space-y-5">
         <div className="grid gap-4 sm:grid-cols-2">
           <Field label="Name" htmlFor="contact-name">
             <Input
@@ -105,7 +117,11 @@ export function ContactForm() {
         </div>
 
         <Field label="What is this about?">
-          <div className="flex flex-wrap gap-2">
+          <div
+            className="flex flex-wrap gap-2"
+            role="group"
+            aria-label="Message topic"
+          >
             {TOPICS.map((t) => {
               const active = t === topic;
               return (
@@ -114,7 +130,7 @@ export function ContactForm() {
                   type="button"
                   onClick={() => setTopic(t)}
                   aria-pressed={active}
-                  className={`interactive rounded-full border px-3.5 py-2 text-[13px] font-semibold ${
+                  className={`interactive rounded-full border px-3.5 py-2 text-[13px] font-semibold transition-colors ${
                     active
                       ? "border-ink-900 bg-ink-900 text-white"
                       : "border-hairline bg-surface text-ink-600 hover:border-ink-300 hover:text-ink-900"
@@ -139,7 +155,7 @@ export function ContactForm() {
         </Field>
       </div>
 
-      <Button type="submit" size="lg" className="mt-6" block>
+      <Button type="submit" size="lg" className="mt-7" block>
         Send message
       </Button>
       <p className="mt-3 text-center text-[12px] text-ink-400">

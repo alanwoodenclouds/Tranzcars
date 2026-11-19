@@ -38,7 +38,7 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed z-50 flex flex-col overflow-hidden border border-hairline bg-surface shadow-e4",
+        "fixed z-50 flex flex-col overflow-hidden border border-hairline bg-surface",
         mobileSheet
           ? [
               // Mobile: bottom sheet

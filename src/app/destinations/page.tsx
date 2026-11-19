@@ -53,7 +53,7 @@ export default function DestinationsPage() {
               <Link
                 key={d.slug}
                 href={`/destinations/${d.slug}`}
-                className="group interactive flex flex-col overflow-hidden rounded-[var(--radius-xl)] border border-hairline bg-surface shadow-e1 hover:-translate-y-1 hover:border-ink-200 hover:shadow-e3"
+                className="group interactive flex flex-col overflow-hidden rounded-[var(--radius-xl)] border border-hairline bg-surface hover:-translate-y-1 hover:border-ink-200"
               >
                 <div className="relative aspect-[16/10] overflow-hidden bg-ink-100">
                   <Image

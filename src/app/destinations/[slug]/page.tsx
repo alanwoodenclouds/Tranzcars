@@ -75,7 +75,7 @@ export default async function DestinationDetailPage({ params }: Props) {
         ])}
       />
 
-      <div className="relative isolate min-h-[52vh] overflow-hidden bg-ink-950 sm:min-h-[58vh]">
+      <div className="relative isolate -mt-16 min-h-[min(70svh,640px)] overflow-hidden bg-ink-950 pt-16 sm:-mt-[72px] sm:min-h-[58vh] sm:pt-[72px]">
         <Image
           src={destination.image}
           alt={`${destination.name} — self-drive from Kochi`}
@@ -86,7 +86,7 @@ export default async function DestinationDetailPage({ params }: Props) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/55 to-ink-950/25" />
 
-        <div className="container-page relative flex min-h-[52vh] flex-col justify-end pb-10 pt-24 sm:min-h-[58vh] sm:pb-14">
+        <div className="container-page relative flex min-h-[min(70svh,640px)] flex-col justify-end pb-10 pt-8 sm:min-h-[calc(58vh-72px)] sm:pb-14 sm:pt-10">
           <Link
             href="/destinations"
             className="text-caption mb-6 inline-flex w-fit items-center gap-1.5 font-semibold text-white transition-colors hover:text-brand-300"
@@ -114,8 +114,8 @@ export default async function DestinationDetailPage({ params }: Props) {
             {destination.summary}
           </p>
 
-          <div className="mt-7 flex flex-wrap gap-3">
-            <Button asChild size="lg">
+          <div className="mt-7 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap">
+            <Button asChild size="lg" className="w-full sm:w-auto">
               <Link href="/cars">
                 <CarFront />
                 Choose a car for this trip
@@ -125,7 +125,7 @@ export default async function DestinationDetailPage({ params }: Props) {
               asChild
               size="lg"
               variant="outline"
-              className="border-white/25 bg-white/10 text-white hover:bg-white/20 hover:text-white"
+              className="w-full border-white/25 bg-white/10 text-white hover:bg-white/20 hover:text-white sm:w-auto"
             >
               <a href="#itinerary">See trip plan</a>
             </Button>
@@ -149,7 +149,9 @@ export default async function DestinationDetailPage({ params }: Props) {
                 <stat.icon className="size-3.5 text-brand-500" />
                 {stat.label}
               </span>
-              <span className="text-title-lg text-ink-900">{stat.value}</span>
+              <span className="text-title-lg break-words text-ink-900">
+                {stat.value}
+              </span>
             </div>
           ))}
         </div>
@@ -189,7 +191,7 @@ export default async function DestinationDetailPage({ params }: Props) {
                 {destination.itinerary.map((stop, i) => (
                   <li
                     key={stop.day}
-                    className="relative flex gap-4 rounded-[var(--radius-xl)] border border-hairline bg-surface p-5 shadow-e1"
+                    className="relative flex gap-4 rounded-[var(--radius-xl)] border border-hairline bg-surface p-5"
                   >
                     <span className="grid size-10 shrink-0 place-items-center rounded-full bg-ink-950 font-display text-sm font-bold text-white">
                       {i + 1}
@@ -208,7 +210,7 @@ export default async function DestinationDetailPage({ params }: Props) {
           </div>
 
           <aside className="space-y-5 lg:pt-2">
-            <div className="rounded-[var(--radius-2xl)] border border-hairline bg-surface p-6 shadow-e2">
+            <div className="rounded-[var(--radius-2xl)] border border-hairline bg-surface p-6">
               <p className="text-eyebrow flex items-center gap-2">
                 <span
                   aria-hidden
@@ -307,7 +309,7 @@ export default async function DestinationDetailPage({ params }: Props) {
                   className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/55 to-ink-950/15"
                 />
                 <div className="absolute inset-x-0 bottom-0 p-4">
-                  <p className="text-title text-white drop-shadow-[0_1px_12px_rgba(0,0,0,0.55)]">
+                  <p className="text-title text-white">
                     {d.name}
                   </p>
                   <p className="text-caption mt-0.5 text-white/90">{d.drive}</p>

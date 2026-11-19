@@ -58,6 +58,7 @@ export function SiteNav() {
   const hasPhotoHero =
     pathname === "/" ||
     pathname === "/about" ||
+    pathname === "/contact" ||
     /^\/destinations\/[^/]+$/.test(pathname);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -90,9 +91,9 @@ export function SiteNav() {
     <>
       <header
         className={cn(
-          "fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,border-color,color] duration-300",
+          "fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,color] duration-300",
           scrolled
-            ? "border-b border-white/10 bg-ink-950/95 backdrop-blur-xl shadow-[0_8px_30px_-12px_rgba(0,0,0,0.55)]"
+            ? "border-b border-white/10 bg-ink-950/95 backdrop-blur-xl"
             : "border-b border-transparent bg-transparent"
         )}
       >
@@ -232,7 +233,7 @@ export function SiteNav() {
         />
         <div
           className={cn(
-            "absolute inset-x-0 top-0 flex max-h-[100dvh] flex-col overflow-y-auto rounded-b-[var(--radius-3xl)] bg-surface px-5 pb-8 pt-4 shadow-e4 transition-transform duration-[420ms] ease-[var(--ease-out-quint)]",
+            "absolute inset-x-0 top-0 flex max-h-[100dvh] flex-col overflow-y-auto rounded-b-[var(--radius-3xl)] bg-surface px-5 pb-8 pt-4 transition-transform duration-[420ms] ease-[var(--ease-out-quint)]",
             menuOpen ? "translate-y-0" : "-translate-y-full"
           )}
         >

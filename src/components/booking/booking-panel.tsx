@@ -50,7 +50,7 @@ export function BookingPanel({
 
   return (
     <div className="lg:sticky lg:top-28">
-      <div className="overflow-hidden rounded-[var(--radius-2xl)] border border-hairline bg-surface shadow-e2">
+      <div className="overflow-hidden rounded-[var(--radius-2xl)] border border-hairline bg-surface">
         <div className="border-b border-hairline p-5 sm:p-6">
           <div className="flex items-end justify-between gap-3">
             <div>

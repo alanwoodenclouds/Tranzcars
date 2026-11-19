@@ -27,7 +27,7 @@ export function ExperienceKerala() {
           />
         </Reveal>
 
-        <div className="mt-10 grid auto-rows-[200px] gap-4 sm:grid-cols-3 sm:auto-rows-[220px]">
+        <div className="mt-10 grid auto-rows-[180px] gap-3 sm:grid-cols-3 sm:auto-rows-[220px] sm:gap-4">
           {DESTINATIONS.map((d, i) => (
             <Reveal key={d.slug} delay={i * 0.06} className={d.span}>
               <Link
@@ -50,21 +50,21 @@ export function ExperienceKerala() {
                   className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-ink-950/90 to-transparent"
                 />
 
-                <span className="text-caption absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-ink-950/80 px-2.5 py-1.5 font-bold text-white shadow-e1 ring-1 ring-white/15 backdrop-blur-md">
+                <span className="text-caption absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-ink-950/80 px-2.5 py-1.5 font-bold text-white ring-1 ring-white/15 backdrop-blur-md">
                   <Clock3 className="size-3.5 text-brand-400" />
                   {d.drive}
                 </span>
 
                 <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-5">
                   <div className="min-w-0">
-                    <h3 className="text-title-lg text-white drop-shadow-[0_1px_12px_rgba(0,0,0,0.55)]">
+                    <h3 className="text-title-lg text-white">
                       {d.name}
                     </h3>
                     <p className="text-caption mt-1 text-white/90">
                       {d.line}
                     </p>
                   </div>
-                  <span className="grid size-10 shrink-0 place-items-center rounded-full bg-white text-ink-900 shadow-e2 transition-colors group-hover:bg-brand-500 group-hover:text-white">
+                  <span className="grid size-10 shrink-0 place-items-center rounded-full bg-white text-ink-900 transition-colors group-hover:bg-brand-500 group-hover:text-white">
                     <ArrowUpRight className="size-4" />
                   </span>
                 </div>

@@ -141,9 +141,9 @@ export function CheckoutForm({
     <div className="grid gap-8 lg:grid-cols-[1.25fr_0.75fr] lg:gap-10">
       <div className="space-y-5">
         {/* Progress */}
-        <ol className="flex items-center gap-2">
+        <ol className="flex items-center gap-1.5 sm:gap-2">
           {steps.map((step, i) => (
-            <li key={step.label} className="flex flex-1 items-center gap-2">
+            <li key={step.label} className="flex min-w-0 flex-1 items-center gap-1.5 sm:gap-2">
               <span
                 className={cn(
                   "grid size-6 shrink-0 place-items-center rounded-full text-[11px] font-bold",
@@ -156,14 +156,14 @@ export function CheckoutForm({
               </span>
               <span
                 className={cn(
-                  "text-[12.5px] font-bold",
+                  "truncate text-[11px] font-bold sm:text-[12.5px]",
                   step.done ? "text-ink-900" : "text-ink-500"
                 )}
               >
                 {step.label}
               </span>
               {i < steps.length - 1 ? (
-                <span className="h-px flex-1 bg-hairline" />
+                <span className="hidden h-px flex-1 bg-hairline sm:block" />
               ) : null}
             </li>
           ))}
@@ -297,15 +297,20 @@ export function CheckoutForm({
             <BadgePercent className="size-[18px] text-brand-500" />
             Have a code?
           </h2>
-          <div className="mt-3 flex gap-2">
+          <div className="mt-3 flex min-w-0 flex-col gap-2 sm:flex-row">
             <Input
               placeholder="SENIOR15 or LADY10"
               value={coupon}
               onChange={(e) => setCoupon(e.target.value.toUpperCase())}
-              className="uppercase"
+              className="min-w-0 flex-1 uppercase"
               aria-label="Promo code"
             />
-            <Button type="button" variant="outline" onClick={applyCoupon}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={applyCoupon}
+              className="w-full shrink-0 sm:w-auto"
+            >
               Apply
             </Button>
           </div>
@@ -324,7 +329,7 @@ export function CheckoutForm({
 
       {/* Summary */}
       <aside className="lg:sticky lg:top-28 lg:h-fit">
-        <div className="overflow-hidden rounded-[var(--radius-2xl)] border border-hairline bg-surface shadow-e2">
+        <div className="overflow-hidden rounded-[var(--radius-2xl)] border border-hairline bg-surface">
           <div className="border-b border-hairline px-5 py-4">
             <h2 className="text-title">
               Price summary

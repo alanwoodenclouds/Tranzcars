@@ -53,14 +53,16 @@ export default function AccountPage() {
   return (
     <div className="container-page pb-20 pt-10">
       <div className="mx-auto max-w-2xl">
-        <div className="flex items-center gap-4">
-          <span className="grid size-16 place-items-center rounded-full bg-ink-900 font-display text-xl font-extrabold text-white">
+        <div className="flex items-start gap-3 sm:items-center sm:gap-4">
+          <span className="grid size-14 shrink-0 place-items-center rounded-full bg-ink-900 font-display text-xl font-extrabold text-white sm:size-16">
             {(user.name || "G").slice(0, 1).toUpperCase()}
           </span>
-          <div>
-            <h1 className="text-display-sm">{user.name || "Guest driver"}</h1>
-            <p className="mt-1 flex items-center gap-2 text-[13.5px] text-ink-500">
-              +91 {user.mobile}
+          <div className="min-w-0">
+            <h1 className="text-display-sm truncate">
+              {user.name || "Guest driver"}
+            </h1>
+            <p className="mt-1 flex flex-wrap items-center gap-2 text-[13.5px] text-ink-500">
+              <span className="truncate">+91 {user.mobile}</span>
               <Badge tone="success" size="sm">
                 <ShieldCheck />
                 Verified
@@ -71,7 +73,7 @@ export default function AccountPage() {
 
         <Link
           href="/trips"
-          className="interactive mt-8 flex items-center gap-4 rounded-[var(--radius-xl)] border border-hairline bg-surface p-5 hover:border-ink-200 hover:shadow-e2"
+          className="interactive mt-8 flex items-center gap-4 rounded-[var(--radius-xl)] border border-hairline bg-surface p-5 hover:border-ink-200"
         >
           <span className="grid size-11 place-items-center rounded-full bg-brand-50 text-brand-600">
             <Ticket className="size-5" />

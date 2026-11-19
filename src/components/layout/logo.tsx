@@ -67,7 +67,7 @@ export function Logo({
       className={cn(
         "inline-flex items-center transition-opacity hover:opacity-95",
         plate &&
-          "rounded-xl bg-black px-2.5 py-1.5 shadow-[0_8px_24px_-12px_rgba(248,120,0,0.55)] ring-1 ring-white/10",
+          "rounded-xl bg-black px-2.5 py-1.5 ring-1 ring-white/10",
         className
       )}
       aria-label="TranzCars home — Rent A Car. Drive Better."

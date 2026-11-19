@@ -159,9 +159,8 @@ export function ImmersiveHero({ branches }: { branches: Branch[] }) {
                 >
                   <span
                     className={cn(
-                      "absolute inset-0 block overflow-hidden rounded-[26px] bg-ink-100 shadow-e3 lg:rounded-[34px]",
+                      "absolute inset-0 block overflow-hidden rounded-[26px] bg-ink-100 lg:rounded-[34px]",
                       "[transform:skewX(-9deg)]",
-                      "transition-shadow duration-300 group-hover:shadow-e4",
                       "group-focus-visible:outline-2 group-focus-visible:outline-offset-4 group-focus-visible:outline-ring"
                     )}
                   >

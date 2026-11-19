@@ -142,7 +142,7 @@ export default function AboutPage() {
           </Reveal>
 
           <Reveal delay={0.1} className="relative">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[var(--radius-3xl)] bg-ink-100 shadow-e3 sm:aspect-[5/4] lg:aspect-[4/5]">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[var(--radius-3xl)] bg-ink-100 sm:aspect-[5/4] lg:aspect-[4/5]">
               <Image
                 src={MEDIA.heroFullBleed}
                 alt="Maruti Suzuki Fronx self-drive — TranzCars Kochi"
@@ -155,7 +155,7 @@ export default function AboutPage() {
                 className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/50 to-transparent"
               />
               <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
-                <p className="text-title-lg text-white drop-shadow-[0_1px_12px_rgba(0,0,0,0.55)]">
+                <p className="text-title-lg text-white">
                   Hand-over in minutes.
                 </p>
                 <p className="text-body-sm mt-1.5 max-w-sm text-white">
@@ -165,7 +165,7 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <div className="absolute -left-3 top-8 hidden max-w-[200px] rounded-[var(--radius-xl)] border border-hairline bg-surface p-4 shadow-e3 sm:block lg:-left-6">
+            <div className="absolute -left-3 top-8 hidden max-w-[200px] rounded-[var(--radius-xl)] border border-hairline bg-surface p-4 sm:block lg:-left-6">
               <p className="text-numeric font-display text-2xl font-extrabold text-ink-900">
                 {BUSINESS_RULES.googleRating}
                 <span className="text-brand-500">/5</span>
@@ -281,12 +281,12 @@ export default function AboutPage() {
                   />
                   <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-5">
                     <div className="min-w-0">
-                      <h3 className="text-title-lg text-white drop-shadow-[0_1px_12px_rgba(0,0,0,0.55)]">
+                      <h3 className="text-title-lg text-white">
                         {p.city}
                       </h3>
                       <p className="text-caption mt-1 text-white/90">{p.line}</p>
                     </div>
-                    <span className="grid size-9 shrink-0 place-items-center rounded-full bg-white text-ink-900 shadow-e2 transition-colors group-hover:bg-brand-500 group-hover:text-white">
+                    <span className="grid size-9 shrink-0 place-items-center rounded-full bg-white text-ink-900 transition-colors group-hover:bg-brand-500 group-hover:text-white">
                       <ArrowRight className="size-4" />
                     </span>
                   </div>

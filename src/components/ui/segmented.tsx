@@ -49,7 +49,7 @@ export function Segmented<T extends string>({
               "inline-flex items-center gap-1.5 rounded-full font-semibold transition-all duration-200 ease-[var(--ease-out-quint)]",
               size === "md" ? "h-9 px-4 text-sm" : "h-8 px-3.5 text-[13px]",
               active
-                ? "bg-surface text-ink-900 shadow-e2"
+                ? "bg-surface text-ink-900"
                 : "text-ink-500 hover:text-ink-800"
             )}
           >

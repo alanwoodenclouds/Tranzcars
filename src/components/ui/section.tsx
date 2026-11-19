@@ -21,14 +21,14 @@ export function SectionHeading({
   return (
     <div
       className={cn(
-        "flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between",
+        "flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between sm:gap-6",
         centered && "sm:flex-col sm:items-center",
         className
       )}
     >
       <div
         className={cn(
-          "max-w-2xl",
+          "min-w-0 max-w-2xl",
           centered && "mx-auto flex flex-col items-center text-center"
         )}
       >
@@ -72,7 +72,7 @@ export function PageHeading({
         className
       )}
     >
-      <div className="max-w-2xl">
+      <div className="min-w-0 max-w-2xl">
         {eyebrow ? (
           <p className="text-eyebrow mb-3 flex items-center gap-2">
             <span

@@ -47,9 +47,9 @@ export function AppPromo() {
         <Reveal>
           <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.05fr] lg:gap-16">
             {/* Left visual */}
-            <div className="relative mx-auto w-full max-w-[420px] lg:mx-0 lg:max-w-none">
+            <div className="relative mx-auto w-full max-w-[min(100%,420px)] overflow-hidden lg:mx-0 lg:max-w-none lg:overflow-visible">
               {/* Soft backdrop plate */}
-              <div className="absolute inset-y-6 left-0 w-[72%] overflow-hidden rounded-[28px] bg-ink-900 shadow-e3 sm:inset-y-10 sm:rounded-[32px]">
+              <div className="absolute inset-y-6 left-0 w-[72%] overflow-hidden rounded-[28px] bg-ink-900 sm:inset-y-10 sm:rounded-[32px]">
                 <Image
                   src="/images/fleet/maruti-fronx.png"
                   alt=""
@@ -62,7 +62,7 @@ export function AppPromo() {
 
               {/* Phone */}
               <div className="relative ml-auto w-[min(100%,270px)] sm:w-[290px]">
-                <div className="relative overflow-hidden rounded-[40px] border-[8px] border-ink-950 bg-ink-950 shadow-[0_30px_60px_-24px_rgba(0,0,0,0.55)] ring-1 ring-white/10">
+                <div className="relative overflow-hidden rounded-[40px] border-[8px] border-ink-950 bg-ink-950 ring-1 ring-white/10">
                   {/* Notch */}
                   <span
                     aria-hidden
@@ -121,7 +121,7 @@ export function AppPromo() {
                       <div className="mt-4 flex justify-end">
                         <Link
                           href="/cars"
-                          className="grid size-12 place-items-center rounded-full bg-brand-500 text-white shadow-brand transition-transform hover:scale-105"
+                          className="grid size-12 place-items-center rounded-full bg-brand-500 text-white transition-transform hover:scale-105"
                           aria-label="Search cars"
                         >
                           <ArrowRight className="size-5" />

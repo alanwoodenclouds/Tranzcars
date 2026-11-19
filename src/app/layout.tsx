@@ -102,7 +102,10 @@ export default function RootLayout({
           <Suspense fallback={<div className="h-16 sm:h-[72px]" aria-hidden />}>
             <SiteNav />
           </Suspense>
-          <main id="main" className="min-h-screen pt-16 sm:pt-[72px]">
+          <main
+            id="main"
+            className="min-h-screen min-h-[100dvh] overflow-x-clip pt-16 sm:pt-[72px]"
+          >
             {children}
           </main>
           <SiteFooter />

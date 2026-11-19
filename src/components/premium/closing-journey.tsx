@@ -38,17 +38,17 @@ export function ClosingJourney() {
                 free km/day, and OTP only when you confirm payment.
               </p>
 
-              <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-                <Button asChild size="lg">
+              <div className="mt-9 flex w-full flex-col items-stretch justify-center gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
+                <Button asChild size="lg" className="w-full sm:w-auto">
                   <Link href="/cars">
                     Find a self-drive car
                     <ArrowRight />
                   </Link>
                 </Button>
-                <Button asChild size="lg" variant="outline">
+                <Button asChild size="lg" variant="outline" className="w-full sm:w-auto">
                   <a href={`tel:${BUSINESS_RULES.phoneE164}`}>
                     <Phone />
-                    {BUSINESS_RULES.phoneDisplay}
+                    <span className="truncate">{BUSINESS_RULES.phoneDisplay}</span>
                   </a>
                 </Button>
               </div>

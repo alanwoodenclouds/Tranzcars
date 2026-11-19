@@ -25,7 +25,7 @@ export function ToastHost() {
       {toasts.map((t) => (
         <div
           key={t.id}
-          className="animate-fade-in pointer-events-auto flex items-center gap-3 rounded-full border border-white/10 bg-ink-900/95 py-2.5 pl-4 pr-2 text-sm font-medium text-white shadow-e4 backdrop-blur-md"
+          className="animate-fade-in pointer-events-auto flex items-center gap-3 rounded-full border border-white/10 bg-ink-900/95 py-2.5 pl-4 pr-2 text-sm font-medium text-white backdrop-blur-md"
         >
           {ICONS[t.tone]}
           <span className="flex-1 leading-snug">{t.message}</span>

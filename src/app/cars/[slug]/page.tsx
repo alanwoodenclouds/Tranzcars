@@ -177,11 +177,11 @@ export default async function CarDetailPage({ params }: Props) {
 
       {related.length ? (
         <section className="mt-20">
-          <div className="flex items-end justify-between gap-4">
-            <h2 className="text-display-sm">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+            <h2 className="text-display-sm min-w-0">
               Other {isBike ? "bikes" : "cars"} you might like
             </h2>
-            <Button asChild variant="ghost" size="sm">
+            <Button asChild variant="ghost" size="sm" className="self-start sm:self-auto">
               <Link href={isBike ? "/cars?category=bike" : "/cars?category=car"}>
                 See all
               </Link>

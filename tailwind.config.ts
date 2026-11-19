@@ -2,7 +2,7 @@ import type { Config } from "tailwindcss";
 
 /**
  * Light Premium Skeuomorphic — locked palette.
- * Shadow physics live in src/app/globals.css utility classes (.panel, .panel-inset, .btn-physical).
+ * Surface elevation uses borders only — no box-shadow utilities.
  */
 const config: Config = {
   content: [

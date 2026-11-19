@@ -20,10 +20,10 @@ export function AiFloatingButton() {
       onClick={() => setOpen((v) => !v)}
       aria-expanded={open}
       aria-label={open ? "Close AI booking assistant" : "Open AI booking assistant"}
-      className="fixed bottom-[calc(env(safe-area-inset-bottom)+4.75rem)] right-4 z-40 inline-flex items-center gap-2.5 rounded-full border border-white/25 bg-brand-500 pl-3 pr-4 font-semibold text-white shadow-brand ring-1 ring-brand-700/30 sm:bottom-7 sm:right-6"
+      className="fixed bottom-[calc(env(safe-area-inset-bottom)+4.75rem)] right-3 z-40 inline-flex max-w-[calc(100vw-1.5rem)] items-center gap-2 rounded-full border border-white/25 bg-brand-500 pl-2.5 pr-3.5 font-semibold text-white shadow-brand ring-1 ring-brand-700/30 sm:bottom-7 sm:right-6 sm:gap-2.5 sm:pl-3 sm:pr-4"
       style={{ height: 52 }}
     >
-      <span className="grid size-8 place-items-center rounded-full bg-white text-brand-600 shadow-e1">
+      <span className="grid size-8 place-items-center rounded-full bg-white text-brand-600">
         {open ? (
           <X className="size-4" />
         ) : (

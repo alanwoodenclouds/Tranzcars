@@ -170,7 +170,7 @@ export function BookingConsole({
   return (
     <div
       className={cn(
-        "overflow-hidden rounded-[var(--radius-xl)] border border-ink-200/80 bg-surface shadow-[0_28px_60px_-28px_rgba(0,0,0,0.65)] sm:rounded-[var(--radius-2xl)]",
+        "overflow-hidden rounded-[var(--radius-xl)] border border-ink-200/80 bg-surface sm:rounded-[var(--radius-2xl)]",
         className
       )}
     >
@@ -237,7 +237,7 @@ export function BookingConsole({
               onChange={(e) => onDifferentDropoff(e.target.checked)}
             />
             <span className="absolute inset-0 rounded-full bg-ink-200 transition-colors peer-checked:bg-brand-500 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ring" />
-            <span className="absolute left-0.5 size-4 rounded-full bg-white shadow-e1 transition-transform peer-checked:translate-x-4 sm:size-5 sm:peer-checked:translate-x-5" />
+            <span className="absolute left-0.5 size-4 rounded-full bg-white transition-transform peer-checked:translate-x-4 sm:size-5 sm:peer-checked:translate-x-5" />
           </span>
           <span className="text-[12.5px] font-medium leading-snug text-ink-700 sm:text-[13.5px]">
             Return {category === "bike" ? "bike" : "car"} to another location

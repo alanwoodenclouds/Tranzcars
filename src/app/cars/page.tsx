@@ -78,7 +78,7 @@ export default async function CarsPage({ searchParams }: Props) {
         : "The TranzCars fleet";
 
   return (
-    <div className="container-page pb-20 pt-8">
+    <div className="container-page pb-20 pt-6 sm:pt-8">
       <JsonLd
         data={[
           breadcrumbJsonLd([

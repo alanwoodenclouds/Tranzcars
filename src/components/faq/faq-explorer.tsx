@@ -121,7 +121,7 @@ export function FaqExplorer({ faqs }: { faqs: Faq[] }) {
           </button>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-[var(--radius-2xl)] border border-hairline bg-surface shadow-e1">
+        <div className="overflow-hidden rounded-[var(--radius-2xl)] border border-hairline bg-surface">
           <Accordion type="single" collapsible defaultValue={visible[0]?.id}>
             {visible.map((faq) => (
               <AccordionItem key={faq.id} value={faq.id}>

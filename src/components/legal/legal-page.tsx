@@ -35,7 +35,7 @@ export function LegalPage({
     <>
       <PageHero eyebrow="Legal" title={title} description={summary} />
 
-      <div className="container-page grid gap-10 py-12 lg:grid-cols-[220px_1fr] lg:gap-16 lg:py-16">
+      <div className="container-page grid gap-8 py-10 sm:gap-10 sm:py-12 lg:grid-cols-[220px_1fr] lg:gap-16 lg:py-16">
         <nav
           aria-label="Policies"
           className="lg:sticky lg:top-28 lg:h-fit"
