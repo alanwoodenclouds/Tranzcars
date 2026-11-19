@@ -51,7 +51,18 @@ export const useBookingStore = create<BookingState>()(
     }),
     {
       name: "tranzcars-booking",
-      storage: createJSONStorage(() => localStorage),
+      // Next SSR has no localStorage; Providers rehydrates on the client.
+      skipHydration: true,
+      storage: createJSONStorage(() => {
+        if (typeof window === "undefined") {
+          return {
+            getItem: () => null,
+            setItem: () => {},
+            removeItem: () => {},
+          };
+        }
+        return localStorage;
+      }),
       partialize: (state) => ({ search: state.search }),
       onRehydrateStorage: () => (state, error) => {
         if (error) {
