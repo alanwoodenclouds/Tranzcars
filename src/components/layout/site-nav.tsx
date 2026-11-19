@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   Bike,
@@ -22,26 +22,43 @@ import { Badge } from "@/components/ui/badge";
 import { Logo } from "@/components/layout/logo";
 import { OtpDialog } from "@/components/auth/otp-dialog";
 
-const NAV = [
-  { href: "/cars", label: "Cars", match: (p: string) => p === "/cars" },
+type NavMatch = (pathname: string, category: string | null) => boolean;
+
+const NAV: {
+  href: string;
+  label: string;
+  match: NavMatch;
+  icon?: typeof Bike;
+}[] = [
+  {
+    href: "/cars",
+    label: "Cars",
+    match: (p, category) => p === "/cars" && category !== "bike",
+  },
   {
     href: "/cars?category=bike",
     label: "Bikes",
-    match: () => false,
+    match: (p, category) => p === "/cars" && category === "bike",
     icon: Bike,
   },
-  { href: "/about", label: "About", match: (p: string) => p === "/about" },
-  { href: "/faq", label: "FAQ", match: (p: string) => p === "/faq" },
-  { href: "/contact", label: "Contact", match: (p: string) => p === "/contact" },
+  { href: "/about", label: "About", match: (p) => p === "/about" },
+  { href: "/faq", label: "FAQ", match: (p) => p === "/faq" },
+  { href: "/contact", label: "Contact", match: (p) => p === "/contact" },
 ];
 
 export function SiteNav() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const category = searchParams.get("category");
+  const hasPhotoHero = pathname === "/" || pathname === "/about";
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [otpOpen, setOtpOpen] = useState(false);
   const user = useAuthStore((s) => s.user);
   const logout = useAuthStore((s) => s.logout);
+  /** Light-on-dark chrome over photo hero, and keep dark after scroll */
+  const overHero = hasPhotoHero && !scrolled;
+  const darkChrome = overHero || scrolled;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -65,9 +82,9 @@ export function SiteNav() {
     <>
       <header
         className={cn(
-          "fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,border-color] duration-300",
+          "fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,border-color,color] duration-300",
           scrolled
-            ? "border-b border-hairline bg-surface/85 backdrop-blur-xl supports-[backdrop-filter]:bg-surface/70"
+            ? "border-b border-white/10 bg-ink-950/95 backdrop-blur-xl shadow-[0_8px_30px_-12px_rgba(0,0,0,0.55)]"
             : "border-b border-transparent bg-transparent"
         )}
       >
@@ -76,16 +93,20 @@ export function SiteNav() {
 
           <nav className="hidden items-center gap-0.5 md:flex" aria-label="Main">
             {NAV.map((item) => {
-              const active = item.match(pathname);
+              const active = item.match(pathname, category);
               return (
                 <Link
                   key={item.label}
                   href={item.href}
                   className={cn(
                     "relative rounded-full px-3.5 py-2 text-sm font-semibold transition-colors",
-                    active
-                      ? "text-ink-900"
-                      : "text-ink-500 hover:bg-ink-100/70 hover:text-ink-900"
+                    darkChrome
+                      ? active
+                        ? "text-white"
+                        : "text-white/70 hover:bg-white/10 hover:text-white"
+                      : active
+                        ? "text-ink-900"
+                        : "text-ink-500 hover:bg-ink-100/70 hover:text-ink-900"
                   )}
                 >
                   {item.label}
@@ -103,14 +124,28 @@ export function SiteNav() {
           <div className="hidden items-center gap-2 md:flex">
             <a
               href={`tel:${BUSINESS_RULES.phoneE164}`}
-              className="hidden items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold text-ink-700 transition-colors hover:bg-ink-100 lg:inline-flex"
+              className={cn(
+                "hidden items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold transition-colors lg:inline-flex",
+                darkChrome
+                  ? "text-white/85 hover:bg-white/10 hover:text-white"
+                  : "text-ink-700 hover:bg-ink-100"
+              )}
             >
               <Phone className="size-4 text-brand-500" />
               {BUSINESS_RULES.phoneDisplay}
             </a>
             {user ? (
               <>
-                <Button asChild variant="ghost" size="sm">
+                <Button
+                  asChild
+                  variant="ghost"
+                  size="sm"
+                  className={
+                    darkChrome
+                      ? "text-white hover:bg-white/10 hover:text-white"
+                      : undefined
+                  }
+                >
                   <Link href="/account">
                     <UserRound />
                     Account
@@ -126,6 +161,11 @@ export function SiteNav() {
                   variant="ghost"
                   size="sm"
                   onClick={() => setOtpOpen(true)}
+                  className={
+                    darkChrome
+                      ? "text-white hover:bg-white/10 hover:text-white"
+                      : undefined
+                  }
                 >
                   Sign in
                 </Button>
@@ -140,7 +180,12 @@ export function SiteNav() {
             <a
               href={`tel:${BUSINESS_RULES.phoneE164}`}
               aria-label="Call TranzCars"
-              className="grid size-10 place-items-center rounded-full border border-hairline bg-surface text-brand-500"
+              className={cn(
+                "grid size-10 place-items-center rounded-full text-brand-500",
+                darkChrome
+                  ? "border border-white/20 bg-white/10"
+                  : "border border-hairline bg-surface"
+              )}
             >
               <Phone className="size-4" />
             </a>
@@ -149,7 +194,12 @@ export function SiteNav() {
               onClick={() => setMenuOpen(true)}
               aria-label="Open menu"
               aria-expanded={menuOpen}
-              className="grid size-10 place-items-center rounded-full border border-hairline bg-surface text-ink-900"
+              className={cn(
+                "grid size-10 place-items-center rounded-full",
+                darkChrome
+                  ? "border border-white/20 bg-white/10 text-white"
+                  : "border border-hairline bg-surface text-ink-900"
+              )}
             >
               <Menu className="size-5" />
             </button>

@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata, Viewport } from "next";
 import { fontBody, fontDisplay } from "@/lib/fonts";
 import { SiteNav } from "@/components/layout/site-nav";
@@ -98,7 +99,9 @@ export default function RootLayout({
           >
             Skip to content
           </a>
-          <SiteNav />
+          <Suspense fallback={<div className="h-16 sm:h-[72px]" aria-hidden />}>
+            <SiteNav />
+          </Suspense>
           <main id="main" className="min-h-screen pt-16 sm:pt-[72px]">
             {children}
           </main>

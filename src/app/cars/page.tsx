@@ -3,7 +3,6 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { CarFront, Phone } from "lucide-react";
 import { SearchHydrator } from "@/components/booking/search-hydrator";
-import { TripBar } from "@/components/booking/trip-bar";
 import { CarCard } from "@/components/fleet/car-card";
 import { FleetFilters, FleetToolbar } from "@/components/fleet/fleet-filters";
 import { Button } from "@/components/ui/button";
@@ -15,7 +14,7 @@ import {
 } from "@/components/seo/json-ld";
 import { BUSINESS_RULES } from "@/content/site";
 import type { Car } from "@/content/site";
-import { getBranches, getCars } from "@/lib/api/server";
+import { getCars } from "@/lib/api/server";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -61,15 +60,12 @@ export default async function CarsPage({ searchParams }: Props) {
   const category = str(params.category);
   const sort = str(params.sort);
 
-  const [cars, branches] = await Promise.all([
-    getCars({
-      transmission: str(params.transmission),
-      type: str(params.type),
-      category,
-      q: str(params.q),
-    }),
-    getBranches(),
-  ]);
+  const cars = await getCars({
+    transmission: str(params.transmission),
+    type: str(params.type),
+    category,
+    q: str(params.q),
+  });
 
   const results = sortCars(cars, sort);
 
@@ -100,16 +96,8 @@ export default async function CarsPage({ searchParams }: Props) {
         <h1 className="text-display-lg">{heading}</h1>
         <p className="text-lead mt-3">
           Every price includes {BUSINESS_RULES.kmPerDay} free km a day and
-          insurance. Set your pick-up and return details to unlock booking.
+          insurance.
         </p>
-      </div>
-
-      <div className="mt-7">
-        <Suspense
-          fallback={<Skeleton className="h-[68px] w-full rounded-[var(--radius-xl)]" />}
-        >
-          <TripBar branches={branches} />
-        </Suspense>
       </div>
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[264px_1fr] lg:gap-10">

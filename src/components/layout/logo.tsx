@@ -50,8 +50,8 @@ export function Logo({
   className,
   href = "/",
   variant = "wordmark",
-  /** When false, skip the black brand plate (e.g. already on a dark footer). */
-  plate = true,
+  /** Optional black plate — off by default so logo sits transparent on dark/light headers. */
+  plate = false,
 }: {
   className?: string;
   href?: string;

@@ -1,4 +1,4 @@
-import { Manrope, Inter } from "next/font/google";
+import { Manrope, Plus_Jakarta_Sans } from "next/font/google";
 
 /**
  * Both faces are loaded as variable fonts (no `weight` list). Google's CDN
@@ -13,8 +13,8 @@ export const fontDisplay = Manrope({
   display: "swap",
 });
 
-/** Body / UI — Inter for maximum legibility at small sizes */
-export const fontBody = Inter({
+/** Body / UI — Plus Jakarta Sans (not Inter) for brand-distinctive UI */
+export const fontBody = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-body",
   display: "swap",

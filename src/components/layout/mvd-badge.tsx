@@ -5,17 +5,27 @@ import { cn } from "@/utils";
 type MvdBadgeProps = {
   className?: string;
   size?: "sm" | "md" | "banner";
+  /** light = on pale pages; onDark = on black / photo hero */
+  tone?: "light" | "onDark" | "dark";
 };
 
 /** Minimal Kerala MVD trust chip. */
-export function MvdBadge({ className, size = "sm" }: MvdBadgeProps) {
+export function MvdBadge({
+  className,
+  size = "sm",
+  tone = "light",
+}: MvdBadgeProps) {
   const isBanner = size === "banner";
   const logoSize = isBanner ? 36 : size === "md" ? 28 : 22;
+  const onDark = tone === "onDark" || tone === "dark";
 
   return (
     <div
       className={cn(
-        "inline-flex max-w-full items-center gap-2 rounded-full border border-hairline bg-surface/90 text-ink-800 backdrop-blur-sm",
+        "inline-flex max-w-full items-center gap-2 rounded-full backdrop-blur-sm",
+        onDark
+          ? "border border-white/15 bg-white/[0.06] text-white"
+          : "border border-hairline bg-surface/90 text-ink-800",
         isBanner ? "px-2.5 py-1.5 sm:gap-2.5 sm:px-3 sm:py-2" : "px-2 py-1",
         size === "md" && "px-2.5 py-1.5",
         className
@@ -23,24 +33,37 @@ export function MvdBadge({ className, size = "sm" }: MvdBadgeProps) {
       role="img"
       aria-label={`Kerala Government Approved Rent A Cab since ${BUSINESS_RULES.foundedYear}. MVD licensed self-drive.`}
     >
-      <Image
-        src="/brand/mvd-logo.png"
-        alt="Kerala Motor Vehicles Department (MVD) seal"
-        width={logoSize}
-        height={Math.round(logoSize * (300 / 278))}
-        className="shrink-0 object-contain"
-        priority={isBanner}
-      />
       <span
         className={cn(
-          "min-w-0 font-semibold tracking-tight text-ink-700",
-          isBanner ? "text-[12px] sm:text-[13px]" : "text-[11px]"
+          "grid shrink-0 place-items-center rounded-full",
+          onDark && "bg-white p-0.5"
+        )}
+      >
+        <Image
+          src="/brand/mvd-logo.png"
+          alt="Kerala Motor Vehicles Department (MVD) seal"
+          width={logoSize}
+          height={Math.round(logoSize * (300 / 278))}
+          className="object-contain"
+          priority={isBanner}
+        />
+      </span>
+      <span
+        className={cn(
+          "min-w-0 font-semibold tracking-tight",
+          isBanner ? "text-[12px] sm:text-[13px]" : "text-[11px]",
+          onDark ? "text-white/90" : "text-ink-700"
         )}
       >
         {isBanner ? (
           <>
-            <span className="text-ink-900">Kerala Govt Approved</span>
-            <span className="text-ink-400"> · Since {BUSINESS_RULES.foundedYear}</span>
+            <span className={onDark ? "text-white" : "text-ink-900"}>
+              Kerala Govt Approved
+            </span>
+            <span className={onDark ? "text-white/50" : "text-ink-400"}>
+              {" "}
+              · Since {BUSINESS_RULES.foundedYear}
+            </span>
           </>
         ) : (
           <>Govt Approved · {BUSINESS_RULES.foundedYear}</>

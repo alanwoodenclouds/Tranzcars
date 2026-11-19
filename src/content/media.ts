@@ -1,26 +1,7 @@
 /** Central imagery for marketing surfaces. Every entry here is in use. */
 export const MEDIA = {
-  /** Slanted hero collage panels, left to right — TranzCars fleet photos */
-  heroPanels: [
-    {
-      id: "fronx",
-      alt: "Maruti Suzuki Fronx self-drive crossover — TranzCars Kochi",
-      src: "/images/fleet/maruti-fronx.png",
-      href: "/cars?type=SUV",
-    },
-    {
-      id: "hycross",
-      alt: "Toyota Innova Hycross self-drive MUV — TranzCars Kochi",
-      src: "/images/fleet/innova-hycross.png",
-      href: "/cars?type=MUV",
-    },
-    {
-      id: "punch",
-      alt: "Tata Punch self-drive compact SUV — TranzCars Kochi",
-      src: "/images/fleet/tata-punch.png",
-      href: "/cars?type=SUV",
-    },
-  ],
+  /** Full-bleed home hero — real TranzCars night fleet photography */
+  heroFullBleed: "/images/fleet/maruti-fronx.png",
   /** Story image in the "why TranzCars" section */
   keralaRoadCar: "/images/fleet/innova-hycross.png",
   appScreen: "/images/fleet/mobile-booking-ui.jpg",

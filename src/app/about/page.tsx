@@ -2,20 +2,20 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  BadgeCheck,
-  Building2,
-  Car,
+  ArrowRight,
   Gauge,
   HeartHandshake,
-  Plane,
+  MapPin,
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
-import { BRANCHES, BUSINESS_RULES, CARS } from "@/content/site";
+import { BRANCHES, BUSINESS_RULES } from "@/content/site";
+import { MEDIA } from "@/content/media";
+import { AboutHero } from "@/components/premium/about-hero";
+import { ClosingJourney } from "@/components/premium/closing-journey";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/ui/section";
-import { PageHero } from "@/components/layout/page-hero";
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal";
 
 import { buildPageMetadata } from "@/lib/seo";
@@ -26,18 +26,6 @@ export const metadata: Metadata = buildPageMetadata({
     "TranzCars is Kerala’s top-rated self-drive car rental — Govt Approved since 2017, Kochi HQ, 100+ vehicles, Cochin Airport delivery across South India.",
   path: "/about",
 });
-
-const YEARS = new Date().getFullYear() - BUSINESS_RULES.foundedYear;
-
-const STATS = [
-  { value: `${YEARS}+`, label: "Years serving Kerala" },
-  {
-    value: BUSINESS_RULES.fleetSizeLabel,
-    label: `Vehicles · ${BUSINESS_RULES.fleetVariantsLabel} variants`,
-  },
-  { value: `${BUSINESS_RULES.kmPerDay} km`, label: "Free driving every day" },
-  { value: "24×7", label: "Customer support" },
-];
 
 const VALUES = [
   {
@@ -81,7 +69,25 @@ const TIMELINE = [
   {
     year: "Today",
     title: "Across Kerala",
-    body: `Pick-up points in Kochi, Trivandrum and Kozhikode plus home delivery in service areas.`,
+    body: "Pick-up in Kochi, Trivandrum and Kozhikode — plus home delivery in our service areas.",
+  },
+];
+
+const PRESENCE = [
+  {
+    city: "Kochi",
+    line: "HQ · Airport · Railway",
+    image: MEDIA.destinations.alleppey,
+  },
+  {
+    city: "Trivandrum",
+    line: "South Kerala pick-ups",
+    image: MEDIA.destinations.munnar,
+  },
+  {
+    city: "Kozhikode",
+    line: "Malabar coast desk",
+    image: MEDIA.destinations.kozhikode,
   },
 ];
 
@@ -90,99 +96,74 @@ export default function AboutPage() {
 
   return (
     <>
-      <PageHero
-        eyebrow="About TranzCars"
-        title="Kerala’s top-rated self-drive rental company."
-        description={`TranzCars is a Kerala Govt Approved Self Drive Rent A Cab company headquartered in Kochi. Founded in ${BUSINESS_RULES.foundedYear} as the second licensed self-drive operator in the state — ${BUSINESS_RULES.ownership}.`}
-      >
-        <div className="flex flex-wrap gap-3">
-          <Button asChild size="lg">
-            <Link href="/cars">Browse the fleet</Link>
-          </Button>
-          <Button asChild size="lg" variant="outline">
-            <Link href="/contact">Talk to us</Link>
-          </Button>
-        </div>
-      </PageHero>
-
-      <section className="hairline-b bg-surface">
-        <div className="container-page grid grid-cols-2 gap-px overflow-hidden py-10 sm:grid-cols-4 sm:py-12">
-          {STATS.map((s) => (
-            <div key={s.label} className="px-2 text-center sm:px-4">
-              <p className="text-numeric font-display text-3xl font-extrabold text-ink-900 sm:text-4xl">
-                {s.value}
-              </p>
-              <p className="mt-1.5 text-[12.5px] font-medium text-ink-500">
-                {s.label}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
+      <AboutHero />
 
       <section className="section-y">
-        <div className="container-page grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+        <div className="container-page grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <Reveal>
             <p className="text-eyebrow mb-3">Our story</p>
-            <h2 className="text-display-md">
+            <h2 className="text-display-md max-w-[18ch]">
               Built by people who drive these roads every week.
             </h2>
             <div className="mt-5 space-y-4 text-[15px] leading-relaxed text-ink-600">
               <p>
-                Our mission is simple: give people the freedom to drive Kerala on
-                their own terms, in a safe, well-maintained, latest-generation
-                car — without a driver. No chauffeur watching the clock, no
-                padded bills at the end of the trip.
+                Freedom to drive Kerala on your own terms — in a safe,
+                well-maintained car, without a chauffeur watching the clock or a
+                padded bill at the end.
               </p>
               <p>
-                The fleet has {BUSINESS_RULES.fleetSizeLabel} well-maintained
-                vehicles across {BUSINESS_RULES.fleetVariantsLabel} variants —
-                hatchbacks to premium SUVs from trusted brands — with{" "}
-                {BUSINESS_RULES.kmPerDay} km free driving every day on every
-                rental.
+                {BUSINESS_RULES.fleetSizeLabel} vehicles across{" "}
+                {BUSINESS_RULES.fleetVariantsLabel} variants,{" "}
+                {BUSINESS_RULES.kmPerDay} km free every day, and a desk that still
+                picks up at 2 a.m. when your flight lands.
               </p>
               <p>
-                Headquartered in Kochi, we operate throughout Kerala with pickup
-                at Cochin Airport and railway stations, and delivery / drop-off
-                available anywhere in South India. {airports} airport desks and
-                doorstep delivery — and we still answer the phone 24/7.
+                Headquartered in Kochi. Pickup at Cochin Airport and railway
+                stations. Delivery across South India — {airports} airport desks
+                plus doorstep options, and we still answer the phone 24/7.
               </p>
             </div>
-            <div className="mt-7 flex flex-wrap gap-2.5">
-              <Badge tone="jade">
-                <BadgeCheck />
-                MVD approved
-              </Badge>
-              <Badge tone="brand">
-                <Plane />
-                Airport delivery
-              </Badge>
-              <Badge tone="neutral">
-                <Building2 />
-                Kochi · Trivandrum · Kozhikode
-              </Badge>
+
+            <p className="mt-6 max-w-md border-l-2 border-brand-400 pl-4 text-[13.5px] leading-relaxed text-ink-500">
+              {BUSINESS_RULES.ownership}.
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-2.5">
+              <Badge tone="jade">MVD approved</Badge>
+              <Badge tone="brand">Airport delivery</Badge>
+              <Badge tone="neutral">Kochi · TVM · Kozhikode</Badge>
             </div>
           </Reveal>
 
-          <Reveal delay={0.1}>
+          <Reveal delay={0.1} className="relative">
             <div className="relative aspect-[4/5] overflow-hidden rounded-[var(--radius-3xl)] bg-ink-100 shadow-e3 sm:aspect-[5/4] lg:aspect-[4/5]">
               <Image
-                src={CARS[0]?.image ?? "/images/cars/placeholder.jpg"}
-                alt="A TranzCars self-drive vehicle ready for hand-over in Kochi"
+                src={MEDIA.heroFullBleed}
+                alt="Maruti Suzuki Fronx self-drive — TranzCars Kochi"
                 fill
-                className="object-cover"
+                className="object-cover object-center"
                 sizes="(max-width: 1024px) 100vw, 46vw"
               />
-              <div className="absolute inset-x-4 bottom-4 rounded-[var(--radius-xl)] bg-white/90 p-4 backdrop-blur-md">
-                <p className="flex items-center gap-2 text-[13px] font-bold text-ink-900">
-                  <Car className="size-4 text-brand-500" />
-                  Hand-over in 10 minutes
+              <div className="absolute inset-0 bg-gradient-to-t from-ink-950/55 via-transparent to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
+                <p className="font-display text-xl font-extrabold tracking-tight text-white sm:text-2xl">
+                  Hand-over in minutes.
                 </p>
-                <p className="mt-1 text-[12.5px] leading-relaxed text-ink-500">
+                <p className="mt-1.5 max-w-sm text-[13.5px] leading-relaxed text-white/75">
                   Documents, photos and fuel level confirmed together before you
                   drive away.
                 </p>
               </div>
+            </div>
+
+            <div className="absolute -left-3 top-8 hidden max-w-[200px] rounded-[var(--radius-xl)] border border-hairline bg-surface p-4 shadow-e3 sm:block lg:-left-6">
+              <p className="text-numeric font-display text-2xl font-extrabold text-ink-900">
+                {BUSINESS_RULES.googleRating}
+                <span className="text-brand-500">/5</span>
+              </p>
+              <p className="mt-1 text-[12px] font-semibold uppercase tracking-[0.1em] text-ink-500">
+                {BUSINESS_RULES.googleReviewCount} Google reviews
+              </p>
             </div>
           </Reveal>
         </div>
@@ -192,22 +173,29 @@ export default function AboutPage() {
         <div className="container-page">
           <SectionHeading
             eyebrow="What we stand for"
-            title="Four things we refuse to compromise on"
-            description="These are the promises our Kochi desk is measured against, every single trip."
+            title="Four things we refuse to compromise on."
+            description="Promises our Kochi desk is measured against — every single trip."
           />
-          <RevealStagger className="mt-10 grid gap-4 sm:grid-cols-2">
-            {VALUES.map((v) => (
+
+          <RevealStagger className="mt-12 grid gap-0 sm:grid-cols-2">
+            {VALUES.map((v, i) => (
               <RevealItem key={v.title}>
-                <div className="h-full rounded-[var(--radius-2xl)] border border-hairline bg-surface p-6 shadow-e1">
-                  <span className="grid size-11 place-items-center rounded-[var(--radius-lg)] bg-brand-50 text-brand-600">
-                    <v.icon className="size-5" />
+                <div
+                  className={`flex gap-4 border-hairline py-7 sm:gap-5 sm:px-6 sm:py-8 ${
+                    i % 2 === 0 ? "sm:border-r" : ""
+                  } ${i < 2 ? "border-b" : ""} ${i >= 2 ? "sm:border-t-0" : ""}`}
+                >
+                  <span className="mt-0.5 grid size-11 shrink-0 place-items-center rounded-[var(--radius-lg)] bg-brand-50 text-brand-600">
+                    <v.icon className="size-5" strokeWidth={2} />
                   </span>
-                  <h3 className="mt-4 font-display text-[17px] font-bold tracking-tight">
-                    {v.title}
-                  </h3>
-                  <p className="mt-2 text-[14px] leading-relaxed text-ink-600">
-                    {v.body}
-                  </p>
+                  <div>
+                    <h3 className="font-display text-[17px] font-bold tracking-tight text-ink-900">
+                      {v.title}
+                    </h3>
+                    <p className="mt-2 text-[14px] leading-relaxed text-ink-600">
+                      {v.body}
+                    </p>
+                  </div>
                 </div>
               </RevealItem>
             ))}
@@ -219,28 +207,31 @@ export default function AboutPage() {
         <div className="container-page">
           <SectionHeading
             eyebrow="Milestones"
-            title="How we got here"
-            align="center"
+            title="How we got here."
+            description={`From the second licence in Kerala to a fleet that covers the whole state.`}
           />
-          <ol className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+
+          <ol className="relative mt-12 space-y-0 lg:grid lg:grid-cols-4 lg:gap-6 lg:space-y-0">
+            <span
+              aria-hidden
+              className="absolute left-[15px] top-3 hidden h-[calc(100%-24px)] w-px bg-hairline sm:block lg:left-0 lg:top-4 lg:h-px lg:w-full"
+            />
             {TIMELINE.map((t, i) => (
-              <li key={t.title} className="relative">
-                <span
-                  aria-hidden
-                  className="absolute left-0 top-3.5 hidden h-px w-full bg-hairline lg:block"
-                />
-                <span className="relative z-10 grid size-8 place-items-center rounded-full bg-ink-900 text-[12px] font-bold text-white">
+              <li key={t.title} className="relative flex gap-5 pb-10 last:pb-0 lg:block lg:pb-0">
+                <span className="relative z-10 mt-1 grid size-8 shrink-0 place-items-center rounded-full bg-ink-900 text-[12px] font-bold text-white lg:mt-0">
                   {i + 1}
                 </span>
-                <p className="text-numeric mt-4 font-display text-[15px] font-extrabold text-brand-600">
-                  {t.year}
-                </p>
-                <h3 className="mt-1 font-display text-[16px] font-bold tracking-tight">
-                  {t.title}
-                </h3>
-                <p className="mt-2 text-[13.5px] leading-relaxed text-ink-500">
-                  {t.body}
-                </p>
+                <div className="lg:mt-6">
+                  <p className="text-numeric font-display text-[15px] font-extrabold text-brand-600">
+                    {t.year}
+                  </p>
+                  <h3 className="mt-1 font-display text-[17px] font-bold tracking-tight text-ink-900">
+                    {t.title}
+                  </h3>
+                  <p className="mt-2 text-[13.5px] leading-relaxed text-ink-500">
+                    {t.body}
+                  </p>
+                </div>
               </li>
             ))}
           </ol>
@@ -249,38 +240,60 @@ export default function AboutPage() {
 
       <section className="section-y-sm">
         <div className="container-page">
-          <div className="relative overflow-hidden rounded-[var(--radius-3xl)] bg-ink-900 px-6 py-14 text-center sm:px-12">
-            <div
-              aria-hidden
-              className="bg-grid absolute inset-0 opacity-[0.12]"
-            />
-            <div className="relative">
-              <h2 className="mx-auto max-w-xl font-display text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-                Ready when your flight lands.
-              </h2>
-              <p className="mx-auto mt-4 max-w-lg text-[15px] leading-relaxed text-ink-300">
-                Set your pick-up point and dates — we will have the keys, papers
-                and a full tank waiting.
-              </p>
-              <div className="mt-8 flex flex-wrap justify-center gap-3">
-                <Button asChild size="lg">
-                  <Link href="/cars">Find a ride</Link>
-                </Button>
-                <Button
-                  asChild
-                  size="lg"
-                  variant="outline"
-                  className="border-white/20 bg-transparent text-white hover:bg-white/10"
-                >
-                  <a href={`tel:${BUSINESS_RULES.phoneE164}`}>
-                    {BUSINESS_RULES.phoneDisplay}
-                  </a>
-                </Button>
+          <Reveal>
+            <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+              <div className="max-w-xl">
+                <p className="text-eyebrow mb-3">Where we operate</p>
+                <h2 className="text-display-md">
+                  Three cities. One phone number.
+                </h2>
+                <p className="text-lead mt-3">
+                  Pick up where your trip starts — or we bring the car to you.
+                </p>
               </div>
+              <Button asChild variant="outline">
+                <Link href="/contact">
+                  <MapPin />
+                  Find a desk
+                </Link>
+              </Button>
             </div>
-          </div>
+          </Reveal>
+
+          <RevealStagger className="mt-10 grid gap-4 sm:grid-cols-3">
+            {PRESENCE.map((p) => (
+              <RevealItem key={p.city}>
+                <Link
+                  href="/cars"
+                  className="group relative block aspect-[5/4] overflow-hidden rounded-[var(--radius-2xl)] bg-ink-100"
+                >
+                  <Image
+                    src={p.image}
+                    alt={`${p.city} — TranzCars pick-up`}
+                    fill
+                    className="object-cover transition-transform duration-700 ease-[var(--ease-out-quint)] group-hover:scale-105"
+                    sizes="(max-width: 640px) 100vw, 33vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink-950/75 via-ink-950/20 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-5">
+                    <div>
+                      <h3 className="font-display text-2xl font-extrabold tracking-tight text-white">
+                        {p.city}
+                      </h3>
+                      <p className="mt-0.5 text-[13px] text-white/70">{p.line}</p>
+                    </div>
+                    <span className="grid size-9 shrink-0 place-items-center rounded-full bg-white/15 text-white backdrop-blur transition-colors group-hover:bg-brand-500">
+                      <ArrowRight className="size-4" />
+                    </span>
+                  </div>
+                </Link>
+              </RevealItem>
+            ))}
+          </RevealStagger>
         </div>
       </section>
+
+      <ClosingJourney />
     </>
   );
 }

@@ -170,7 +170,7 @@ export function BookingConsole({
   return (
     <div
       className={cn(
-        "overflow-hidden rounded-[var(--radius-xl)] border border-ink-200/80 bg-surface sm:rounded-[var(--radius-2xl)]",
+        "overflow-hidden rounded-[var(--radius-xl)] border border-ink-200/80 bg-surface shadow-[0_28px_60px_-28px_rgba(0,0,0,0.65)] sm:rounded-[var(--radius-2xl)]",
         className
       )}
     >

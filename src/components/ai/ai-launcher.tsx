@@ -20,17 +20,17 @@ export function AiFloatingButton() {
       onClick={() => setOpen((v) => !v)}
       aria-expanded={open}
       aria-label={open ? "Close AI booking assistant" : "Open AI booking assistant"}
-      className="fixed bottom-[calc(env(safe-area-inset-bottom)+4.75rem)] right-4 z-40 inline-flex items-center gap-2.5 rounded-full bg-ink-900 pl-3 pr-4 font-semibold text-white shadow-e4 sm:bottom-7 sm:right-6"
+      className="fixed bottom-[calc(env(safe-area-inset-bottom)+4.75rem)] right-4 z-40 inline-flex items-center gap-2.5 rounded-full border border-white/25 bg-brand-500 pl-3 pr-4 font-semibold text-white shadow-brand ring-1 ring-brand-700/30 sm:bottom-7 sm:right-6"
       style={{ height: 52 }}
     >
-      <span className="grid size-8 place-items-center rounded-full bg-brand-500">
+      <span className="grid size-8 place-items-center rounded-full bg-white text-brand-600 shadow-e1">
         {open ? (
           <X className="size-4" />
         ) : (
           <Sparkles className="size-[15px]" />
         )}
       </span>
-      <span className="text-[13px]">{open ? "Close" : "Ask AI"}</span>
+      <span className="text-[13px] tracking-wide">{open ? "Close" : "Ask AI"}</span>
     </motion.button>
   );
 }
