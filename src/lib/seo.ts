@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { BUSINESS_RULES } from "@/constants/businessRules";
 
 export const SITE_NAME = "TranzCars";
-export const SITE_TAGLINE = "Self Drive Cars & Bikes in Kochi, Kerala";
+export const SITE_TAGLINE = "Rent A Car. Drive Better.";
+export const SITE_POSITIONING = "Self Drive Cars & Bikes in Kochi, Kerala";
 
-export const DEFAULT_TITLE = `${SITE_NAME} | ${SITE_TAGLINE}`;
+export const DEFAULT_TITLE = `${SITE_NAME} | ${SITE_POSITIONING}`;
 export const DEFAULT_DESCRIPTION =
   "MVD-approved self-drive car & bike rental in Kochi & Kerala since 2017. Free km daily, airport delivery, hatchbacks to SUVs and electric scooters. Search without signing in.";
 
@@ -91,7 +92,7 @@ export const ORGANIZATION = {
   name: SITE_NAME,
   legalName: "Tranz Cars Kerala Rent A Car Company",
   url: getSiteUrl(),
-  logo: absoluteUrl("/images/company_logo.jpg"),
+  logo: absoluteUrl("/brand/tranzcars-logo.png"),
   phone: BUSINESS_RULES.phoneDisplay,
   phoneE164: `+${BUSINESS_RULES.phoneE164}`,
   foundingDate: String(BUSINESS_RULES.foundedYear),

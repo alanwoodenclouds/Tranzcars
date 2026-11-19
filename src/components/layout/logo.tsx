@@ -1,65 +1,89 @@
+import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/utils";
 
-/** Brand mark — squircle with a stylised road vanishing to the horizon. */
-export function LogoMark({ className }: { className?: string }) {
+type LogoVariant = "full" | "wordmark";
+
+const SRC: Record<LogoVariant, { src: string; width: number; height: number }> =
+  {
+    full: {
+      src: "/brand/tranzcars-logo.png",
+      width: 852,
+      height: 215,
+    },
+    wordmark: {
+      src: "/brand/tranzcars-wordmark.png",
+      width: 852,
+      height: 147,
+    },
+  };
+
+/** Square brand plate (full logo on black) — favicon-style compact mark. */
+export function LogoMark({
+  className,
+  size = 36,
+}: {
+  className?: string;
+  size?: number;
+}) {
   return (
     <span
-      aria-hidden
       className={cn(
-        "relative grid size-9 shrink-0 place-items-center overflow-hidden rounded-[11px] bg-brand-500 text-white",
+        "relative inline-grid shrink-0 overflow-hidden rounded-[10px] bg-black ring-1 ring-white/10",
         className
       )}
+      style={{ width: size, height: size }}
     >
-      <svg viewBox="0 0 32 32" className="size-full" fill="none">
-        <path d="M0 0h32v32H0z" fill="url(#tz-g)" />
-        <path
-          d="M11.2 27 14.6 8.5h2.8L20.8 27h-3.2l-.6-3.6h-2.1L14.4 27h-3.2Zm4.1-6.7h1.4L16 14.6l-.7 5.7Z"
-          fill="currentColor"
-          opacity="0.95"
-        />
-        <path
-          d="M4 27c2.6-3.4 5.2-5.1 7.8-5.1M28 27c-2.6-3.4-5.2-5.1-7.8-5.1"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-          opacity="0.55"
-        />
-        <defs>
-          <linearGradient id="tz-g" x1="0" y1="0" x2="32" y2="32">
-            <stop stopColor="#FA7A4C" />
-            <stop offset="1" stopColor="#D24310" />
-          </linearGradient>
-        </defs>
-      </svg>
+      <Image
+        src="/brand/icon-512.png"
+        alt=""
+        width={size}
+        height={size}
+        className="size-full object-cover"
+        priority
+      />
     </span>
   );
 }
 
 export function Logo({
   className,
-  wordmarkClassName,
   href = "/",
+  variant = "wordmark",
+  /** When false, skip the black brand plate (e.g. already on a dark footer). */
+  plate = true,
 }: {
   className?: string;
-  wordmarkClassName?: string;
   href?: string;
+  /** full = wordmark + tagline (transparent); wordmark = header-friendly */
+  variant?: LogoVariant;
+  plate?: boolean;
 }) {
+  const asset = SRC[variant];
+
   return (
     <Link
       href={href}
-      className={cn("flex items-center gap-2.5", className)}
-      aria-label="TranzCars home"
+      className={cn(
+        "inline-flex items-center transition-opacity hover:opacity-95",
+        plate &&
+          "rounded-xl bg-black px-2.5 py-1.5 shadow-[0_8px_24px_-12px_rgba(248,120,0,0.55)] ring-1 ring-white/10",
+        className
+      )}
+      aria-label="TranzCars home — Rent A Car. Drive Better."
     >
-      <LogoMark />
-      <span
+      <Image
+        src={asset.src}
+        alt="TranzCars — Rent A Car. Drive Better."
+        width={asset.width}
+        height={asset.height}
         className={cn(
-          "font-display text-[19px] font-extrabold tracking-[-0.03em] text-ink-900",
-          wordmarkClassName
+          "w-auto object-contain object-left",
+          variant === "wordmark" && "h-7 sm:h-8",
+          variant === "full" && "h-10 sm:h-12"
         )}
-      >
-        Tranz<span className="text-brand-500">Cars</span>
-      </span>
+        priority
+      />
     </Link>
   );
 }

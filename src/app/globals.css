@@ -21,15 +21,16 @@
   --color-ink-100: #edf1f7;
   --color-ink-50: #f7f9fc;
 
-  /* --- Brand ------------------------------------------------------------- */
-  --color-brand-50: #fff4ef;
-  --color-brand-100: #ffe4d8;
-  --color-brand-200: #ffc5ac;
-  --color-brand-300: #ff9d78;
-  --color-brand-400: #fa7a4c;
-  --color-brand-500: #ed5527;
-  --color-brand-600: #d24310;
-  --color-brand-700: #a9330c;
+  /* --- Brand (matched to TranzCars logo orange → yellow) ---------------- */
+  --color-brand-50: #fff7ec;
+  --color-brand-100: #ffecd0;
+  --color-brand-200: #ffd39a;
+  --color-brand-300: #ffb35a;
+  --color-brand-400: #ff8f28;
+  --color-brand-500: #f87800;
+  --color-brand-600: #e05f00;
+  --color-brand-700: #b84700;
+  --color-brand-yellow: #f8e808;
 
   /* --- Secondary (trust / verified) -------------------------------------- */
   --color-jade-50: #e8f6f3;
@@ -106,7 +107,7 @@
   --shadow-e2: 0 4px 14px -3px rgba(13, 20, 32, 0.08), 0 2px 5px -3px rgba(13, 20, 32, 0.05);
   --shadow-e3: 0 20px 44px -14px rgba(13, 20, 32, 0.16), 0 6px 16px -8px rgba(13, 20, 32, 0.07);
   --shadow-e4: 0 44px 90px -26px rgba(13, 20, 32, 0.28), 0 12px 28px -14px rgba(13, 20, 32, 0.12);
-  --shadow-brand: 0 10px 26px -8px rgba(237, 85, 39, 0.42);
+  --shadow-brand: 0 10px 26px -8px rgba(248, 120, 0, 0.42);
   /* legacy */
   --shadow-soft: var(--shadow-e2);
   --shadow-float: var(--shadow-e3);
@@ -118,17 +119,18 @@
 }
 
 :root {
-  --background: #f8f9fc;
+  /* Warm off-white so the orange/yellow logo feels at home */
+  --background: #faf7f2;
   --foreground: #0d1420;
   --surface: #ffffff;
-  --surface-sunken: #f2f5f9;
+  --surface-sunken: #f4eee6;
   --surface-raised: #ffffff;
   --hairline: rgba(13, 20, 32, 0.09);
   --hairline-strong: rgba(13, 20, 32, 0.14);
-  --brand: #ed5527;
-  --ring: #ed5527;
+  --brand: #f87800;
+  --ring: #f87800;
 
-  --glass: rgba(255, 255, 255, 0.72);
+  --glass: rgba(255, 251, 245, 0.78);
   --glass-border: rgba(255, 255, 255, 0.6);
 
   --dur-fast: 140ms;
@@ -388,23 +390,28 @@
   .bg-grid {
     background-image: linear-gradient(
         to right,
-        rgba(13, 20, 32, 0.045) 1px,
+        rgba(184, 71, 0, 0.055) 1px,
         transparent 1px
       ),
-      linear-gradient(to bottom, rgba(13, 20, 32, 0.045) 1px, transparent 1px);
+      linear-gradient(to bottom, rgba(184, 71, 0, 0.055) 1px, transparent 1px);
     background-size: 64px 64px;
   }
 
   .bg-aurora {
     background-image: radial-gradient(
         ellipse 70% 60% at 8% -10%,
-        rgba(237, 85, 39, 0.1),
+        rgba(248, 120, 0, 0.16),
         transparent 60%
       ),
       radial-gradient(
         ellipse 55% 50% at 95% 0%,
-        rgba(29, 99, 209, 0.09),
+        rgba(248, 232, 8, 0.12),
         transparent 55%
+      ),
+      radial-gradient(
+        ellipse 40% 35% at 50% 20%,
+        rgba(0, 0, 0, 0.03),
+        transparent 70%
       );
   }
 

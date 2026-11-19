@@ -13,7 +13,7 @@ import { BUSINESS_RULES } from "@/content/site";
 import { toast } from "@/store/useToastStore";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { LogoMark } from "@/components/layout/logo";
+import { Logo } from "@/components/layout/logo";
 
 const COLUMNS = [
   {
@@ -91,12 +91,7 @@ export function SiteFooter() {
         {/* Links */}
         <div className="grid gap-12 py-14 lg:grid-cols-[1.5fr_repeat(3,1fr)]">
           <div>
-            <div className="flex items-center gap-2.5">
-              <LogoMark />
-              <span className="font-display text-[19px] font-extrabold tracking-[-0.03em] text-white">
-                Tranz<span className="text-brand-400">Cars</span>
-              </span>
-            </div>
+            <Logo variant="full" plate={false} />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-ink-400">
               MVD-approved self-drive cars and bikes across Kerala since{" "}
               {BUSINESS_RULES.foundedYear}. {BUSINESS_RULES.kmPerDay} free km a
