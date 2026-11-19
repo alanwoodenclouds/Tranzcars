@@ -1,7 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Compass, Home, Phone } from "lucide-react";
 import { BUSINESS_RULES } from "@/content/site";
 import { Button } from "@/components/ui/button";
+
+export const metadata: Metadata = {
+  title: "Page not found",
+  robots: { index: false, follow: true },
+};
 
 const SUGGESTIONS = [
   { href: "/cars", label: "Browse cars & bikes" },
@@ -39,14 +45,11 @@ export default function NotFound() {
         </Button>
       </div>
 
-      <ul className="mt-10 flex flex-wrap justify-center gap-2">
-        {SUGGESTIONS.map((s) => (
-          <li key={s.href}>
-            <Link
-              href={s.href}
-              className="interactive inline-flex rounded-full border border-hairline bg-surface px-3.5 py-2 text-[13px] font-semibold text-ink-600 hover:border-ink-300 hover:text-ink-900"
-            >
-              {s.label}
+      <ul className="mt-12 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[14px] font-semibold text-ink-500">
+        {SUGGESTIONS.map((item) => (
+          <li key={item.href}>
+            <Link href={item.href} className="hover:text-brand-600">
+              {item.label}
             </Link>
           </li>
         ))}

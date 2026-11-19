@@ -8,15 +8,28 @@ import { CarCard } from "@/components/fleet/car-card";
 import { FleetFilters, FleetToolbar } from "@/components/fleet/fleet-filters";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  JsonLd,
+  breadcrumbJsonLd,
+  fleetItemListJsonLd,
+} from "@/components/seo/json-ld";
 import { BUSINESS_RULES } from "@/content/site";
 import type { Car } from "@/content/site";
 import { getBranches, getCars } from "@/lib/api/server";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Fleet — self-drive cars & bikes",
   description:
     "Browse TranzCars self-drive cars and bikes in Kochi and across Kerala. Set your trip, compare real prices, book with one OTP.",
-};
+  path: "/cars",
+  keywords: [
+    "self drive cars Kochi",
+    "bike rental Kerala",
+    "SUV rental Kochi",
+    "electric scooter rental",
+  ],
+});
 
 type Props = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -67,6 +80,15 @@ export default async function CarsPage({ searchParams }: Props) {
 
   return (
     <div className="container-page pb-20 pt-8">
+      <JsonLd
+        data={[
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Fleet", path: "/cars" },
+          ]),
+          fleetItemListJsonLd(results),
+        ]}
+      />
       <Suspense fallback={null}>
         <SearchHydrator />
       </Suspense>

@@ -2,11 +2,14 @@ import type { Metadata } from "next";
 import { BUSINESS_RULES } from "@/content/site";
 import { LegalPage } from "@/components/legal/legal-page";
 
-export const metadata: Metadata = {
+import { buildPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildPageMetadata({
   title: "Terms and conditions",
   description:
     "Self-drive eligibility, kilometre allowance, fuel and permit rules for TranzCars rentals.",
-};
+  path: "/terms-and-conditions",
+});
 
 export default function TermsPage() {
   return (

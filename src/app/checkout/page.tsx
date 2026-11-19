@@ -7,10 +7,14 @@ import { SyncSelectedCar } from "@/components/checkout/sync-selected-car";
 import { getCarBySlug, getSettings } from "@/lib/api/server";
 import { Button } from "@/components/ui/button";
 
-export const metadata: Metadata = {
+import { buildPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildPageMetadata({
   title: "Checkout",
   description: "Confirm your TranzCars booking. OTP verification happens here.",
-};
+  path: "/checkout",
+  noIndex: true,
+});
 
 type Props = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;

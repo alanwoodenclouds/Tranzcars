@@ -1,28 +1,77 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { fontBody, fontDisplay } from "@/lib/fonts";
 import { SiteNav } from "@/components/layout/site-nav";
 import { MobileTabBar } from "@/components/layout/mobile-tab-bar";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { AiAssistant } from "@/components/ai/ai-assistant";
 import { Providers } from "@/components/providers";
+import { JsonLd, organizationJsonLd, websiteJsonLd } from "@/components/seo/json-ld";
+import {
+  DEFAULT_DESCRIPTION,
+  DEFAULT_TITLE,
+  SITE_KEYWORDS,
+  SITE_NAME,
+  getSiteUrl,
+} from "@/lib/seo";
 import "./globals.css";
 
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#FFFFFF" },
+    { media: "(prefers-color-scheme: dark)", color: "#0F172A" },
+  ],
+  width: "device-width",
+  initialScale: 1,
+};
+
 export const metadata: Metadata = {
+  metadataBase: new URL(getSiteUrl()),
   title: {
-    default: "TranzCars | Self Drive Cars & Bikes in Kochi, Kerala",
-    template: "%s | TranzCars",
+    default: DEFAULT_TITLE,
+    template: `%s | ${SITE_NAME}`,
   },
-  description:
-    "MVD-approved self-drive car & bike rental in Kochi & Kerala. Free km daily, airport delivery, hatchbacks to SUVs and electric scooters. Search without signing in.",
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
-  ),
+  description: DEFAULT_DESCRIPTION,
+  applicationName: SITE_NAME,
+  keywords: SITE_KEYWORDS,
+  authors: [{ name: SITE_NAME, url: getSiteUrl() }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  category: "travel",
+  formatDetection: {
+    telephone: true,
+    email: false,
+    address: false,
+  },
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "TranzCars | Self Drive Cars & Bikes in Kochi, Kerala",
-    description:
-      "MVD-approved self-drive cars and bikes with free km/day and Kochi Airport delivery.",
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    url: getSiteUrl(),
+    siteName: SITE_NAME,
     locale: "en_IN",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  icons: {
+    icon: [{ url: "/images/company_logo.jpg", type: "image/jpeg" }],
+    apple: [{ url: "/images/company_logo.jpg" }],
   },
 };
 
@@ -32,8 +81,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en-IN">
       <body className={`${fontDisplay.variable} ${fontBody.variable}`}>
+        <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
         <Providers>
           <a
             href="#main"

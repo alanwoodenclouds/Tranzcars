@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { ImmersiveHero } from "@/components/premium/immersive-hero";
 import { ValueProps } from "@/components/premium/value-props";
 import { FeaturedFleet } from "@/components/premium/featured-fleet";
@@ -10,12 +11,25 @@ import { PremiumTestimonials } from "@/components/premium/premium-testimonials";
 import { AppPromo } from "@/components/premium/app-promo";
 import { FaqSection } from "@/components/home/faq-section";
 import { ClosingJourney } from "@/components/premium/closing-journey";
+import { JsonLd, faqJsonLd } from "@/components/seo/json-ld";
 import {
   getBranches,
   getFaqs,
   getPopularCars,
   getTestimonials,
 } from "@/lib/api/server";
+import { DEFAULT_DESCRIPTION, DEFAULT_TITLE, buildPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = {
+  ...buildPageMetadata({
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    path: "/",
+  }),
+  title: {
+    absolute: DEFAULT_TITLE,
+  },
+};
 
 export default async function HomePage() {
   const [branches, popular, testimonials, faqs] = await Promise.all([
@@ -25,8 +39,11 @@ export default async function HomePage() {
     getFaqs(),
   ]);
 
+  const homeFaqs = faqs.slice(0, 5);
+
   return (
     <>
+      <JsonLd data={faqJsonLd(homeFaqs)} />
       <ImmersiveHero branches={branches} />
       <ValueProps />
       <FeaturedFleet cars={popular} />
@@ -37,7 +54,7 @@ export default async function HomePage() {
       <Membership />
       <PremiumTestimonials items={testimonials.slice(0, 3)} />
       <AppPromo />
-      <FaqSection faqs={faqs.slice(0, 5)} />
+      <FaqSection faqs={homeFaqs} />
       <ClosingJourney />
     </>
   );

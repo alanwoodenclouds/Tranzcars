@@ -6,12 +6,19 @@ import { getFaqs } from "@/lib/api/server";
 import { FaqSection } from "@/components/home/faq-section";
 import { PageHero } from "@/components/layout/page-hero";
 import { Button } from "@/components/ui/button";
+import {
+  JsonLd,
+  breadcrumbJsonLd,
+  faqJsonLd,
+} from "@/components/seo/json-ld";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "FAQ",
+export const metadata: Metadata = buildPageMetadata({
+  title: "FAQ — self-drive rental help",
   description:
-    "FAQ for TranzCars self-drive rentals — MVD approval, 120 km/day, airport pickup, deposits.",
-};
+    "FAQ for TranzCars self-drive rentals — MVD approval, free km/day, Kochi Airport pickup, deposits, licences and eligibility.",
+  path: "/faq",
+});
 
 const QUICK_FACTS = [
   {
@@ -41,6 +48,15 @@ export default async function FaqPage() {
 
   return (
     <>
+      <JsonLd
+        data={[
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "FAQ", path: "/faq" },
+          ]),
+          faqJsonLd(faqs),
+        ]}
+      />
       <PageHero
         eyebrow="Help centre"
         title="Everything about renting from us."

@@ -59,7 +59,7 @@ export function CarCard({ car, priority }: { car: Car; priority?: boolean }) {
       >
         <Image
           src={car.image}
-          alt={car.name}
+          alt={`${car.name} self-drive ${isBike ? "bike" : "car"} rental in Kochi`}
           fill
           priority={priority}
           className="object-cover transition-transform duration-700 ease-[var(--ease-out-quint)] group-hover:scale-[1.04]"

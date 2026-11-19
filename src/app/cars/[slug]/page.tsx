@@ -16,20 +16,39 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { BookingPanel } from "@/components/booking/booking-panel";
 import { CarCard } from "@/components/fleet/car-card";
-import { BUSINESS_RULES } from "@/content/site";
+import {
+  JsonLd,
+  breadcrumbJsonLd,
+  carProductJsonLd,
+} from "@/components/seo/json-ld";
+import { BUSINESS_RULES, CARS } from "@/content/site";
 import { getCarBySlug, getCars, getSettings } from "@/lib/api/server";
+import { buildPageMetadata } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
+
+export function generateStaticParams() {
+  return CARS.map((car) => ({ slug: car.slug }));
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const car = await getCarBySlug(slug);
-  if (!car) return { title: "Vehicle not found" };
+  if (!car) return { title: "Vehicle not found", robots: { index: false } };
   const kind = car.category === "bike" ? "bike" : "car";
-  return {
-    title: car.name,
-    description: `Rent the ${car.name} self-drive ${kind} in Kochi — ${car.transmission}, ${car.seats} seats, ${car.kmPerDay} free km a day.`,
-  };
+  const description = `Rent the ${car.name} self-drive ${kind} in Kochi from ₹${car.pricePerDay}/day — ${car.transmission}, ${car.seats} seats, ${car.kmPerDay} free km a day. Airport delivery available.`;
+  return buildPageMetadata({
+    title: `Rent ${car.name} in Kochi`,
+    description,
+    path: `/cars/${car.slug}`,
+    image: car.image,
+    keywords: [
+      `${car.name} rental Kochi`,
+      `self drive ${car.name}`,
+      `${car.type} rental Kerala`,
+      `${kind} rental Kochi Airport`,
+    ],
+  });
 }
 
 export default async function CarDetailPage({ params }: Props) {
@@ -55,6 +74,16 @@ export default async function CarDetailPage({ params }: Props) {
 
   return (
     <div className="container-page pb-20 pt-6">
+      <JsonLd
+        data={[
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Fleet", path: "/cars" },
+            { name: car.name, path: `/cars/${car.slug}` },
+          ]),
+          carProductJsonLd(car),
+        ]}
+      />
       <Link
         href={isBike ? "/cars?category=bike" : "/cars"}
         className="inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-ink-500 transition-colors hover:text-ink-900"
@@ -68,7 +97,7 @@ export default async function CarDetailPage({ params }: Props) {
           <div className="relative aspect-[16/11] overflow-hidden rounded-[var(--radius-2xl)] bg-ink-100">
             <Image
               src={car.image}
-              alt={car.name}
+              alt={`${car.name} self-drive ${isBike ? "bike" : "car"} for rent in Kochi, Kerala`}
               fill
               priority
               className="object-cover"

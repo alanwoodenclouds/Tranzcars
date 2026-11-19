@@ -18,11 +18,14 @@ import { SectionHeading } from "@/components/ui/section";
 import { PageHero } from "@/components/layout/page-hero";
 import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal";
 
-export const metadata: Metadata = {
-  title: "About",
+import { buildPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: "About TranzCars",
   description:
-    "TranzCars is an MVD-approved self-drive car & bike rental company in Kochi, Kerala, operating since 2017.",
-};
+    "TranzCars is an MVD-approved self-drive car & bike rental company in Kochi, Kerala, operating since 2017 with airport delivery across the state.",
+  path: "/about",
+});
 
 const YEARS = new Date().getFullYear() - BUSINESS_RULES.foundedYear;
 

@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/legal/legal-page";
 
-export const metadata: Metadata = {
+import { buildPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildPageMetadata({
   title: "Privacy policy",
   description:
     "What data TranzCars collects for self-drive rentals, why we need it, and how to have it removed.",
-};
+  path: "/privacy-policy",
+});
 
 export default function PrivacyPage() {
   return (

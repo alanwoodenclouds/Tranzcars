@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/legal/legal-page";
 
-export const metadata: Metadata = {
+import { buildPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildPageMetadata({
   title: "Refund policy",
   description:
     "How TranzCars refunds security deposits and cancelled bookings, and how long it takes.",
-};
+  path: "/refund-policy",
+});
 
 export default function RefundPage() {
   return (

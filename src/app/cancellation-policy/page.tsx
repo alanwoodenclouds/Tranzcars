@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/legal/legal-page";
 
-export const metadata: Metadata = {
+import { buildPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildPageMetadata({
   title: "Cancellation policy",
   description:
     "Cancellation windows and charges for TranzCars self-drive bookings in Kerala.",
-};
+  path: "/cancellation-policy",
+});
 
 export default function CancellationPage() {
   return (

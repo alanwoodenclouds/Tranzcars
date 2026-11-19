@@ -5,10 +5,14 @@ import { ContactForm } from "@/components/contact/contact-form";
 import { PageHero } from "@/components/layout/page-hero";
 import { Badge } from "@/components/ui/badge";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description: "Contact TranzCars for self-drive bookings in Kochi and Kerala.",
-};
+import { buildPageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: "Contact TranzCars Kochi",
+  description:
+    "Call, WhatsApp or write to TranzCars for self-drive bookings, airport delivery and extensions across Kochi and Kerala. Open 24/7.",
+  path: "/contact",
+});
 
 const BRANCH_LABEL: Record<string, string> = {
   airport: "Airport desk",
