@@ -10,20 +10,20 @@ import { Button } from "@/components/ui/button";
 
 const POINTS = [
   {
-    title: "No deposit games",
-    body: "A published security deposit, refunded within 48 hours of a clean return.",
+    title: "Government-approved",
+    body: `Kerala Govt Approved self-drive operator since ${BUSINESS_RULES.foundedYear}, fully licensed.`,
   },
   {
-    title: "Prices that hold",
-    body: "The rate you see at search is the rate you pay at checkout — delivery shown separately.",
+    title: `${BUSINESS_RULES.kmPerDay} km free every day`,
+    body: "Transparent excess-km rates — no surprise line items at hand-over.",
   },
   {
-    title: "Serviced between trips",
-    body: "Every vehicle is cleaned, fuelled to the marked level and mechanically checked.",
+    title: "Airport & doorstep",
+    body: "Cochin Airport, railway stations and home delivery across South India.",
   },
   {
-    title: "Real humans on call",
-    body: `One Kerala number, ${BUSINESS_RULES.googleRating}★ rated by ${BUSINESS_RULES.googleReviewCount} travellers.`,
+    title: "Deposit back in 7 days",
+    body: `Refundable security deposit returned within ${BUSINESS_RULES.refundWorkingDays} working days of a clean return.`,
   },
 ];
 
@@ -71,9 +71,9 @@ export function WhyTranzCars() {
             <div className="relative aspect-[4/3.4] overflow-hidden rounded-[var(--radius-2xl)] bg-ink-100 shadow-e2">
               <Image
                 src={MEDIA.keralaRoadCar}
-                alt="Driving a TranzCars vehicle through Kerala"
+                alt="Toyota Innova Hycross self-drive — TranzCars Kochi"
                 fill
-                className="object-cover"
+                className="object-cover object-center"
                 sizes="(max-width: 1024px) 92vw, 46vw"
               />
             </div>
@@ -81,11 +81,12 @@ export function WhyTranzCars() {
             <div className="relative z-10 mx-4 -mt-14 rounded-[var(--radius-xl)] border border-hairline bg-surface p-6 shadow-e3 sm:mx-8">
               <Quote className="size-6 text-brand-300" />
               <p className="mt-3 text-[15px] font-medium leading-relaxed text-ink-800">
-                “Landed at 6am, the car was waiting at arrivals with a full tank
-                and a spotless interior. We drove to Munnar an hour later.”
+                “We booked Thar Roxx for Munnar and Vagamon. Car was so clean,
+                documents hassle-free, and Vineesh arranged everything on time.
+                10/10.”
               </p>
               <p className="mt-4 text-[12.5px] font-bold uppercase tracking-[0.1em] text-ink-500">
-                Aravind M · Bengaluru
+                Karthikeyan M S
               </p>
             </div>
           </Reveal>

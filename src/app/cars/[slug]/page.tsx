@@ -162,9 +162,9 @@ export default async function CarDetailPage({ params }: Props) {
                 What to bring
               </h3>
               <p className="mt-1.5 text-[13px] leading-relaxed text-ink-500">
-                Original driving licence held {BUSINESS_RULES.licenceYears}+ year
-                and a government photo ID. Minimum age{" "}
-                {BUSINESS_RULES.eligibilityAge}.
+                Original driving licence held {BUSINESS_RULES.licenceYears}+ years
+                and Aadhaar or passport. Minimum age{" "}
+                {BUSINESS_RULES.eligibilityAge}+ (per rental terms).
               </p>
             </div>
             <div className="rounded-[var(--radius-xl)] border border-hairline bg-surface p-5">

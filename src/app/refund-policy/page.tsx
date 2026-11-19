@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
+import { BUSINESS_RULES } from "@/content/site";
 import { LegalPage } from "@/components/legal/legal-page";
-
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Refund policy",
   description:
-    "How TranzCars refunds security deposits and cancelled bookings, and how long it takes.",
+    "TranzCars security deposit and booking refunds — timelines, FasTag rules and pay-later cancellations.",
   path: "/refund-policy",
 });
 
@@ -15,35 +15,38 @@ export default function RefundPage() {
     <LegalPage
       currentHref="/refund-policy"
       title="Refund policy"
-      summary="How money comes back to you — deposits, cancelled bookings and processing times."
+      summary="How security deposits and cancelled booking amounts come back to you."
       sections={[
         {
-          heading: "Security deposits",
-          paragraphs: [
-            "The refundable security deposit is released after the vehicle is inspected at return and once tolls, fines and damages (if any) are settled.",
-          ],
+          heading: "Security deposit refund",
           bullets: [
-            "Clean return with no dues: deposit released within 3 working days.",
-            "Pending challans or insurance assessment: we hold only the disputed amount and release the rest.",
-            "Every deduction is shared with the supporting document — a challan notice, invoice or repair estimate.",
+            "The security deposit is fully refundable for all cancellations, including no-shows.",
+            `After the vehicle is returned, the deposit is refunded without interest to your bank account or original payment platform within ${BUSINESS_RULES.refundWorkingDays} working days, subject to deductions for charges receivable under the terms (tolls, fines, damages, etc.).`,
           ],
         },
         {
           heading: "Cancelled bookings",
           paragraphs: [
-            "Approved cancellations are refunded to the original payment method according to the cancellation schedule. We do not issue cash refunds for online payments.",
+            "Approved cancellations refund the eligible rental/delivery portion after applying the cancellation slab. Refunds are made only through the original payment account — typically within 7–10 working days including bank processing.",
+          ],
+        },
+        {
+          heading: "FasTag policy",
+          bullets: [
+            "The company is not responsible for double payments or penalties related to FasTag usage.",
+            "Refunds are not provided for any unused balance in the FasTag wallet after recharging.",
+          ],
+        },
+        {
+          heading: "Pay later",
+          paragraphs: [
+            "If the pay-later option is selected and the remaining booking amount (additional 50%) is not paid when requested by the company, the booking will be cancelled as per company process.",
           ],
         },
         {
           heading: "Processing time",
           paragraphs: [
-            "We initiate refunds within 3 working days of approval. The time it takes to appear in your account depends on your bank, card issuer or UPI provider — typically 5 to 7 working days.",
-          ],
-        },
-        {
-          heading: "Disputes",
-          paragraphs: [
-            "If a refund seems wrong, call the Kochi desk with your booking reference. We keep hand-over photos, the return checklist and the fuel reading for every trip and will walk you through them.",
+            `We typically complete refund initiation within ${BUSINESS_RULES.refundWorkingDays} working days of trip completion or cancellation approval. Banks may take additional time. Contact +91 98950 41111 with your booking reference if a refund has not appeared after ${BUSINESS_RULES.refundWorkingDays} working days.`,
           ],
         },
       ]}

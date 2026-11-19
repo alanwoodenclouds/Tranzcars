@@ -6,7 +6,6 @@ import { HowItWorks } from "@/components/premium/how-it-works";
 import { WhyTranzCars } from "@/components/premium/why-tranzcars";
 import { TrustStrip } from "@/components/premium/trust-strip";
 import { ExperienceKerala } from "@/components/premium/experience-kerala";
-import { Membership } from "@/components/premium/membership";
 import { PremiumTestimonials } from "@/components/premium/premium-testimonials";
 import { AppPromo } from "@/components/premium/app-promo";
 import { FaqSection } from "@/components/home/faq-section";
@@ -39,7 +38,7 @@ export default async function HomePage() {
     getFaqs(),
   ]);
 
-  const homeFaqs = faqs.slice(0, 5);
+  const homeFaqs = faqs.slice(0, 6);
 
   return (
     <>
@@ -51,10 +50,12 @@ export default async function HomePage() {
       <WhyTranzCars />
       <TrustStrip />
       <ExperienceKerala />
-      <Membership />
-      <PremiumTestimonials items={testimonials.slice(0, 3)} />
+      <PremiumTestimonials items={testimonials.slice(0, 6)} />
       <AppPromo />
-      <FaqSection faqs={homeFaqs} />
+      <FaqSection
+        faqs={homeFaqs}
+        title="Self-drive rental FAQ — Kochi & Kerala"
+      />
       <ClosingJourney />
     </>
   );

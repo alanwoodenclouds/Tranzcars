@@ -21,19 +21,22 @@ import { Reveal, RevealItem, RevealStagger } from "@/components/motion/reveal";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "About TranzCars",
+  title: "About TranzCars — Kerala Govt Approved self-drive",
   description:
-    "TranzCars is an MVD-approved self-drive car & bike rental company in Kochi, Kerala, operating since 2017 with airport delivery across the state.",
+    "TranzCars is Kerala’s top-rated self-drive car rental — Govt Approved since 2017, Kochi HQ, 100+ vehicles, Cochin Airport delivery across South India.",
   path: "/about",
 });
 
 const YEARS = new Date().getFullYear() - BUSINESS_RULES.foundedYear;
 
 const STATS = [
-  { value: `${YEARS}+`, label: "Years on Kerala roads" },
-  { value: `${CARS.length}`, label: "Cars & bikes in fleet" },
-  { value: BUSINESS_RULES.googleReviewCount, label: "Google reviews" },
-  { value: `${BUSINESS_RULES.googleRating}★`, label: "Average rating" },
+  { value: `${YEARS}+`, label: "Years serving Kerala" },
+  {
+    value: BUSINESS_RULES.fleetSizeLabel,
+    label: `Vehicles · ${BUSINESS_RULES.fleetVariantsLabel} variants`,
+  },
+  { value: `${BUSINESS_RULES.kmPerDay} km`, label: "Free driving every day" },
+  { value: "24×7", label: "Customer support" },
 ];
 
 const VALUES = [
@@ -62,8 +65,8 @@ const VALUES = [
 const TIMELINE = [
   {
     year: `${BUSINESS_RULES.foundedYear}`,
-    title: "Started in Kalamassery",
-    body: "A joint venture of Kerala travel operators put four hatchbacks on self-drive rent.",
+    title: "Licensed in Kochi",
+    body: "Second licensed self-drive operator in Kerala — a joint venture of 10 leading travel operators under Trust Pilot Trans & Trades Pvt Ltd.",
   },
   {
     year: "2019",
@@ -89,8 +92,8 @@ export default function AboutPage() {
     <>
       <PageHero
         eyebrow="About TranzCars"
-        title="Self-drive in Kerala, done the honest way."
-        description={`We are a government-approved, MVD-authorised self-drive operator based in Kochi. Since ${BUSINESS_RULES.foundedYear} we have handed keys to travellers who would rather drive themselves through Kerala.`}
+        title="Kerala’s top-rated self-drive rental company."
+        description={`TranzCars is a Kerala Govt Approved Self Drive Rent A Cab company headquartered in Kochi. Founded in ${BUSINESS_RULES.foundedYear} as the second licensed self-drive operator in the state — ${BUSINESS_RULES.ownership}.`}
       >
         <div className="flex flex-wrap gap-3">
           <Button asChild size="lg">
@@ -126,22 +129,23 @@ export default function AboutPage() {
             </h2>
             <div className="mt-5 space-y-4 text-[15px] leading-relaxed text-ink-600">
               <p>
-                TranzCars began as a small counter in Kalamassery with a simple
-                promise: give travellers a clean, legal, well-maintained vehicle
-                and get out of their way. No chauffeur watching the clock, no
+                Our mission is simple: give people the freedom to drive Kerala on
+                their own terms, in a safe, well-maintained, latest-generation
+                car — without a driver. No chauffeur watching the clock, no
                 padded bills at the end of the trip.
               </p>
               <p>
-                Today the fleet spans hatchbacks, sedans, SUVs and 7-seaters, plus
-                electric scooters and motorcycles for riders who want the coast
-                road to themselves. Cars include{" "}
-                {BUSINESS_RULES.kmPerDay} km free per day; bikes carry
-                model-specific free kilometres.
+                The fleet has {BUSINESS_RULES.fleetSizeLabel} well-maintained
+                vehicles across {BUSINESS_RULES.fleetVariantsLabel} variants —
+                hatchbacks to premium SUVs from trusted brands — with{" "}
+                {BUSINESS_RULES.kmPerDay} km free driving every day on every
+                rental.
               </p>
               <p>
-                We deliver to {airports} airports, two railway stations and your
-                doorstep inside our service areas — and we still answer the phone
-                ourselves.
+                Headquartered in Kochi, we operate throughout Kerala with pickup
+                at Cochin Airport and railway stations, and delivery / drop-off
+                available anywhere in South India. {airports} airport desks and
+                doorstep delivery — and we still answer the phone 24/7.
               </p>
             </div>
             <div className="mt-7 flex flex-wrap gap-2.5">

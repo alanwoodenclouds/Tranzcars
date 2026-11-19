@@ -16,13 +16,13 @@ export function FeaturedFleet({ cars }: { cars: Car[] }) {
       <div className="container-page">
         <Reveal>
           <SectionHeading
-            eyebrow="Featured fleet"
-            title="Rides people keep coming back for."
-            description="Hatchbacks for the city, SUVs for the hills, scooters for the coast — all serviced between trips."
+            eyebrow="Self-drive fleet Kochi"
+            title="Popular cars for Kerala trips."
+            description="Hatchbacks for the city, SUVs for Munnar & Wayanad, scooters for the coast — cleaned and serviced between every rental."
             action={
               <Button asChild variant="outline">
                 <Link href="/cars">
-                  View all vehicles
+                  View all self-drive cars
                   <ArrowRight />
                 </Link>
               </Button>

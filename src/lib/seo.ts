@@ -3,23 +3,29 @@ import { BUSINESS_RULES } from "@/constants/businessRules";
 
 export const SITE_NAME = "TranzCars";
 export const SITE_TAGLINE = "Rent A Car. Drive Better.";
-export const SITE_POSITIONING = "Self Drive Cars & Bikes in Kochi, Kerala";
+export const SITE_POSITIONING =
+  "Top Rated Self Drive Car Rental in Kochi, Kerala";
 
 export const DEFAULT_TITLE = `${SITE_NAME} | ${SITE_POSITIONING}`;
-export const DEFAULT_DESCRIPTION =
-  "MVD-approved self-drive car & bike rental in Kochi & Kerala since 2017. Free km daily, airport delivery, hatchbacks to SUVs and electric scooters. Search without signing in.";
+export const DEFAULT_DESCRIPTION = `Kerala Govt Approved self-drive car & bike rental in Kochi since ${BUSINESS_RULES.foundedYear}. ${BUSINESS_RULES.kmPerDay} km free daily, Cochin Airport delivery, hatchbacks to SUVs & scooters. Book online — OTP only at checkout.`;
 
 export const SITE_KEYWORDS = [
   "self drive car rental Kochi",
-  "self drive bike rental Kerala",
+  "self drive car rental Kerala",
   "TranzCars",
+  "top rated car rental Kerala",
   "rent a car Kochi Airport",
   "MVD approved self drive",
+  "Kerala Govt Approved Rent A Cab",
   "car rental Cochin",
+  "self drive bike rental Kochi",
   "SUV rental Kerala",
-  "electric scooter rental Kochi",
-  "self drive Thar Kochi",
+  "Innova rental Kochi",
+  "Thar rental Kerala",
   "airport car delivery COK",
+  "monthly car rental Kerala",
+  "self drive Trivandrum",
+  "self drive Calicut",
 ];
 
 /** Production-safe absolute site origin (no trailing slash). */
@@ -39,7 +45,6 @@ type PageMetaInput = {
   title: string;
   description: string;
   path: string;
-  /** Absolute or site-relative image path for Open Graph / Twitter */
   image?: string;
   noIndex?: boolean;
   keywords?: string[];
@@ -90,25 +95,19 @@ export function buildPageMetadata({
 
 export const ORGANIZATION = {
   name: SITE_NAME,
-  legalName: "Tranz Cars Kerala Rent A Car Company",
+  legalName: BUSINESS_RULES.legalName,
   url: getSiteUrl(),
   logo: absoluteUrl("/brand/tranzcars-logo.png"),
   phone: BUSINESS_RULES.phoneDisplay,
   phoneE164: `+${BUSINESS_RULES.phoneE164}`,
   foundingDate: String(BUSINESS_RULES.foundedYear),
   areaServed: ["Kochi", "Ernakulam", "Kerala", "Trivandrum", "Kozhikode"],
-  address: {
-    streetAddress: "Kalamassery",
-    addressLocality: "Kochi",
-    addressRegion: "Kerala",
-    postalCode: "683104",
-    addressCountry: "IN",
-  },
+  address: { ...BUSINESS_RULES.address },
   geo: {
     latitude: 10.0535,
     longitude: 76.328,
   },
-  sameAs: [
-    process.env.NEXT_PUBLIC_GOOGLE_REVIEWS_URL,
-  ].filter(Boolean) as string[],
+  sameAs: [process.env.NEXT_PUBLIC_GOOGLE_REVIEWS_URL].filter(
+    Boolean
+  ) as string[],
 } as const;

@@ -107,6 +107,13 @@ export function SiteFooter() {
                 {BUSINESS_RULES.phoneDisplay}
               </a>
               <a
+                href={`tel:${BUSINESS_RULES.phoneAltE164}`}
+                className="inline-flex items-center gap-2.5 text-sm font-semibold text-ink-300 transition-colors hover:text-white"
+              >
+                <Phone className="size-4 text-brand-400" />
+                {BUSINESS_RULES.phoneAltDisplay}
+              </a>
+              <a
                 href={`https://wa.me/${wa}`}
                 target="_blank"
                 rel="noreferrer"
@@ -115,9 +122,9 @@ export function SiteFooter() {
                 <MessageCircle className="size-4 text-brand-400" />
                 WhatsApp a booking agent
               </a>
-              <p className="inline-flex items-center gap-2.5 text-sm text-ink-400">
-                <MapPin className="size-4 text-brand-400" />
-                Kochi · Trivandrum · Kozhikode
+              <p className="inline-flex items-start gap-2.5 text-sm leading-relaxed text-ink-400">
+                <MapPin className="mt-0.5 size-4 shrink-0 text-brand-400" />
+                {BUSINESS_RULES.addressLine}
               </p>
             </div>
           </div>

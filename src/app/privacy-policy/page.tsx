@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
+import { BUSINESS_RULES } from "@/content/site";
 import { LegalPage } from "@/components/legal/legal-page";
-
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Privacy policy",
   description:
-    "What data TranzCars collects for self-drive rentals, why we need it, and how to have it removed.",
+    "How TranzCars collects, uses and protects personal information under the Information Technology Act, 2000.",
   path: "/privacy-policy",
 });
 
@@ -15,43 +15,75 @@ export default function PrivacyPage() {
     <LegalPage
       currentHref="/privacy-policy"
       title="Privacy policy"
-      summary="We collect the minimum needed to rent you a vehicle legally — and we never sell it."
+      summary="This privacy policy is an electronic record under the Information Technology Act, 2000. By using www.tranzcars.com you consent to this policy."
       sections={[
         {
-          heading: "What we collect",
-          bullets: [
-            "Your mobile number, used as your account identity and verified by OTP.",
-            "Name and email, printed on the rental agreement and receipts.",
-            "Identity and licence documents, to confirm you are eligible to drive.",
-            "Booking details — pick-up point, dates and vehicle — and payment status.",
-          ],
-        },
-        {
-          heading: "Why we need it",
+          heading: "About this policy",
           paragraphs: [
-            "Rental eligibility and vehicle hand-over are regulated. We use your documents to verify eligibility, to complete the rental agreement, to process payments and refunds, and to reach you during a trip.",
-            "We may contact you about an active or recent booking. Marketing messages are opt-in and every one carries an unsubscribe option.",
+            "This Privacy Policy sets out how TranzCars collects, uses, protects and shares information you give us when you use www.tranzcars.com and related apps. It is a legally binding document between you and TranzCars, read together with our membership / rental terms.",
+            "It is published in accordance with the Information Technology (Reasonable Security Practices and Procedures and Sensitive Personal Data or Information) Rules, 2011.",
           ],
         },
         {
-          heading: "Who sees it",
+          heading: "Personal information we collect",
           bullets: [
-            "Our own staff, limited to the team handling your booking.",
-            "Payment providers, for the transaction itself.",
-            "Insurers or authorities, only where a claim, challan or legal request requires it.",
-            "We do not sell or rent personal data to advertisers or data brokers.",
+            "Name, age, gender, photograph, contact preferences, telephone number and mailing addresses",
+            "Email address, financial / payment information, IP address and booking & payment history",
+            "Driving licence and address / identity proofs required for membership and vehicle hand-over",
+            "Device identifiers used to access the website",
+            "Vehicle use data from in-vehicle hardware (security, theft prevention and trip assistance)",
+            "Location tracking of the rental vehicle for security, emergencies and recovery / insurance",
           ],
         },
         {
-          heading: "How long we keep it",
+          heading: "How we use it",
           paragraphs: [
-            "Completed trips, invoices and tax records are retained as long as Indian accounting and motor-vehicle rules require. Documents attached to abandoned or cancelled bookings are deleted once they are no longer needed.",
+            "We use your information to create and maintain your account, verify eligibility, complete rental agreements, process payments and refunds, provide roadside support, prevent fraud/theft, and improve our services.",
+            "You authorise us to access driving / vehicle history from applicable authorities where required for membership. Location data may be shared with insurers, police or courts during investigations or emergencies.",
+          ],
+        },
+        {
+          heading: "Sharing with third parties",
+          bullets: [
+            "Processors who handle data on our behalf under confidentiality and security obligations",
+            "When required by law, regulation, court order or to detect fraud / enforce our terms",
+            "To protect TranzCars assets and defend against third-party claims",
+            "In connection with a sale or transfer of business assets",
+            "Partners for related services you opt into (e.g. referrals), limited to what is reasonably needed",
+            "Vendors who provide infrastructure, analytics, payments, customer support or research",
+          ],
+        },
+        {
+          heading: "Cookies & non-personal data",
+          paragraphs: [
+            "We collect non-personal information such as browser type and usage details, and may use cookies, web beacons and similar technologies. You can control cookies in your browser; some features may not work if cookies are disabled. Aggregated anonymous data may be shared with third parties for analytics.",
+          ],
+        },
+        {
+          heading: "Security & retention",
+          paragraphs: [
+            "We take administrative, technical and physical precautions — including encryption and access controls — to safeguard personal information. Your right to claim damages is limited as provided under the Information Technology Act, 2000.",
+            "Personal information is retained for as long as needed for the purpose or as required by applicable law, whichever is later. Non-personal information may be retained indefinitely.",
           ],
         },
         {
           heading: "Your choices",
           paragraphs: [
-            "Write to us to see, correct or delete your data. Deletion is honoured except where a completed trip must be retained for legal or tax reasons. You can sign out of any device from the account page; signing out does not delete your booking history.",
+            "You may request that we discontinue use of your personal information by closing your account. We do not intentionally collect information from children 15 years of age or younger.",
+            `For privacy requests contact ${BUSINESS_RULES.phoneDisplay} or write to us at ${BUSINESS_RULES.addressLine}.`,
+          ],
+        },
+        {
+          heading: "Refunds & cancellations (summary)",
+          bullets: [
+            "Refunds are made through the original payment account within 7–10 working days where applicable.",
+            "Cancellation charges apply only on rental and delivery; security deposit remains fully refundable including no-shows — see Cancellation and Refund policies for slabs.",
+          ],
+        },
+        {
+          heading: "Changes",
+          paragraphs: [
+            "We may update this policy on the website without prior notice. Continued use of the website means you accept the updated policy.",
           ],
         },
       ]}

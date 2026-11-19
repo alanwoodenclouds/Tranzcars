@@ -19,15 +19,17 @@ import { getBranches, getCars } from "@/lib/api/server";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Fleet — self-drive cars & bikes",
+  title: "Self-drive cars & bikes for rent in Kochi",
   description:
-    "Browse TranzCars self-drive cars and bikes in Kochi and across Kerala. Set your trip, compare real prices, book with one OTP.",
+    "Browse TranzCars self-drive fleet in Kochi & Kerala — hatchbacks, SUVs, Innova, Thar, electric scooters. 120 km free/day, airport delivery, book with OTP.",
   path: "/cars",
   keywords: [
     "self drive cars Kochi",
     "bike rental Kerala",
     "SUV rental Kochi",
-    "electric scooter rental",
+    "Innova rental Kochi",
+    "electric scooter rental Kochi",
+    "self drive car hire Cochin Airport",
   ],
 });
 

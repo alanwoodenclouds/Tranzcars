@@ -267,8 +267,8 @@ export function CheckoutForm({
             Driver & documents
           </h2>
           <p className="mt-2 text-[13px] leading-relaxed text-ink-500">
-            Age {BUSINESS_RULES.eligibilityAge}+ with an LMV licence held{" "}
-            {BUSINESS_RULES.licenceYears}+ year. Bring the original licence and
+            Age {BUSINESS_RULES.eligibilityAge}+ with an Indian DL held{" "}
+            {BUSINESS_RULES.licenceYears}+ years. Bring the original licence and
             Aadhaar or passport to handover.
           </p>
           <label

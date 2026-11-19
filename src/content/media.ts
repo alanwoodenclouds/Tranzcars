@@ -1,31 +1,29 @@
 /** Central imagery for marketing surfaces. Every entry here is in use. */
 export const MEDIA = {
-  /** Slanted hero collage panels, left to right */
+  /** Slanted hero collage panels, left to right — TranzCars fleet photos */
   heroPanels: [
     {
-      id: "road",
-      alt: "Self-drive car on a winding hill road",
-      src: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1200&q=85",
+      id: "fronx",
+      alt: "Maruti Suzuki Fronx self-drive crossover — TranzCars Kochi",
+      src: "/images/fleet/maruti-fronx.png",
       href: "/cars?type=SUV",
     },
     {
-      id: "handover",
-      alt: "Premium self-drive car ready for hand-over",
-      src: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=1200&q=85",
-      href: "/cars?transmission=Automatic",
+      id: "hycross",
+      alt: "Toyota Innova Hycross self-drive MUV — TranzCars Kochi",
+      src: "/images/fleet/innova-hycross.png",
+      href: "/cars?type=MUV",
     },
     {
-      id: "city",
-      alt: "Self-drive hatchback on a tree-lined street",
-      src: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=1200&q=85",
-      href: "/cars?type=Hatchback",
+      id: "punch",
+      alt: "Tata Punch self-drive compact SUV — TranzCars Kochi",
+      src: "/images/fleet/tata-punch.png",
+      href: "/cars?type=SUV",
     },
   ],
   /** Story image in the "why TranzCars" section */
-  keralaRoadCar:
-    "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=2000&q=80",
-  appScreen:
-    "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=900&q=80",
+  keralaRoadCar: "/images/fleet/innova-hycross.png",
+  appScreen: "/images/fleet/mobile-booking-ui.jpg",
   destinations: {
     munnar:
       "https://images.unsplash.com/photo-1593693411515-c20261bcad6e?auto=format&fit=crop&w=1400&q=80",

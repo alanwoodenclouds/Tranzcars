@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { BUSINESS_RULES } from "@/content/site";
+import { MvdBadge } from "@/components/layout/mvd-badge";
 import { Reveal } from "@/components/motion/reveal";
 
 const STATS = [
@@ -43,10 +44,13 @@ export function TrustStrip() {
                 </div>
               ))}
             </dl>
-            <p className="mt-10 border-t border-white/10 pt-6 text-[13px] text-ink-400">
-              Government approved · Comprehensive insurance included · 24/7
-              roadside assistance across Kerala
-            </p>
+            <div className="mt-10 flex flex-col gap-4 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
+              <MvdBadge size="md" />
+              <p className="text-[13px] text-ink-400">
+                Comprehensive insurance included · 24/7 roadside assistance
+                across Kerala
+              </p>
+            </div>
           </div>
         </Reveal>
       </div>

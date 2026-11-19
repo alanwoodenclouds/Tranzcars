@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 
 export function ClosingJourney() {
   return (
-    <section className="section-y-sm">
+    <section className="section-y-sm" aria-labelledby="closing-heading">
       <div className="container-page">
         <Reveal>
           <div className="relative overflow-hidden rounded-[var(--radius-3xl)] border border-hairline bg-surface px-6 py-14 text-center sm:px-10 sm:py-20">
@@ -19,19 +19,20 @@ export function ClosingJourney() {
             />
 
             <div className="relative">
-              <p className="text-eyebrow">Ready when you are</p>
-              <h2 className="text-display-lg mx-auto mt-4 max-w-2xl">
-                Your Kerala trip starts with a search.
+              <p className="text-eyebrow">Self-drive rental Kochi</p>
+              <h2 id="closing-heading" className="text-display-lg mx-auto mt-4 max-w-2xl">
+                Start your Kerala self-drive trip today.
               </h2>
-              <p className="text-lead mx-auto mt-4 max-w-md">
-                Cars and bikes, browsable without an account. OTP only when you
-                pay.
+              <p className="text-lead mx-auto mt-4 max-w-lg">
+                Browse cars and bikes without signing in. Cochin Airport delivery,
+                {` ${BUSINESS_RULES.kmPerDay} `}
+                free km/day, and OTP only when you confirm payment.
               </p>
 
               <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
                 <Button asChild size="lg">
                   <Link href="/cars">
-                    Find a vehicle
+                    Find a self-drive car
                     <ArrowRight />
                   </Link>
                 </Button>

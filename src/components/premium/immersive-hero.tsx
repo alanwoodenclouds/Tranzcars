@@ -7,13 +7,20 @@ import type { Branch } from "@/content/site";
 import { BUSINESS_RULES } from "@/content/site";
 import { MEDIA } from "@/content/media";
 import { BookingConsole } from "@/components/premium/booking-console";
+import { MvdBadge } from "@/components/layout/mvd-badge";
 import { cn } from "@/utils";
 
 const POPULAR = [
-  { label: "Cochin airport pickup", href: "/cars?pickup=cok-airport" },
-  { label: "Automatic hatchbacks", href: "/cars?transmission=Automatic" },
-  { label: "7-seater for family", href: "/cars?type=MUV" },
-  { label: "Electric scooters", href: "/cars?category=bike" },
+  {
+    label: "Cochin Airport self-drive",
+    href: "/cars?pickup=cok-airport",
+  },
+  {
+    label: "Automatic cars Kochi",
+    href: "/cars?transmission=Automatic&category=car",
+  },
+  { label: "7-seater family MUV", href: "/cars?type=MUV" },
+  { label: "Electric scooter rental", href: "/cars?category=bike" },
 ];
 
 const PANEL_SHAPE = [
@@ -38,7 +45,10 @@ export function ImmersiveHero({ branches }: { branches: Branch[] }) {
         };
 
   return (
-    <section className="relative isolate -mt-16 overflow-hidden pt-16 sm:-mt-[72px] sm:pt-[72px]">
+    <section
+      className="relative isolate -mt-16 overflow-hidden pt-16 sm:-mt-[72px] sm:pt-[72px]"
+      aria-labelledby="hero-heading"
+    >
       <div aria-hidden className="absolute inset-0 bg-aurora" />
       <div
         aria-hidden
@@ -47,23 +57,24 @@ export function ImmersiveHero({ branches }: { branches: Branch[] }) {
 
       <div className="container-page relative">
         <div className="grid items-start gap-6 pt-6 sm:gap-8 sm:pt-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-10 lg:pt-12">
-          {/* Brand + images */}
           <motion.div {...fade()} className="min-w-0">
             <div className="relative z-10 text-center lg:text-left">
-              <h1 className="text-hero">
-                Drive your journey.
+              <div className="mb-5 flex justify-center lg:justify-start">
+                <MvdBadge size="banner" />
+              </div>
+
+              <h1 id="hero-heading" className="text-hero">
+                Kerala&apos;s top-rated
                 <br />
-                Your way.
+                self-drive car rental.
               </h1>
 
               <p className="text-lead mx-auto mt-3 max-w-md sm:mt-4 lg:mx-0">
-                Premium self-drive cars and bikes for every Kerala trip —
-                airport delivery, {BUSINESS_RULES.kmPerDay} km free/day, MVD
-                approved.
+                Cars & bikes in Kochi — airport delivery,{" "}
+                {BUSINESS_RULES.kmPerDay} km free/day, clear pricing.
               </p>
             </div>
 
-            {/* Collage: compact on mobile, full on desktop */}
             <motion.div
               {...(reduce
                 ? {}
@@ -83,7 +94,6 @@ export function ImmersiveHero({ branches }: { branches: Branch[] }) {
                   <Link
                     key={panel.id}
                     href={panel.href}
-                    aria-label={panel.alt}
                     className={cn(
                       "group relative focus-visible:outline-none",
                       PANEL_SHAPE[i],
@@ -101,7 +111,7 @@ export function ImmersiveHero({ branches }: { branches: Branch[] }) {
                       <span className="absolute inset-y-0 -left-[32%] -right-[32%] block [transform:skewX(9deg)]">
                         <Image
                           src={panel.src}
-                          alt=""
+                          alt={panel.alt}
                           fill
                           priority={i < 2}
                           sizes="(max-width: 640px) 40vw, (max-width: 1024px) 28vw, 24vw"
@@ -109,13 +119,13 @@ export function ImmersiveHero({ branches }: { branches: Branch[] }) {
                         />
                       </span>
                     </span>
+                    <span className="sr-only">{panel.alt}</span>
                   </Link>
                 ))}
               </div>
             </motion.div>
           </motion.div>
 
-          {/* Booking */}
           <motion.div
             {...fade(0.08)}
             id="booking-console"
@@ -125,7 +135,10 @@ export function ImmersiveHero({ branches }: { branches: Branch[] }) {
           </motion.div>
         </div>
 
-        <div className="no-scrollbar -mx-1 mt-5 flex items-center gap-2 overflow-x-auto px-1 pb-10 sm:mt-8 sm:pb-12 lg:pb-14">
+        <nav
+          aria-label="Popular self-drive searches"
+          className="no-scrollbar -mx-1 mt-5 flex items-center gap-2 overflow-x-auto px-1 pb-10 sm:mt-8 sm:pb-12 lg:pb-14"
+        >
           <span className="shrink-0 text-[12px] font-semibold text-ink-400 sm:text-[12.5px]">
             Popular:
           </span>
@@ -138,7 +151,7 @@ export function ImmersiveHero({ branches }: { branches: Branch[] }) {
               {item.label}
             </Link>
           ))}
-        </div>
+        </nav>
       </div>
     </section>
   );

@@ -280,68 +280,142 @@ export const CARS: Car[] = [
   },
 ];
 
+/** Testimonials from https://www.tranzcars.com (unique reviews). */
 export const TESTIMONIALS: Testimonial[] = [
   {
     id: "1",
+    name: "Ravi Jakhar",
+    title: "It was a great experience!",
+    body: "We hired a car for Kerala trip from them. This trip was so fantastic and car company service was very good. Provided a new condition car. Thanks Tranz Cars.",
+  },
+  {
+    id: "2",
     name: "Muzamil Hasham",
-    title: "Seamless airport delivery",
-    body: "Right from booking to delivery at Kochi Airport and pickup after, the process was seamless. Clean car, prompt deposit refund. Highly recommend.",
+    title: "Good Experience",
+    body: "Great experience over all. Right from booking process to delivery at airport and pick up after we used the car was quite seamless. The car was clean and had no issues. The refund process of the deposit was also very seamless and promptly done. Highly recommend Tranz cars.",
   },
   {
-    id: "2",
+    id: "3",
     name: "Karthikeyan M S",
-    title: "Thar for Munnar & Vagamon",
-    body: "Booked Thar Roxx for Munnar and Vagamon. Car was clean, documents hassle-free, and Vineesh arranged everything on time. 10/10.",
+    title: "Good Experience",
+    body: "We booked Thar Roxx in Tranzcars with Vineesh for Munnar and Vagamon trip. Car was so clean and hassle free process related to documents. Car was maintained in very good condition and their service is top. Mr. Vineesh assisted throughout the process — he was kind and arranged everything on time. On a scale of 1 to 10 I'll recommend this for 10.",
   },
   {
-    id: "3",
+    id: "4",
     name: "Parivesh C",
-    title: "3 AM airport pickup",
-    body: "Took Swift AT for 8 days with Kochi Airport pickup at 3 AM. Staff on time, car like new. Best self-drive rental I've used.",
-  },
-  {
-    id: "4",
-    name: "Deepak Deepu",
-    title: "10-day rental",
-    body: "Outstanding service. Smooth pickup and drop at Kochi Airport for a 10-day rental. Friendly staff and a flawless car.",
-  },
-];
-
-export const FAQS: Faq[] = [
-  {
-    id: "1",
-    question: "Is TranzCars a government-approved rental company?",
-    answer:
-      "Yes. TranzCars is a government-approved, licensed self-drive operator in Kerala (MVD authorised), offering cars and bikes since 2017.",
-  },
-  {
-    id: "2",
-    question: "How many free kilometres do I get per day?",
-    answer:
-      "Car rentals include 120 km free per day. Bike & scooter rentals include 80–100 km free per day depending on the model. Extra kilometres are charged at the published per-km rate.",
-  },
-  {
-    id: "3",
-    question: "Can I pick up at Cochin Airport?",
-    answer:
-      "Yes. TranzCars offers pickup and drop for cars and bikes at Cochin International Airport and Ernakulam railway station, with advance booking. Home delivery is also available within service areas.",
-  },
-  {
-    id: "4",
-    question: "Do I need to pay a security deposit?",
-    answer:
-      "A refundable security deposit applies and is returned after your trip, minus any tolls or fines.",
+    title: "Quickly and Efficiently",
+    body: "This is the best car rental I have used so far. I took Swift AT for 8 days and it was a wonderful experience. My pickup and drop was at Kochi airport and they provide services round the clock. They delivered the car at 3 AM in the morning. The guy was on time and we didn't have to wait at all. Cars are in very good condition — good as new. Highly recommended.",
   },
   {
     id: "5",
-    question: "What documents do I need?",
-    answer:
-      "Cars: original LMV licence held for at least 1 year. Bikes & scooters: valid two-wheeler licence (MCWG / equivalent). Aadhaar or passport for ID. Drivers must be 21 or older. Self-drive only — no chauffeur.",
+    name: "Deepak Deepu",
+    title: "Great collaboration",
+    body: "Outstanding service from Tranzcars! Easily the best car rental experience I've had. Super smooth pickup and drop-off right at Kochi Airport for my 10-day rental. Extremely nice staff, great dealings, and a flawless car. Will definitely use them again!",
   },
   {
     id: "6",
-    question: "When do I need to create an account?",
+    name: "Manojkumar M",
+    title: "It was a great experience!",
+    body: "I had a fantastic experience with Tranz Cars Kalamassery. What impressed me most was the wide range of cars they have available — everything from budget-friendly hatchbacks to premium SUVs. All the vehicles are in excellent condition, very clean, and well-maintained. If you're looking for variety and quality at a fair price, this is the place to go!",
+  },
+  {
+    id: "7",
+    name: "Travel Diaries India",
+    title: "Quickly and Efficiently",
+    body: "I want to say a big thank you to Tranzcars for giving us a wonderful service. We hired a car for two days and the check out as well as check in process was hassle free and done in not less than ten minutes even though it was in the morning at 6am. The car was clean and in good condition and we got it at an affordable price with kms range that was beyond the limit which other service providers gave. Overall, it was a good trip with a safe ride.",
+  },
+];
+
+/** FAQs curated from https://www.tranzcars.com and /faq */
+export const FAQS: Faq[] = [
+  {
+    id: "1",
+    question: "Is TranzCars a government-approved car rental company?",
     answer:
-      "You can search and browse cars & bikes without signing in. We only ask for mobile OTP verification at checkout before payment.",
+      "Yes. TranzCars is a government-approved, licensed self-drive car rental operator in Kerala, operating since 2017 as a Kerala Govt Approved Self Drive Rent A Cab company.",
+  },
+  {
+    id: "2",
+    question: "Am I eligible to use TranzCars services?",
+    answer:
+      "Indian citizens must be above 23 years of age, hold a valid Indian driving licence that is at least three years old, and present an Aadhaar card or voter ID. Foreign nationals must be above 23, hold a valid International Driving Permit, their home-country driving licence, and a passport with a valid visa. Original documents are required at delivery.",
+  },
+  {
+    id: "3",
+    question: "How many free kilometres do I get per day?",
+    answer:
+      "Every TranzCars rental includes 120 km of free driving per day. Extra kilometres beyond the daily free limit are charged at the published per-km rate for that vehicle.",
+  },
+  {
+    id: "4",
+    question: "Can I pick up a car at Cochin Airport?",
+    answer:
+      "Yes. TranzCars offers pickup and drop at Cochin International Airport and Ernakulam railway station, plus doorstep / home delivery across service areas in Kerala and South India.",
+  },
+  {
+    id: "5",
+    question: "Do I need to pay a security deposit?",
+    answer:
+      "Yes. A refundable security deposit is collected and returned after your trip (typically within 7 working days), minus any tolls, fines or damages as per the terms.",
+  },
+  {
+    id: "6",
+    question: "What documents do I need at delivery?",
+    answer:
+      "Original driving licence (with clear photo) and Aadhaar or passport. Printed A4 copies of the licence are not accepted. Foreign nationals also need the original International Driving Permit, home-country licence, and passport. Missing originals are treated as a late cancellation.",
+  },
+  {
+    id: "7",
+    question: "Can I book a TranzCars car with a driver?",
+    answer:
+      "No. TranzCars is self-drive only — you drive the vehicle yourself. There is no chauffeur option.",
+  },
+  {
+    id: "8",
+    question: "Does TranzCars operate outside Kochi?",
+    answer:
+      "Yes. TranzCars is headquartered in Kochi and operates throughout Kerala (including Trivandrum and Calicut), with delivery and drop-off available anywhere in South India.",
+  },
+  {
+    id: "9",
+    question: "Is fuel included in my booking?",
+    answer:
+      "Fuel is not included. Return the vehicle at the same fuel level you received. Top-up costs apply if the level is lower; unused extra fuel is not refunded.",
+  },
+  {
+    id: "10",
+    question: "Who pays for tolls, parking and traffic fines?",
+    answer:
+      "You pay tolls, FasTag usage, parking, interstate entry taxes and any traffic / parking fines incurred during the rental. Challans that arrive after return remain your responsibility.",
+  },
+  {
+    id: "11",
+    question: "What if I need to modify or cancel my booking?",
+    answer:
+      "You can modify or cancel via the website or by calling us. Charges depend on how close you are to pick-up time — see the Cancellation Policy. Security deposit is fully refundable on cancellations including no-shows; deductions apply only to rental and delivery charges.",
+  },
+  {
+    id: "12",
+    question: "How long do refunds take?",
+    answer:
+      "Refunds are typically initiated within 7 working days to the original payment account or bank. Bank processing may add a few days — contact us if a refund has not appeared after 7 working days.",
+  },
+  {
+    id: "13",
+    question: "Is there a speed limit?",
+    answer:
+      "Yes. Vehicles have tracking devices and the maximum speed limit is 80 km/h. Overspeeding attracts a penalty as per company policy.",
+  },
+  {
+    id: "14",
+    question: "Can I take a pet along?",
+    answer:
+      "Pets are not allowed in TranzCars vehicles. A cleaning charge applies if this rule is violated.",
+  },
+  {
+    id: "15",
+    question: "What do I do if the vehicle breaks down or I meet with an accident?",
+    answer:
+      "Call TranzCars immediately on +91 98950 41111. Do not leave the scene unless unavoidable. Take spot photos, inform the local police (GD / FIR as required), and follow instructions from our team and the insurer.",
   },
 ];

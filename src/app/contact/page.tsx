@@ -8,9 +8,9 @@ import { Badge } from "@/components/ui/badge";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Contact TranzCars Kochi",
+  title: "Contact TranzCars Kochi — 24/7 self-drive bookings",
   description:
-    "Call, WhatsApp or write to TranzCars for self-drive bookings, airport delivery and extensions across Kochi and Kerala. Open 24/7.",
+    "Call +91 98950 41111 or WhatsApp TranzCars Kochi for self-drive car rental, Cochin Airport delivery and trip extensions. South Kalamassery desk open 24/7.",
   path: "/contact",
 });
 
@@ -46,9 +46,15 @@ export default function ContactPage() {
             >
               {BUSINESS_RULES.phoneDisplay}
             </a>
+            <a
+              href={`tel:${BUSINESS_RULES.phoneAltE164}`}
+              className="mt-1 block text-[15px] font-semibold text-ink-600 transition-colors hover:text-brand-600"
+            >
+              {BUSINESS_RULES.phoneAltDisplay}
+            </a>
             <p className="mt-2 text-[13.5px] leading-relaxed text-ink-500">
               Call for same-day availability, airport hand-over timings and
-              long-term rates.
+              long-term rates. Open 24/7.
             </p>
 
             <div className="mt-5 grid gap-2.5 sm:grid-cols-2">
@@ -98,11 +104,11 @@ export default function ContactPage() {
             </h2>
             <p className="mt-3 flex gap-3 text-[14px] leading-relaxed text-ink-600">
               <MapPin className="mt-0.5 size-4 shrink-0 text-ink-400" />
-              TranzCars, Kalamassery, Kochi, Kerala 683104
+              {BUSINESS_RULES.addressLine}
             </p>
             <p className="mt-2.5 flex gap-3 text-[14px] text-ink-600">
               <Mail className="mt-0.5 size-4 shrink-0 text-ink-400" />
-              hello@tranzcars.com
+              {BUSINESS_RULES.email}
             </p>
           </div>
         </div>

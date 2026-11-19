@@ -31,9 +31,9 @@ export function HowItWorks() {
       <div className="container-page">
         <Reveal>
           <SectionHeading
-            eyebrow="How it works"
-            title="Three steps from landing to driving."
-            description="A booking flow built for travellers, not paperwork."
+            eyebrow="How self-drive booking works"
+            title="Airport to keys in three steps."
+            description="Search self-drive cars in Kochi without an account — OTP only when you pay."
             action={
               <Button asChild variant="outline">
                 <Link href="/cars">Start a booking</Link>

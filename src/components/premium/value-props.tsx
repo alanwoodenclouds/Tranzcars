@@ -7,23 +7,23 @@ import { RevealItem, RevealStagger } from "@/components/motion/reveal";
 const PROPS = [
   {
     icon: ShieldCheck,
-    title: "MVD approved",
-    body: `Licensed self-drive since ${BUSINESS_RULES.foundedYear}. Insurance and paperwork sorted before you arrive.`,
+    title: "Kerala Govt / MVD approved",
+    body: `Licensed self-drive Rent A Cab since ${BUSINESS_RULES.foundedYear}. Insurance and paperwork ready before you arrive.`,
   },
   {
     icon: Gauge,
-    title: `${BUSINESS_RULES.kmPerDay} free km daily`,
-    body: "Real Kerala distances, no nickel-and-diming. Extra km billed at a flat, published rate.",
+    title: `${BUSINESS_RULES.kmPerDay} free km every day`,
+    body: "Built for Kerala distances. Extra kilometres billed only at a flat, published rate.",
   },
   {
     icon: MapPinned,
-    title: "Delivered to you",
-    body: "Cochin airport, railway stations, our branches, or your doorstep across Kochi.",
+    title: "Cochin Airport delivery",
+    body: "Pickup at COK, railway stations, branches, or doorstep delivery across Kochi & South India.",
   },
   {
     icon: Headphones,
-    title: "24/7 road support",
-    body: "One number for breakdowns, extensions and route advice — answered by humans.",
+    title: "24/7 roadside support",
+    body: "One Kerala number for breakdowns, extensions and route advice — answered by humans.",
   },
 ];
 

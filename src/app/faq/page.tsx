@@ -14,9 +14,9 @@ import {
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "FAQ — self-drive rental help",
+  title: "Self-drive car rental FAQ Kochi — documents, km & deposits",
   description:
-    "FAQ for TranzCars self-drive rentals — MVD approval, free km/day, Kochi Airport pickup, deposits, licences and eligibility.",
+    "TranzCars FAQ: Kerala Govt / MVD approval, 120 km free/day, Cochin Airport pickup, security deposit, licence rules (23+, 3 years), fuel, tolls and refunds.",
   path: "/faq",
 });
 
@@ -24,22 +24,22 @@ const QUICK_FACTS = [
   {
     icon: IdCard,
     label: "Eligibility",
-    value: `${BUSINESS_RULES.eligibilityAge}+ years, LMV licence held ${BUSINESS_RULES.licenceYears}+ year`,
+    value: `${BUSINESS_RULES.eligibilityAge}+ years, Indian DL held ${BUSINESS_RULES.licenceYears}+ years`,
   },
   {
     icon: Gauge,
     label: "Free kilometres",
-    value: `${BUSINESS_RULES.kmPerDay} km per day on cars`,
+    value: `${BUSINESS_RULES.kmPerDay} km free every day`,
   },
   {
     icon: ShieldCheck,
-    label: "Minimum rental",
-    value: `${BUSINESS_RULES.minRentalHours} hours`,
+    label: "Support",
+    value: "24×7 roadside & customer care",
   },
   {
     icon: BadgeCheck,
     label: "Approval",
-    value: "MVD-authorised self-drive fleet",
+    value: "Kerala Govt approved since 2017",
   },
 ];
 
@@ -87,7 +87,10 @@ export default async function FaqPage() {
         </div>
       </section>
 
-      <FaqSection faqs={faqs} title="Frequently asked questions" />
+      <FaqSection
+        faqs={faqs}
+        title="Self-drive car rental questions, answered"
+      />
     </>
   );
 }
