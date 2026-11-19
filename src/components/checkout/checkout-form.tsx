@@ -20,6 +20,7 @@ import { BUSINESS_RULES } from "@/content/site";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { BindMobileDialog } from "@/components/auth/bind-mobile-dialog";
 import { OtpDialog } from "@/components/auth/otp-dialog";
 import { TripScheduleDialog } from "@/components/booking/trip-schedule-dialog";
 import { useAuthStore } from "@/store/useAuthStore";
@@ -51,6 +52,7 @@ export function CheckoutForm({
   const search = useBookingStore((s) => s.search);
   const addBooking = useBookingsStore((s) => s.addBooking);
   const [otpOpen, setOtpOpen] = useState(false);
+  const [bindOpen, setBindOpen] = useState(false);
   const [scheduleOpen, setScheduleOpen] = useState(false);
   const [coupon, setCoupon] = useState("");
   const [couponOff, setCouponOff] = useState(0);
@@ -85,33 +87,83 @@ export function CheckoutForm({
     }
   }
 
-  function completePay() {
+  async function completePay() {
     if (!user) return;
     setPaying(true);
-    const booking = addBooking({
-      carId: car.id,
-      carSlug: car.slug,
-      carName: car.name,
-      carImage: car.image,
-      pickupBranchId: search.pickupBranchId,
-      pickupLabel: search.pickupLabel,
-      dropoffBranchId: search.dropoffBranchId || search.pickupBranchId,
-      dropoffLabel: search.dropoffLabel || search.pickupLabel,
-      pickupDate: search.pickupDate,
-      pickupTime: search.pickupTime,
-      dropoffDate: search.dropoffDate,
-      dropoffTime: search.dropoffTime,
-      days: quote.days,
-      subtotal: quote.subtotal,
-      delivery: quote.delivery,
-      discount: quote.discount,
-      total: quote.total,
-      status: "upcoming",
-      mobile: user.mobile,
-    });
-    toast("Booking confirmed", "success");
-    setNote(`Payment successful. Taking you to your trip…`);
-    setTimeout(() => router.push(`/trips/${booking.id}`), 700);
+    try {
+      const pickupAt = `${search.pickupDate}T${search.pickupTime || "10:00"}:00`;
+      const dropoffAt = `${search.dropoffDate}T${search.dropoffTime || "10:00"}:00`;
+      const discountKind =
+        coupon.trim().toUpperCase() === "SENIOR15"
+          ? "senior"
+          : coupon.trim().toUpperCase() === "LADY10"
+            ? "lady"
+            : "";
+
+      let remoteId: string | undefined;
+      if (user.token && !user.token.startsWith("mock-")) {
+        const res = await fetch("/api/bookings", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+          body: JSON.stringify({
+            variant: Number(car.id),
+            pickup_branch: Number(search.pickupBranchId),
+            dropoff_branch: Number(
+              search.dropoffBranchId || search.pickupBranchId
+            ),
+            pickup_at: pickupAt,
+            dropoff_at: dropoffAt,
+            discount_kind: discountKind,
+          }),
+        });
+        const data = (await res.json()) as {
+          id?: number;
+          detail?: string;
+          code?: string;
+        };
+        if (!res.ok) {
+          if (data.code === "mobile_required") {
+            setBindOpen(true);
+            setPaying(false);
+            return;
+          }
+          throw new Error(data.detail || "Could not create booking");
+        }
+        remoteId = data.id != null ? String(data.id) : undefined;
+      }
+
+      const booking = addBooking({
+        id: remoteId,
+        carId: car.id,
+        carSlug: car.slug,
+        carName: car.name,
+        carImage: car.image,
+        pickupBranchId: search.pickupBranchId,
+        pickupLabel: search.pickupLabel,
+        dropoffBranchId: search.dropoffBranchId || search.pickupBranchId,
+        dropoffLabel: search.dropoffLabel || search.pickupLabel,
+        pickupDate: search.pickupDate,
+        pickupTime: search.pickupTime,
+        dropoffDate: search.dropoffDate,
+        dropoffTime: search.dropoffTime,
+        days: quote.days,
+        subtotal: quote.subtotal,
+        delivery: quote.delivery,
+        discount: quote.discount,
+        total: quote.total,
+        status: "upcoming",
+        mobile: user.mobile || "",
+      });
+      toast("Booking confirmed", "success");
+      setNote(`Payment successful. Taking you to your trip…`);
+      setTimeout(() => router.push(`/trips/${booking.id}`), 700);
+    } catch (e) {
+      toast(e instanceof Error ? e.message : "Booking failed", "error");
+      setPaying(false);
+    }
   }
 
   function attemptPay() {
@@ -124,11 +176,15 @@ export function CheckoutForm({
       setOtpOpen(true);
       return;
     }
+    if (!user.mobileBound && !(user.mobile || "").trim()) {
+      setBindOpen(true);
+      return;
+    }
     if (!docsOk) {
       setNote("Please confirm you’ll carry your original licence and ID.");
       return;
     }
-    completePay();
+    void completePay();
   }
 
   const steps = [
@@ -381,7 +437,7 @@ export function CheckoutForm({
             {user ? (
               <p className="mt-3 flex items-center justify-center gap-1.5 text-[12px] font-semibold text-jade-600">
                 <CheckCircle2 className="size-3.5" />
-                Signed in as {user.mobile}
+                Signed in as {user.mobile ? `+91 ${user.mobile}` : user.email || "customer"}
               </p>
             ) : (
               <p className="mt-3 text-center text-[12px] text-ink-500">
@@ -414,6 +470,15 @@ export function CheckoutForm({
         onVerified={() => {
           setNote("Verified. Confirm your documents, then pay.");
           toast("Signed in — you can complete payment", "success");
+        }}
+      />
+
+      <BindMobileDialog
+        open={bindOpen}
+        onOpenChange={setBindOpen}
+        onBound={() => {
+          setNote("Mobile linked. You can complete payment.");
+          toast("Mobile linked", "success");
         }}
       />
 

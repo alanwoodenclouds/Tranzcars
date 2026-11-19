@@ -56,9 +56,11 @@ export const FAQ_CATEGORY_LABELS: Record<FaqCategory, string> = {
 
 export type UserSession = {
   token: string;
-  mobile: string;
+  refresh?: string;
+  mobile?: string | null;
   name?: string;
   email?: string;
+  mobileBound?: boolean;
 };
 
 export { BUSINESS_RULES } from "@/constants/businessRules";

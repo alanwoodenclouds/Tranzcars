@@ -49,7 +49,10 @@ export default function TripDetailPage({ params }: Props) {
     );
   }
 
-  if (!booking || booking.mobile !== user.mobile) {
+  if (
+    !booking ||
+    (user.mobile ? booking.mobile !== user.mobile : false)
+  ) {
     return (
       <div className="container-page py-20">
         <div className="mx-auto flex max-w-md flex-col items-center rounded-[var(--radius-2xl)] border border-hairline bg-surface px-6 py-14 text-center">

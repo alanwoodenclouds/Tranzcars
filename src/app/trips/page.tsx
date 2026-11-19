@@ -38,7 +38,12 @@ export default function TripsPage() {
   const [tab, setTab] = useState<BookingStatus>("upcoming");
 
   const mine = useMemo(
-    () => (user ? bookings.filter((b) => b.mobile === user.mobile) : []),
+    () =>
+      user
+        ? bookings.filter((b) =>
+            user.mobile ? b.mobile === user.mobile : true
+          )
+        : [],
     [bookings, user]
   );
   const filtered = mine.filter((b) => b.status === tab);
@@ -55,7 +60,7 @@ export default function TripsPage() {
   return (
     <div className="container-page pb-20 pt-8 sm:pt-10">
       <PageHeading
-        eyebrow={user.name ? user.name : user.mobile}
+        eyebrow={user.name ? user.name : user.mobile || user.email || "Account"}
         title="My trips"
         action={
           <Button asChild variant="outline" className="w-full sm:w-auto">

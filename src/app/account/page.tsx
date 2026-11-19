@@ -32,12 +32,14 @@ export default function AccountPage() {
     return (
       <SignInGate
         title="Your account"
-        description="Sign in with a mobile OTP to manage your profile and trips."
+        description="Sign in to manage your profile and trips."
       />
     );
   }
 
-  const tripCount = bookings.filter((b) => b.mobile === user.mobile).length;
+  const tripCount = bookings.filter(
+    (b) => (user.mobile && b.mobile === user.mobile) || (!user.mobile && !b.mobile)
+  ).length;
 
   function onSave(e: React.FormEvent) {
     e.preventDefault();
@@ -62,7 +64,9 @@ export default function AccountPage() {
               {user.name || "Guest driver"}
             </h1>
             <p className="mt-1.5 flex flex-wrap items-center gap-2 text-[14px] leading-snug text-ink-500">
-              <span className="truncate">+91 {user.mobile}</span>
+              <span className="truncate">
+                {user.mobile ? `+91 ${user.mobile}` : user.email || "Signed in"}
+              </span>
               <Badge tone="success" size="sm">
                 <ShieldCheck />
                 Verified

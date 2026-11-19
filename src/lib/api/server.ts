@@ -7,32 +7,32 @@ import {
   TESTIMONIALS,
   BUSINESS_RULES,
 } from "@/content/site";
+import {
+  isPortalLive,
+  portalAuthConfig,
+  portalBindMobileSend,
+  portalBindMobileVerify,
+  portalBranches,
+  portalCreateBooking,
+  portalGoogleLogin,
+  portalListBookings,
+  portalMe,
+  portalPasswordLogin,
+  portalSendEmailOtp,
+  portalSendMobileOtp,
+  portalVariants,
+  portalVerifyEmailOtp,
+  portalVerifyMobileOtp,
+  type PortalAuthConfig,
+  type PortalAuthResult,
+} from "@/lib/api/portal";
 
-const isMockMode = () => process.env.USE_MOCK_API !== "false";
-
-async function upstream<T>(path: string, init?: RequestInit): Promise<T | null> {
-  const base = process.env.API_BASE_URL ?? "https://api.tranzcars.com";
-  try {
-    const res = await fetch(`${base.replace(/\/$/, "")}/${path.replace(/^\//, "")}`, {
-      ...init,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        ...(init?.headers ?? {}),
-      },
-      next: { revalidate: 60 },
-    });
-    if (!res.ok) return null;
-    return (await res.json()) as T;
-  } catch {
-    return null;
-  }
-}
+const isMockMode = () => !isPortalLive();
 
 export async function getBranches(): Promise<Branch[]> {
   if (isMockMode()) return BRANCHES;
-  const data = await upstream<Branch[]>("branches");
-  return data?.length ? data : BRANCHES;
+  const data = await portalBranches();
+  return data.length ? data : BRANCHES;
 }
 
 export async function getCars(filters?: {
@@ -43,8 +43,8 @@ export async function getCars(filters?: {
 }): Promise<Car[]> {
   let cars = CARS;
   if (!isMockMode()) {
-    const data = await upstream<Car[]>("bookings/get-cars");
-    if (data?.length) cars = data;
+    const data = await portalVariants();
+    if (data.length) cars = data;
   }
   return cars.filter((car) => {
     if (filters?.category && (car.category ?? "car") !== filters.category)
@@ -77,9 +77,7 @@ export async function getPopularCars(): Promise<Car[]> {
 }
 
 export async function getTestimonials(): Promise<Testimonial[]> {
-  if (isMockMode()) return TESTIMONIALS;
-  const data = await upstream<Testimonial[]>("testimonials");
-  return data?.length ? data : TESTIMONIALS;
+  return TESTIMONIALS;
 }
 
 function normalizeFaq(item: Partial<Faq>, index: number): Faq {
@@ -99,25 +97,14 @@ function normalizeFaq(item: Partial<Faq>, index: number): Faq {
 
 export async function getFaqs(): Promise<Faq[]> {
   if (isMockMode()) return FAQS;
-  const data = await upstream<Partial<Faq>[]>("faqs");
-  if (!data?.length) return FAQS;
-  return data.map((item, index) => normalizeFaq(item, index));
+  return FAQS.map((item, index) => normalizeFaq(item, index));
 }
 
 export async function getSettings() {
-  if (isMockMode()) {
-    return {
-      delivery_charge: BUSINESS_RULES.deliveryCharge,
-      km_per_day: BUSINESS_RULES.kmPerDay,
-    };
-  }
-  const data = await upstream<Record<string, number>>("settings");
-  return (
-    data ?? {
-      delivery_charge: BUSINESS_RULES.deliveryCharge,
-      km_per_day: BUSINESS_RULES.kmPerDay,
-    }
-  );
+  return {
+    delivery_charge: BUSINESS_RULES.deliveryCharge,
+    km_per_day: BUSINESS_RULES.kmPerDay,
+  };
 }
 
 export type OtpSendResult = { ok: boolean; message: string };
@@ -125,10 +112,56 @@ export type OtpVerifyResult = {
   ok: boolean;
   message: string;
   token?: string;
+  refresh?: string;
   name?: string;
+  email?: string;
+  mobile?: string | null;
+  mobile_bound?: boolean;
+  account?: PortalAuthResult["account"];
 };
 
-/** Mock OTP: any 4-digit code works in mock mode; live mode proxies upstream */
+function toVerifyResult(res: PortalAuthResult): OtpVerifyResult {
+  if (!res.ok || !res.access) {
+    return { ok: false, message: res.message };
+  }
+  return {
+    ok: true,
+    message: res.message,
+    token: res.access,
+    refresh: res.refresh,
+    name: res.account?.name,
+    email: res.account?.email,
+    mobile: res.account?.mobile,
+    mobile_bound: Boolean(res.account?.mobile),
+    account: res.account,
+  };
+}
+
+export async function getAuthConfig(): Promise<PortalAuthConfig> {
+  if (isMockMode()) {
+    return {
+      email_password_login_enabled: true,
+      email_otp_login_enabled: true,
+      phone_otp_login_enabled: true,
+      google_login_enabled: true,
+      apple_login_enabled: false,
+      google_client_id: "",
+      enabled_methods: ["Email", "Email OTP", "Phone OTP", "Google"],
+    };
+  }
+  return (
+    (await portalAuthConfig()) || {
+      email_password_login_enabled: false,
+      email_otp_login_enabled: false,
+      phone_otp_login_enabled: true,
+      google_login_enabled: false,
+      apple_login_enabled: false,
+      google_client_id: "",
+      enabled_methods: ["Phone OTP"],
+    }
+  );
+}
+
 export async function sendOtp(mobile: string): Promise<OtpSendResult> {
   if (!/^[6-9]\d{9}$/.test(mobile)) {
     return { ok: false, message: "Enter a valid 10-digit Indian mobile number." };
@@ -136,13 +169,7 @@ export async function sendOtp(mobile: string): Promise<OtpSendResult> {
   if (isMockMode()) {
     return { ok: true, message: "OTP sent (use 1234 in demo mode)." };
   }
-  const data = await upstream<{ message?: string }>("auths", {
-    method: "POST",
-    body: JSON.stringify({ mobile }),
-  });
-  return data
-    ? { ok: true, message: data.message ?? "OTP sent." }
-    : { ok: false, message: "Could not send OTP. Try again." };
+  return portalSendMobileOtp(mobile);
 }
 
 export async function verifyOtp(
@@ -156,24 +183,122 @@ export async function verifyOtp(
         message: "Verified",
         token: `mock-token-${mobile}`,
         name: "Guest Driver",
+        mobile,
+        mobile_bound: true,
       };
     }
     return { ok: false, message: "Invalid OTP." };
   }
-  const data = await upstream<{ token?: string; name?: string; message?: string }>(
-    "auths/validate-otp",
-    {
-      method: "POST",
-      body: JSON.stringify({ mobile, otp }),
+  return toVerifyResult(await portalVerifyMobileOtp(mobile, otp));
+}
+
+export async function sendEmailOtp(email: string): Promise<OtpSendResult> {
+  if (!email.includes("@")) {
+    return { ok: false, message: "Enter a valid email address." };
+  }
+  if (isMockMode()) {
+    return { ok: true, message: "OTP sent (use 1234 in demo mode)." };
+  }
+  return portalSendEmailOtp(email);
+}
+
+export async function verifyEmailOtp(
+  email: string,
+  otp: string
+): Promise<OtpVerifyResult> {
+  if (isMockMode()) {
+    if (otp === "1234" || /^\d{4}$/.test(otp)) {
+      return {
+        ok: true,
+        message: "Verified",
+        token: `mock-token-${email}`,
+        name: "Guest Driver",
+        email,
+        mobile_bound: false,
+      };
     }
-  );
-  if (data?.token) {
+    return { ok: false, message: "Invalid OTP." };
+  }
+  return toVerifyResult(await portalVerifyEmailOtp(email, otp));
+}
+
+export async function passwordLogin(
+  email: string,
+  password: string
+): Promise<OtpVerifyResult> {
+  if (isMockMode()) {
+    if (password.length >= 4) {
+      return {
+        ok: true,
+        message: "Signed in",
+        token: `mock-token-${email}`,
+        email,
+        name: "Guest Driver",
+        mobile_bound: false,
+      };
+    }
+    return { ok: false, message: "Invalid email or password." };
+  }
+  return toVerifyResult(await portalPasswordLogin(email, password));
+}
+
+export async function googleLogin(idToken: string): Promise<OtpVerifyResult> {
+  if (isMockMode()) {
     return {
       ok: true,
-      message: "Verified",
-      token: data.token,
-      name: data.name,
+      message: "Signed in",
+      token: "mock-token-google",
+      email: "driver@example.com",
+      name: "Google Driver",
+      mobile_bound: false,
     };
   }
-  return { ok: false, message: data?.message ?? "Invalid OTP." };
+  return toVerifyResult(await portalGoogleLogin(idToken));
+}
+
+export async function bindMobileSend(
+  token: string,
+  mobile: string
+): Promise<OtpSendResult> {
+  if (!/^[6-9]\d{9}$/.test(mobile)) {
+    return { ok: false, message: "Enter a valid 10-digit Indian mobile number." };
+  }
+  if (isMockMode()) {
+    return { ok: true, message: "OTP sent (use 1234 in demo mode)." };
+  }
+  return portalBindMobileSend(token, mobile);
+}
+
+export async function bindMobileVerify(
+  token: string,
+  mobile: string,
+  otp: string
+): Promise<OtpVerifyResult> {
+  if (isMockMode()) {
+    if (otp === "1234" || /^\d{4}$/.test(otp)) {
+      return { ok: true, message: "Mobile linked.", mobile, mobile_bound: true };
+    }
+    return { ok: false, message: "Invalid OTP." };
+  }
+  return toVerifyResult(await portalBindMobileVerify(token, mobile, otp));
+}
+
+export async function fetchPortalMe(token: string) {
+  if (isMockMode()) return null;
+  return portalMe(token);
+}
+
+export async function fetchPortalBookings(token: string) {
+  if (isMockMode()) return [];
+  return portalListBookings(token);
+}
+
+export async function createPortalBooking(
+  token: string,
+  body: Record<string, unknown>
+) {
+  if (isMockMode()) {
+    return { ok: true, status: 201, data: { id: Date.now(), ...body } };
+  }
+  return portalCreateBooking(token, body);
 }

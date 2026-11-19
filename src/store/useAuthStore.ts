@@ -7,7 +7,7 @@ import type { UserSession } from "@/content/site";
 type AuthState = {
   user: UserSession | null;
   setUser: (user: UserSession | null) => void;
-  updateProfile: (partial: Pick<UserSession, "name" | "email">) => void;
+  updateProfile: (partial: Partial<UserSession>) => void;
   logout: () => void;
 };
 

@@ -301,7 +301,9 @@ export function SiteNav() {
                     <p className="text-sm font-bold">
                       {user.name || "Signed in"}
                     </p>
-                    <p className="text-xs text-ink-500">{user.mobile}</p>
+                    <p className="text-xs text-ink-500">
+                      {user.mobile ? `+91 ${user.mobile}` : user.email || "Signed in"}
+                    </p>
                   </div>
                   <Badge tone="success" size="sm">
                     Verified
@@ -328,7 +330,7 @@ export function SiteNav() {
                     setOtpOpen(true);
                   }}
                 >
-                  Sign in with OTP
+                  Sign in
                 </Button>
                 <a
                   href={`tel:${BUSINESS_RULES.phoneE164}`}
