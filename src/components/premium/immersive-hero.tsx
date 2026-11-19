@@ -96,7 +96,7 @@ export function ImmersiveHero({ branches }: { branches: Branch[] }) {
               self-drive car rental.
             </h1>
 
-            <p className="mt-3 max-w-md text-[15px] leading-relaxed text-white/75 sm:mt-3.5 sm:text-[16.5px]">
+            <p className="text-lead-on-dark mt-3 max-w-md sm:mt-3.5">
               Cars and bikes in Kochi — Cochin Airport pickup,{" "}
               {BUSINESS_RULES.kmPerDay} km free every day, transparent pricing
               since {BUSINESS_RULES.foundedYear}.
@@ -143,14 +143,14 @@ export function ImmersiveHero({ branches }: { branches: Branch[] }) {
           aria-label="Popular self-drive searches"
           className="no-scrollbar mt-5 flex items-center gap-2 overflow-x-auto pb-1 sm:mt-7"
         >
-          <span className="shrink-0 text-[12px] font-semibold text-white/45 sm:text-[12.5px]">
+          <span className="text-caption shrink-0 font-semibold text-white/45">
             Popular:
           </span>
           {POPULAR.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="shrink-0 rounded-full border border-white/15 bg-white/[0.07] px-3 py-1.5 text-[12px] font-semibold text-white/85 transition-colors hover:border-brand-400/50 hover:bg-white/[0.12] hover:text-white sm:px-3.5 sm:text-[12.5px]"
+              className="text-caption shrink-0 rounded-full border border-white/15 bg-white/[0.07] px-3 py-1.5 font-semibold text-white/85 transition-colors hover:border-brand-400/50 hover:bg-white/[0.12] hover:text-white sm:px-3.5"
             >
               {item.label}
             </Link>

@@ -25,21 +25,27 @@ export function FaqSection({
       <div className="container-page">
         <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
           <Reveal>
-            <p className="text-eyebrow mb-3">FAQ</p>
+            <p className="text-eyebrow mb-3 flex items-center gap-2">
+              <span
+                aria-hidden
+                className="inline-block h-px w-6 bg-brand-400"
+              />
+              FAQ
+            </p>
             <h2 className="text-display-md">{title}</h2>
             {showContact ? (
               <div className="mt-6 rounded-[var(--radius-xl)] border border-hairline bg-surface p-5">
                 <MessageCircleQuestion className="size-5 text-brand-500" />
-                <p className="mt-3 text-[14px] font-bold text-ink-900">
+                <p className="text-body-sm mt-3 font-bold text-ink-900">
                   Still unsure about something?
                 </p>
-                <p className="mt-1 text-[13px] leading-relaxed text-ink-500">
+                <p className="text-caption mt-1">
                   Our Kochi team answers licence, deposit and delivery questions
                   in minutes.
                 </p>
                 <Link
                   href="/contact"
-                  className="mt-3 inline-block text-[13.5px] font-bold text-brand-600 hover:underline"
+                  className="text-caption mt-3 inline-block font-bold text-brand-600 hover:underline"
                 >
                   Talk to a human →
                 </Link>

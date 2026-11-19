@@ -19,8 +19,17 @@ export function ClosingJourney() {
             />
 
             <div className="relative">
-              <p className="text-eyebrow">Self-drive rental Kochi</p>
-              <h2 id="closing-heading" className="text-display-lg mx-auto mt-4 max-w-2xl">
+              <p className="text-eyebrow inline-flex items-center justify-center gap-2">
+                <span
+                  aria-hidden
+                  className="inline-block h-px w-6 bg-brand-400"
+                />
+                Self-drive rental Kochi
+              </p>
+              <h2
+                id="closing-heading"
+                className="text-display-lg mx-auto mt-4 max-w-2xl"
+              >
                 Start your Kerala self-drive trip today.
               </h2>
               <p className="text-lead mx-auto mt-4 max-w-lg">

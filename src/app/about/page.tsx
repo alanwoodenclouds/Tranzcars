@@ -101,11 +101,17 @@ export default function AboutPage() {
       <section className="section-y">
         <div className="container-page grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <Reveal>
-            <p className="text-eyebrow mb-3">Our story</p>
+            <p className="text-eyebrow mb-3 flex items-center gap-2">
+              <span
+                aria-hidden
+                className="inline-block h-px w-6 bg-brand-400"
+              />
+              Our story
+            </p>
             <h2 className="text-display-md max-w-[18ch]">
               Built by people who drive these roads every week.
             </h2>
-            <div className="mt-5 space-y-4 text-[15px] leading-relaxed text-ink-600">
+            <div className="text-body mt-5 space-y-4">
               <p>
                 Freedom to drive Kerala on your own terms — in a safe,
                 well-maintained car, without a chauffeur watching the clock or a
@@ -124,7 +130,7 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <p className="mt-6 max-w-md border-l-2 border-brand-400 pl-4 text-[13.5px] leading-relaxed text-ink-500">
+            <p className="text-body-sm mt-6 max-w-md border-l-2 border-brand-400 pl-4">
               {BUSINESS_RULES.ownership}.
             </p>
 
@@ -146,10 +152,8 @@ export default function AboutPage() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink-950/55 via-transparent to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
-                <p className="font-display text-xl font-extrabold tracking-tight text-white sm:text-2xl">
-                  Hand-over in minutes.
-                </p>
-                <p className="mt-1.5 max-w-sm text-[13.5px] leading-relaxed text-white/75">
+                <p className="text-title-lg text-white">Hand-over in minutes.</p>
+                <p className="text-body-sm mt-1.5 max-w-sm text-white/75">
                   Documents, photos and fuel level confirmed together before you
                   drive away.
                 </p>
@@ -161,7 +165,7 @@ export default function AboutPage() {
                 {BUSINESS_RULES.googleRating}
                 <span className="text-brand-500">/5</span>
               </p>
-              <p className="mt-1 text-[12px] font-semibold uppercase tracking-[0.1em] text-ink-500">
+              <p className="text-meta mt-1">
                 {BUSINESS_RULES.googleReviewCount} Google reviews
               </p>
             </div>
@@ -189,12 +193,8 @@ export default function AboutPage() {
                     <v.icon className="size-5" strokeWidth={2} />
                   </span>
                   <div>
-                    <h3 className="font-display text-[17px] font-bold tracking-tight text-ink-900">
-                      {v.title}
-                    </h3>
-                    <p className="mt-2 text-[14px] leading-relaxed text-ink-600">
-                      {v.body}
-                    </p>
+                    <h3 className="text-title">{v.title}</h3>
+                    <p className="text-body-sm mt-2 text-ink-600">{v.body}</p>
                   </div>
                 </div>
               </RevealItem>
@@ -222,15 +222,11 @@ export default function AboutPage() {
                   {i + 1}
                 </span>
                 <div className="lg:mt-6">
-                  <p className="text-numeric font-display text-[15px] font-extrabold text-brand-600">
+                  <p className="text-numeric text-title text-brand-600">
                     {t.year}
                   </p>
-                  <h3 className="mt-1 font-display text-[17px] font-bold tracking-tight text-ink-900">
-                    {t.title}
-                  </h3>
-                  <p className="mt-2 text-[13.5px] leading-relaxed text-ink-500">
-                    {t.body}
-                  </p>
+                  <h3 className="text-title mt-1">{t.title}</h3>
+                  <p className="text-body-sm mt-2">{t.body}</p>
                 </div>
               </li>
             ))}
@@ -241,23 +237,19 @@ export default function AboutPage() {
       <section className="section-y-sm">
         <div className="container-page">
           <Reveal>
-            <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-              <div className="max-w-xl">
-                <p className="text-eyebrow mb-3">Where we operate</p>
-                <h2 className="text-display-md">
-                  Three cities. One phone number.
-                </h2>
-                <p className="text-lead mt-3">
-                  Pick up where your trip starts — or we bring the car to you.
-                </p>
-              </div>
-              <Button asChild variant="outline">
-                <Link href="/contact">
-                  <MapPin />
-                  Find a desk
-                </Link>
-              </Button>
-            </div>
+            <SectionHeading
+              eyebrow="Where we operate"
+              title="Three cities. One phone number."
+              description="Pick up where your trip starts — or we bring the car to you."
+              action={
+                <Button asChild variant="outline">
+                  <Link href="/contact">
+                    <MapPin />
+                    Find a desk
+                  </Link>
+                </Button>
+              }
+            />
           </Reveal>
 
           <RevealStagger className="mt-10 grid gap-4 sm:grid-cols-3">
@@ -274,15 +266,22 @@ export default function AboutPage() {
                     className="object-cover transition-transform duration-700 ease-[var(--ease-out-quint)] group-hover:scale-105"
                     sizes="(max-width: 640px) 100vw, 33vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-ink-950/75 via-ink-950/20 to-transparent" />
+                  <div
+                    aria-hidden
+                    className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/55 to-ink-950/20"
+                  />
+                  <div
+                    aria-hidden
+                    className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-ink-950/90 to-transparent"
+                  />
                   <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-5">
-                    <div>
-                      <h3 className="font-display text-2xl font-extrabold tracking-tight text-white">
+                    <div className="min-w-0">
+                      <h3 className="text-title-lg text-white drop-shadow-[0_1px_12px_rgba(0,0,0,0.55)]">
                         {p.city}
                       </h3>
-                      <p className="mt-0.5 text-[13px] text-white/70">{p.line}</p>
+                      <p className="text-caption mt-1 text-white/90">{p.line}</p>
                     </div>
-                    <span className="grid size-9 shrink-0 place-items-center rounded-full bg-white/15 text-white backdrop-blur transition-colors group-hover:bg-brand-500">
+                    <span className="grid size-9 shrink-0 place-items-center rounded-full bg-white text-ink-900 shadow-e2 transition-colors group-hover:bg-brand-500 group-hover:text-white">
                       <ArrowRight className="size-4" />
                     </span>
                   </div>

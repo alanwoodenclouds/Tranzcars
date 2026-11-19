@@ -317,9 +317,62 @@
     color: var(--color-ink-500);
   }
 
+  /* Small uppercase labels (stat keys, field labels, quick facts) */
+  .text-meta {
+    font-size: 0.6875rem;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-ink-500);
+  }
+
+  /* Card / list item titles — one weight & size across the site */
+  .text-title {
+    font-family: var(--font-display), sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.3;
+    letter-spacing: -0.024em;
+    font-weight: 700;
+    color: var(--color-ink-900);
+  }
+
+  .text-title-lg {
+    font-family: var(--font-display), sans-serif;
+    font-size: clamp(1.35rem, 2.2vw, 1.5rem);
+    line-height: 1.2;
+    letter-spacing: -0.028em;
+    font-weight: 800;
+  }
+
   .text-lead {
     font-size: clamp(1rem, 1.2vw, 1.125rem);
     line-height: 1.65;
+    color: var(--color-ink-500);
+  }
+
+  /* Hero / photo-band supporting copy on dark surfaces */
+  .text-lead-on-dark {
+    font-size: clamp(0.9375rem, 1.1vw, 1.03125rem);
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .text-body {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--color-ink-600);
+  }
+
+  .text-body-sm {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--color-ink-500);
+  }
+
+  .text-caption {
+    font-size: 0.8125rem;
+    line-height: 1.5;
     color: var(--color-ink-500);
   }
 
@@ -445,6 +498,11 @@
      ---------------------------------------------------------------------- */
   .animate-marquee {
     animation: marquee 38s linear infinite;
+  }
+
+  .animate-marquee-testimonials {
+    animation: marquee 48s linear infinite;
+    will-change: transform;
   }
 
   @keyframes marquee {

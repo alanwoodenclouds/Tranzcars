@@ -33,7 +33,13 @@ export function WhyTranzCars() {
       <div className="container-page">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <Reveal>
-            <p className="text-eyebrow mb-3">Why TranzCars</p>
+            <p className="text-eyebrow mb-3 flex items-center gap-2">
+              <span
+                aria-hidden
+                className="inline-block h-px w-6 bg-brand-400"
+              />
+              Why TranzCars
+            </p>
             <h2 className="text-display-md">
               Rental, minus the
               <br />
@@ -51,12 +57,8 @@ export function WhyTranzCars() {
                     <Check className="size-3.5" strokeWidth={3} />
                   </span>
                   <div>
-                    <p className="text-[15px] font-bold text-ink-900">
-                      {point.title}
-                    </p>
-                    <p className="mt-1 text-[13.5px] leading-relaxed text-ink-500">
-                      {point.body}
-                    </p>
+                    <p className="text-title">{point.title}</p>
+                    <p className="text-body-sm mt-1">{point.body}</p>
                   </div>
                 </li>
               ))}
@@ -80,14 +82,12 @@ export function WhyTranzCars() {
 
             <div className="relative z-10 mx-4 -mt-14 rounded-[var(--radius-xl)] border border-hairline bg-surface p-6 shadow-e3 sm:mx-8">
               <Quote className="size-6 text-brand-300" />
-              <p className="mt-3 text-[15px] font-medium leading-relaxed text-ink-800">
+              <p className="text-body mt-3 font-medium text-ink-800">
                 “We booked Thar Roxx for Munnar and Vagamon. Car was so clean,
                 documents hassle-free, and Vineesh arranged everything on time.
                 10/10.”
               </p>
-              <p className="mt-4 text-[12.5px] font-bold uppercase tracking-[0.1em] text-ink-500">
-                Karthikeyan M S
-              </p>
+              <p className="text-meta mt-4">Karthikeyan M S</p>
             </div>
           </Reveal>
         </div>

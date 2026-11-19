@@ -38,12 +38,8 @@ export function ValueProps() {
                 <span className="grid size-11 place-items-center rounded-full bg-brand-50 text-brand-600">
                   <item.icon className="size-[19px]" />
                 </span>
-                <h3 className="mt-5 font-display text-[17px] font-bold tracking-tight">
-                  {item.title}
-                </h3>
-                <p className="mt-2 text-[13.5px] leading-relaxed text-ink-500">
-                  {item.body}
-                </p>
+                <h3 className="text-title mt-5">{item.title}</h3>
+                <p className="text-body-sm mt-2">{item.body}</p>
               </div>
             </RevealItem>
           ))}

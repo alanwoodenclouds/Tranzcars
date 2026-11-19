@@ -86,7 +86,7 @@ export default async function CarDetailPage({ params }: Props) {
       />
       <Link
         href={isBike ? "/cars?category=bike" : "/cars"}
-        className="inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-ink-500 transition-colors hover:text-ink-900"
+        className="text-caption inline-flex items-center gap-1.5 font-semibold transition-colors hover:text-ink-900"
       >
         <ChevronLeft className="size-4" />
         Back to fleet
@@ -126,10 +126,8 @@ export default async function CarDetailPage({ params }: Props) {
             {specs.map((spec) => (
               <div key={spec.label} className="bg-surface p-4 sm:p-5">
                 <spec.icon className="size-[18px] text-brand-500" />
-                <dt className="mt-3 text-[11px] font-bold uppercase tracking-[0.1em] text-ink-500">
-                  {spec.label}
-                </dt>
-                <dd className="mt-1 text-[15px] font-bold text-ink-900">
+                <dt className="text-meta mt-3">{spec.label}</dt>
+                <dd className="text-body mt-1 font-bold text-ink-900">
                   {spec.value}
                 </dd>
               </div>
@@ -138,14 +136,12 @@ export default async function CarDetailPage({ params }: Props) {
 
           {car.features.length ? (
             <section className="mt-10">
-              <h2 className="font-display text-xl font-bold tracking-tight">
-                What&apos;s on board
-              </h2>
+              <h2 className="text-display-sm">What&apos;s on board</h2>
               <ul className="mt-4 flex flex-wrap gap-2">
                 {car.features.map((feature) => (
                   <li
                     key={feature}
-                    className="inline-flex items-center gap-1.5 rounded-full bg-ink-100 px-3 py-1.5 text-[13px] font-semibold text-ink-700"
+                    className="text-caption inline-flex items-center gap-1.5 rounded-full bg-ink-100 px-3 py-1.5 font-semibold text-ink-700"
                   >
                     <Sparkles className="size-3.5 text-brand-500" />
                     {feature}
@@ -158,10 +154,8 @@ export default async function CarDetailPage({ params }: Props) {
           <section className="mt-10 grid gap-4 sm:grid-cols-2">
             <div className="rounded-[var(--radius-xl)] border border-hairline bg-surface p-5">
               <IdCard className="size-5 text-brand-500" />
-              <h3 className="mt-3 font-display text-[15px] font-bold">
-                What to bring
-              </h3>
-              <p className="mt-1.5 text-[13px] leading-relaxed text-ink-500">
+              <h3 className="text-title mt-3">What to bring</h3>
+              <p className="text-caption mt-1.5">
                 Original driving licence held {BUSINESS_RULES.licenceYears}+ years
                 and Aadhaar or passport. Minimum age{" "}
                 {BUSINESS_RULES.eligibilityAge}+ (per rental terms).
@@ -169,10 +163,8 @@ export default async function CarDetailPage({ params }: Props) {
             </div>
             <div className="rounded-[var(--radius-xl)] border border-hairline bg-surface p-5">
               <Luggage className="size-5 text-brand-500" />
-              <h3 className="mt-3 font-display text-[15px] font-bold">
-                Fuel & returns
-              </h3>
-              <p className="mt-1.5 text-[13px] leading-relaxed text-ink-500">
+              <h3 className="text-title mt-3">Fuel & returns</h3>
+              <p className="text-caption mt-1.5">
                 Return at the same fuel level you received. Extra km beyond{" "}
                 {car.kmPerDay}/day is billed at a published flat rate.
               </p>

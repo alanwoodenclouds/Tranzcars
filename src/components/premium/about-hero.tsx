@@ -76,7 +76,11 @@ export function AboutHero() {
         <motion.div {...fade()} className="max-w-2xl sm:pb-12">
           <MvdBadge size="banner" tone="onDark" />
 
-          <p className="mt-5 text-[11px] font-bold uppercase tracking-[0.16em] text-brand-300 sm:mt-6">
+          <p className="text-eyebrow mt-5 flex items-center gap-2 text-brand-300 sm:mt-6">
+            <span
+              aria-hidden
+              className="inline-block h-px w-6 bg-brand-400"
+            />
             About TranzCars
           </p>
 
@@ -85,7 +89,7 @@ export function AboutHero() {
             <br className="hidden sm:block" /> built for the open road.
           </h1>
 
-          <p className="mt-4 max-w-md text-[15px] leading-relaxed text-white/75 sm:text-[16.5px]">
+          <p className="text-lead-on-dark mt-4 max-w-md">
             Govt-approved since {BUSINESS_RULES.foundedYear}. Kochi
             headquarters. Keys waiting at the airport, railway, or your door.
           </p>
@@ -124,9 +128,7 @@ export function AboutHero() {
               <dd className="text-numeric font-display text-[1.75rem] font-extrabold tracking-tight text-white sm:text-4xl">
                 {s.value}
               </dd>
-              <p className="mt-1.5 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-white/50 sm:text-[11px]">
-                {s.label}
-              </p>
+              <p className="text-meta mt-1.5 text-white/50">{s.label}</p>
             </div>
           ))}
         </motion.dl>

@@ -48,11 +48,11 @@ export default function ContactPage() {
             </a>
             <a
               href={`tel:${BUSINESS_RULES.phoneAltE164}`}
-              className="mt-1 block text-[15px] font-semibold text-ink-600 transition-colors hover:text-brand-600"
+              className="text-body mt-1 block font-semibold transition-colors hover:text-brand-600"
             >
               {BUSINESS_RULES.phoneAltDisplay}
             </a>
-            <p className="mt-2 text-[13.5px] leading-relaxed text-ink-500">
+            <p className="text-body-sm mt-2">
               Call for same-day availability, airport hand-over timings and
               long-term rates. Open 24/7.
             </p>
@@ -78,18 +78,16 @@ export default function ContactPage() {
           </div>
 
           <div className="rounded-[var(--radius-2xl)] border border-hairline bg-surface p-6">
-            <h2 className="font-display text-[16px] font-bold tracking-tight">
-              Pick-up & delivery points
-            </h2>
+            <h2 className="text-title">Pick-up & delivery points</h2>
             <ul className="mt-4 space-y-3.5">
               {BRANCHES.map((b) => (
                 <li key={b.id} className="flex gap-3">
                   <MapPin className="mt-0.5 size-4 shrink-0 text-brand-500" />
                   <div>
-                    <p className="text-[14px] font-semibold text-ink-900">
+                    <p className="text-body-sm font-semibold text-ink-900">
                       {b.name}
                     </p>
-                    <p className="text-[12.5px] text-ink-500">
+                    <p className="text-caption">
                       {b.city} · {BRANCH_LABEL[b.type] ?? b.type}
                     </p>
                   </div>
@@ -99,14 +97,12 @@ export default function ContactPage() {
           </div>
 
           <div className="rounded-[var(--radius-2xl)] border border-hairline bg-surface p-6">
-            <h2 className="font-display text-[16px] font-bold tracking-tight">
-              Head office
-            </h2>
-            <p className="mt-3 flex gap-3 text-[14px] leading-relaxed text-ink-600">
+            <h2 className="text-title">Head office</h2>
+            <p className="text-body-sm mt-3 flex gap-3 text-ink-600">
               <MapPin className="mt-0.5 size-4 shrink-0 text-ink-400" />
               {BUSINESS_RULES.addressLine}
             </p>
-            <p className="mt-2.5 flex gap-3 text-[14px] text-ink-600">
+            <p className="text-body-sm mt-2.5 flex gap-3 text-ink-600">
               <Mail className="mt-0.5 size-4 shrink-0 text-ink-400" />
               {BUSINESS_RULES.email}
             </p>

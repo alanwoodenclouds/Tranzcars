@@ -73,7 +73,15 @@ export function PageHeading({
       )}
     >
       <div className="max-w-2xl">
-        {eyebrow ? <p className="text-eyebrow mb-2.5">{eyebrow}</p> : null}
+        {eyebrow ? (
+          <p className="text-eyebrow mb-3 flex items-center gap-2">
+            <span
+              aria-hidden
+              className="inline-block h-px w-6 bg-brand-400"
+            />
+            {eyebrow}
+          </p>
+        ) : null}
         <h1 className="text-display-lg">{title}</h1>
         {description ? (
           <p className="text-lead mt-3">{description}</p>

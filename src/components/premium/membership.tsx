@@ -81,7 +81,7 @@ export function Membership() {
                 <div className="flex items-center justify-between gap-3">
                   <p
                     className={cn(
-                      "text-[11px] font-bold uppercase tracking-[0.16em]",
+                      "text-eyebrow",
                       plan.featured ? "text-ink-400" : "text-ink-500"
                     )}
                   >
@@ -96,7 +96,7 @@ export function Membership() {
 
                 <h3
                   className={cn(
-                    "mt-4 font-display text-2xl font-extrabold tracking-tight",
+                    "text-title-lg mt-4",
                     plan.featured && "text-white"
                   )}
                 >
@@ -104,7 +104,7 @@ export function Membership() {
                 </h3>
                 <p
                   className={cn(
-                    "mt-2 text-[13.5px] leading-relaxed",
+                    "text-body-sm mt-2",
                     plan.featured ? "text-ink-400" : "text-ink-500"
                   )}
                 >
@@ -113,7 +113,7 @@ export function Membership() {
 
                 <ul className="mt-7 flex-1 space-y-3.5">
                   {plan.perks.map((perk) => (
-                    <li key={perk} className="flex items-start gap-2.5 text-[13.5px]">
+                    <li key={perk} className="text-body-sm flex items-start gap-2.5">
                       <Check
                         className={cn(
                           "mt-0.5 size-4 shrink-0",

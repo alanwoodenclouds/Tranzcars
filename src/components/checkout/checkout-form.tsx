@@ -209,7 +209,7 @@ export function CheckoutForm({
               <Badge tone="neutral" size="sm">
                 {car.category === "bike" ? "Bike" : car.type}
               </Badge>
-              <h2 className="mt-2 font-display text-lg font-bold tracking-tight">
+              <h2 className="text-title mt-2">
                 {car.name}
               </h2>
               <p className="mt-1 text-[13px] text-ink-500">
@@ -222,7 +222,7 @@ export function CheckoutForm({
         {/* Trip */}
         <section className="rounded-[var(--radius-xl)] border border-hairline bg-surface p-5">
           <div className="flex items-start justify-between gap-3">
-            <h2 className="font-display text-[17px] font-bold tracking-tight">
+            <h2 className="text-title">
               Trip details
             </h2>
             <button
@@ -263,7 +263,7 @@ export function CheckoutForm({
 
         {/* Documents */}
         <section className="rounded-[var(--radius-xl)] border border-hairline bg-surface p-5">
-          <h2 className="font-display text-[17px] font-bold tracking-tight">
+          <h2 className="text-title">
             Driver & documents
           </h2>
           <p className="mt-2 text-[13px] leading-relaxed text-ink-500">
@@ -293,7 +293,7 @@ export function CheckoutForm({
 
         {/* Coupon */}
         <section className="rounded-[var(--radius-xl)] border border-hairline bg-surface p-5">
-          <h2 className="flex items-center gap-2 font-display text-[17px] font-bold tracking-tight">
+          <h2 className="text-title flex items-center gap-2">
             <BadgePercent className="size-[18px] text-brand-500" />
             Have a code?
           </h2>
@@ -326,7 +326,7 @@ export function CheckoutForm({
       <aside className="lg:sticky lg:top-28 lg:h-fit">
         <div className="overflow-hidden rounded-[var(--radius-2xl)] border border-hairline bg-surface shadow-e2">
           <div className="border-b border-hairline px-5 py-4">
-            <h2 className="font-display text-[17px] font-bold tracking-tight">
+            <h2 className="text-title">
               Price summary
             </h2>
           </div>

@@ -9,7 +9,6 @@ import { ExperienceKerala } from "@/components/premium/experience-kerala";
 import { PremiumTestimonials } from "@/components/premium/premium-testimonials";
 import { AppPromo } from "@/components/premium/app-promo";
 import { FaqSection } from "@/components/home/faq-section";
-import { ClosingJourney } from "@/components/premium/closing-journey";
 import { JsonLd, faqJsonLd } from "@/components/seo/json-ld";
 import {
   getBranches,
@@ -56,7 +55,6 @@ export default async function HomePage() {
         faqs={homeFaqs}
         title="Self-drive rental FAQ — Kochi & Kerala"
       />
-      <ClosingJourney />
     </>
   );
 }

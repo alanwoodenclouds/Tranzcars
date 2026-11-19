@@ -6,6 +6,7 @@ import { SearchHydrator } from "@/components/booking/search-hydrator";
 import { CarCard } from "@/components/fleet/car-card";
 import { FleetFilters, FleetToolbar } from "@/components/fleet/fleet-filters";
 import { Button } from "@/components/ui/button";
+import { PageHeading } from "@/components/ui/section";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   JsonLd,
@@ -91,14 +92,11 @@ export default async function CarsPage({ searchParams }: Props) {
         <SearchHydrator />
       </Suspense>
 
-      <div className="max-w-2xl">
-        <p className="text-eyebrow mb-2.5">Kochi · Kerala</p>
-        <h1 className="text-display-lg">{heading}</h1>
-        <p className="text-lead mt-3">
-          Every price includes {BUSINESS_RULES.kmPerDay} free km a day and
-          insurance.
-        </p>
-      </div>
+      <PageHeading
+        eyebrow="Kochi · Kerala"
+        title={heading}
+        description={`Every price includes ${BUSINESS_RULES.kmPerDay} free km a day and insurance.`}
+      />
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[264px_1fr] lg:gap-10">
         <Suspense fallback={null}>
@@ -117,10 +115,10 @@ export default async function CarsPage({ searchParams }: Props) {
               <span className="grid size-14 place-items-center rounded-full bg-ink-100 text-ink-400">
                 <CarFront className="size-6" />
               </span>
-              <h2 className="mt-5 font-display text-xl font-bold">
+              <h2 className="text-display-sm mt-5">
                 Nothing matches those filters
               </h2>
-              <p className="mt-2 max-w-sm text-[14px] leading-relaxed text-ink-500">
+              <p className="text-body-sm mt-2 max-w-sm">
                 Try widening the vehicle type or transmission. Our team can also
                 arrange something specific for your dates.
               </p>

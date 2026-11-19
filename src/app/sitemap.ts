@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { DESTINATIONS } from "@/content/destinations";
 import { CARS } from "@/content/site";
 import { getSiteUrl } from "@/lib/seo";
 
@@ -13,6 +14,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "daily",
       priority: 0.95,
+    },
+    {
+      url: `${base}/destinations`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.9,
     },
     {
       url: `${base}/about`,
@@ -65,5 +72,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: car.popular ? 0.9 : 0.8,
   }));
 
-  return [...staticRoutes, ...carRoutes];
+  const destinationRoutes: MetadataRoute.Sitemap = DESTINATIONS.map((d) => ({
+    url: `${base}/destinations/${d.slug}`,
+    lastModified: now,
+    changeFrequency: "weekly",
+    priority: d.featured ? 0.85 : 0.75,
+  }));
+
+  return [...staticRoutes, ...carRoutes, ...destinationRoutes];
 }

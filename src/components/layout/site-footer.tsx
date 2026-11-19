@@ -131,9 +131,7 @@ export function SiteFooter() {
 
           {COLUMNS.map((column) => (
             <div key={column.title}>
-              <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-ink-500">
-                {column.title}
-              </p>
+              <p className="text-eyebrow text-ink-500">{column.title}</p>
               <ul className="mt-5 space-y-3">
                 {column.links.map((link) => (
                   <li key={link.href + link.label}>

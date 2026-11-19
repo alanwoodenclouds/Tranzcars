@@ -136,6 +136,13 @@ export function AppPromo() {
             {/* Reasons */}
             <div>
               <MvdBadge className="mb-5" />
+              <p className="text-eyebrow mb-3 flex items-center gap-2">
+                <span
+                  aria-hidden
+                  className="inline-block h-px w-6 bg-brand-400"
+                />
+                Why choose us
+              </p>
               <h2 className="text-display-md">
                 Why customers choose{" "}
                 <span className="text-brand-500">TranzCars</span>
@@ -151,7 +158,7 @@ export function AppPromo() {
                     <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-brand-50 text-brand-600">
                       <Check className="size-3.5" strokeWidth={3} />
                     </span>
-                    <span className="text-[14.5px] font-medium leading-snug text-ink-700">
+                    <span className="text-body font-medium leading-snug text-ink-700">
                       {reason}
                     </span>
                   </li>

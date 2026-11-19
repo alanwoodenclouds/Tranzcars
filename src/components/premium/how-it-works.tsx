@@ -55,12 +55,8 @@ export function HowItWorks() {
                 <span className="relative grid size-12 place-items-center rounded-[var(--radius-md)] bg-ink-900 text-white">
                   <step.icon className="size-5" />
                 </span>
-                <h3 className="relative mt-6 font-display text-lg font-bold tracking-tight">
-                  {step.title}
-                </h3>
-                <p className="relative mt-2.5 text-[14px] leading-relaxed text-ink-500">
-                  {step.body}
-                </p>
+                <h3 className="text-title relative mt-6">{step.title}</h3>
+                <p className="text-body-sm relative mt-2.5">{step.body}</p>
               </div>
             </RevealItem>
           ))}

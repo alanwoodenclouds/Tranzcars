@@ -40,9 +40,7 @@ export function LegalPage({
           aria-label="Policies"
           className="lg:sticky lg:top-28 lg:h-fit"
         >
-          <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-ink-500">
-            Policies
-          </p>
+          <p className="text-meta">Policies</p>
           <ul className="mt-3 flex flex-wrap gap-2 lg:flex-col lg:gap-1">
             {LEGAL_LINKS.map((l) => {
               const active = l.href === currentHref;
@@ -51,7 +49,7 @@ export function LegalPage({
                   <Link
                     href={l.href}
                     aria-current={active ? "page" : undefined}
-                    className={`interactive block rounded-[var(--radius-md)] px-3 py-2 text-[13.5px] font-semibold ${
+                    className={`interactive text-caption block rounded-[var(--radius-md)] px-3 py-2 font-semibold ${
                       active
                         ? "bg-ink-900 text-white"
                         : "text-ink-600 hover:bg-ink-50 hover:text-ink-900"
@@ -65,12 +63,10 @@ export function LegalPage({
           </ul>
 
           <div className="mt-6 rounded-[var(--radius-xl)] border border-hairline bg-surface p-4">
-            <p className="text-[12.5px] leading-relaxed text-ink-500">
-              Questions about these terms?
-            </p>
+            <p className="text-caption">Questions about these terms?</p>
             <a
               href={`tel:${BUSINESS_RULES.phoneE164}`}
-              className="mt-2 flex items-center gap-2 text-[13.5px] font-bold text-brand-600 hover:underline"
+              className="text-caption mt-2 flex items-center gap-2 font-bold text-brand-600 hover:underline"
             >
               <Phone className="size-4" />
               {BUSINESS_RULES.phoneDisplay}
@@ -79,31 +75,23 @@ export function LegalPage({
         </nav>
 
         <article className="max-w-2xl">
-          <p className="text-[12.5px] font-medium text-ink-400">
+          <p className="text-caption font-medium text-ink-400">
             Last updated {updated}
           </p>
 
           <div className="mt-8 space-y-10">
             {sections.map((s) => (
               <section key={s.heading}>
-                <h2 className="font-display text-[19px] font-bold tracking-tight text-ink-900">
-                  {s.heading}
-                </h2>
+                <h2 className="text-display-sm">{s.heading}</h2>
                 {s.paragraphs?.map((p) => (
-                  <p
-                    key={p}
-                    className="mt-3 text-[15px] leading-relaxed text-ink-600"
-                  >
+                  <p key={p} className="text-body mt-3">
                     {p}
                   </p>
                 ))}
                 {s.bullets ? (
                   <ul className="mt-4 space-y-2.5">
                     {s.bullets.map((b) => (
-                      <li
-                        key={b}
-                        className="flex gap-3 text-[15px] leading-relaxed text-ink-600"
-                      >
+                      <li key={b} className="text-body flex gap-3">
                         <span
                           aria-hidden
                           className="mt-2 size-1.5 shrink-0 rounded-full bg-brand-400"
@@ -117,7 +105,7 @@ export function LegalPage({
             ))}
           </div>
 
-          <p className="mt-12 rounded-[var(--radius-xl)] bg-surface-sunken p-5 text-[13px] leading-relaxed text-ink-500">
+          <p className="text-caption mt-12 rounded-[var(--radius-xl)] bg-surface-sunken p-5">
             This page is a plain-language summary for the demo site. The binding
             commercial terms are the ones shown at checkout and printed on your
             rental agreement.

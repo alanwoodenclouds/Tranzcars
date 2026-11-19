@@ -75,10 +75,8 @@ export default async function FaqPage() {
                 <f.icon className="size-[18px]" />
               </span>
               <div>
-                <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-ink-500">
-                  {f.label}
-                </p>
-                <p className="mt-1 text-[13.5px] font-semibold leading-snug text-ink-900">
+                <p className="text-meta">{f.label}</p>
+                <p className="text-caption mt-1 font-semibold leading-snug text-ink-900">
                   {f.value}
                 </p>
               </div>

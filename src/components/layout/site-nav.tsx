@@ -41,6 +41,11 @@ const NAV: {
     match: (p, category) => p === "/cars" && category === "bike",
     icon: Bike,
   },
+  {
+    href: "/destinations",
+    label: "Trips",
+    match: (p) => p.startsWith("/destinations"),
+  },
   { href: "/about", label: "About", match: (p) => p === "/about" },
   { href: "/faq", label: "FAQ", match: (p) => p === "/faq" },
   { href: "/contact", label: "Contact", match: (p) => p === "/contact" },
@@ -50,7 +55,10 @@ export function SiteNav() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const category = searchParams.get("category");
-  const hasPhotoHero = pathname === "/" || pathname === "/about";
+  const hasPhotoHero =
+    pathname === "/" ||
+    pathname === "/about" ||
+    /^\/destinations\/[^/]+$/.test(pathname);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [otpOpen, setOtpOpen] = useState(false);
